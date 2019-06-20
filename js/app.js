@@ -1,4 +1,4 @@
-import { getFactors } from './factors.js'
+import { getFactors } from './factors/factors.js'
 import { getValues } from './values.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
@@ -26,4 +26,4 @@ export function updateView() {
 }
 
 updateView()
-window.onresize = debounce(updateView, 100)
+window.onresize = debounce(updateView, 100, true)

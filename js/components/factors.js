@@ -1,16 +1,17 @@
 const { html } = lighterhtml
+import { round2tenth, camel2space } from '../util.js'
 
-export const Title = (label, value, scale) => html`
+export const Title = (text, calcVal, type) => html`
   <h1 class="subtitle">
     <span class="is-pulled-right">
       &nbsp;
-      ${FactorValue(value, scale)}
+      ${FactorValue(calcVal, type)}
     </span>
-    ${label}
+    ${text}
   </h1>
 `
 
-export const FactorValue = (value, scale) => {
+export const FactorValue = (value, type) => {
   let text, color
   if (value === true) {
     text = 'YES'
@@ -19,9 +20,17 @@ export const FactorValue = (value, scale) => {
     text = 'NO'
     color = 'is-danger'
   } else {
-    text = value
+    if (type === 'option') {
+      text = camel2space(value)
+    } else if (type === 'value') {
+      text = round2tenth(value)
+    } else if (type === 'range') {
+      text = value * 100
+    } {
+      text = value
+    }
     if (typeof value === 'number') {
-      if (scale) {
+      if (type === 'range') {
         color = 'is-dark'
       } else if (value > 0) {
         color = 'is-success'
@@ -42,8 +51,7 @@ export const FactorValue = (value, scale) => {
   `
 }
 
-//TODO: restyle when factor will contain other sections
-export const Func = (text) => html`
+export const Desc = (text) => html`
   <div>${text}</div>
 `
 
@@ -75,10 +83,9 @@ export const Grouping = (tags, starred, toggleStar) => html`
   </div>
 `
 
-export const Factor = ({content, star}) => html`
+export const Factor = (content) => html`
   <div class="box">
     ${content}
-    ${star}
   </div>
 `
 

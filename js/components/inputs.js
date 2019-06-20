@@ -17,7 +17,7 @@ const RadioOption = ({name, label, value, checked, onChange, disabled}) => html`
   <br>
 `
 
-export const Radio = (name, options, value, onChange, disabled = []) => {
+export const Radio = (name, options, value, onChange, disabled) => {
   const radioOptions = Object.keys(options).map(
     (optionValue) => ({
       value: optionValue,
@@ -25,7 +25,7 @@ export const Radio = (name, options, value, onChange, disabled = []) => {
       checked: optionValue === value,
       name,
       onChange,
-      disabled: disabled.includes(optionValue)
+      disabled: disabled && disabled.includes(optionValue)
     })
   )
   return html`
