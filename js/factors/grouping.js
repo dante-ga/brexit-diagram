@@ -1,5 +1,6 @@
 import { Grouping } from '../components/factors.js'
 import { Select } from '../components/inputs.js'
+import { Div } from '../components/global.js'
 import { updateView } from '../app.js'
 
 let starredIds = new Set()
@@ -17,7 +18,7 @@ const tagFactors = [
   {label: 'Scotland', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
 ]
 
-let activeTag = 'all'
+let activeTag = 'starred'
 
 export const visibleById = (id) => {
   if (activeTag === 'all') {
@@ -39,8 +40,6 @@ export const GroupingById = (id) => {
       .filter(({ids}) => ids.has(id))
       .map(({label}) => label)
     return Grouping(tags, starred, toggleStar(id, starred))
-  } else {
-    return ''
   }
 }
 

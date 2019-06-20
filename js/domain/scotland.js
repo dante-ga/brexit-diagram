@@ -18,7 +18,7 @@ export const scotland = {
   },
   scotEuMemberProb: {
     type: 'probability',
-    mergeInto: 'scotEuMemberProb',
+    mergeInto: 'scotlandEuMember',
     choice: true,
   },
   scotlandEuMember: {

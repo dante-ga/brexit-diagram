@@ -7,7 +7,7 @@ export const setCalcVals = (newVals, runCalc) => {
   calculate()
 }
 
-export const setValueData = vd => calcVals.valueData = vd
+export const setValueData = vd =>  calcVals.valueData = vd
 
 const defaultVals = {
   option: ({options}) => Object.keys(options)[0],
@@ -67,5 +67,3 @@ export const calculate = () => {
   }
   calcVals.agentValueTotals = getAgentValueTotals()
 }
-
-calculate()

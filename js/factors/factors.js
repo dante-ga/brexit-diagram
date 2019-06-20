@@ -6,7 +6,7 @@ import { domain, mergeFrom } from '../domain/domain.js'
 import { visibleById, GroupingById, Filter } from './grouping.js'
 
 const set = (key) => (value) => {
-  setCalcVals({key, value})
+  setCalcVals({[key]: value})
   updateView()
 }
 
@@ -35,7 +35,8 @@ const getDomainFactors = () => Object.keys(domain)
       const ds = domain[source]
       if (ds.choice) factor.push(inputs[ds.type](ds))
     }
-    factor.push(GroupingById(factorKey + ':domain'))
+    const grouping = GroupingById(factorKey + ':domain')
+    if (grouping) factor.push(grouping)
     return factor
   })
 
@@ -49,10 +50,10 @@ const getValueFactors = () => {
         const title = `${domain[factorKey].title} [${agent}\xa0value]`
         let {value, positive} = factorVals[factorKey]
         if (!positive) value *= -1
-        valueFactors.push([
-          Title(title, value, 'value'),
-          GroupingById(id),
-        ])
+        const factor = [ Title(title, value, 'value') ]
+        const grouping = GroupingById(id)
+        if (grouping) factor.push(grouping)
+        valueFactors.push(factor)
       }
     }
   }
@@ -66,10 +67,10 @@ const getTotalValueFactors = () => {
     if (visibleById(id)) {
       const title = `Total ${agent} value`
       const value = calcVals.agentValueTotals[agent]
-      valueFactors.push([
-        Title(title, value, 'value'),
-        GroupingById(id),
-      ])
+      const factor = [ Title(title, value, 'value') ]
+      const grouping = GroupingById(id)
+      if (grouping) factor.push(grouping)
+      totalValueFactors.push(factor)
     }
   }
   return totalValueFactors

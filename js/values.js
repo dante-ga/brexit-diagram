@@ -95,7 +95,7 @@ function getValueList() {
       const valueItem = {
         factor,
         gap,
-        title: factorTitles[factor],
+        title: domain[factor].title,
         ...valObj,
         refObj: valObj
       }

@@ -131,7 +131,7 @@ export const NumberInput = (value, onChange, disabled) => html`
 `
 
 const Option = ({label, value, selected}) => html`
-  <option value=${value} selected=${selected} >
+  <option value=${value} selected="${selected}" >
     ${label}
   </option>
 `

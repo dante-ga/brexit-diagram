@@ -1,5 +1,6 @@
 import { getFactors } from './factors/factors.js'
 import { getValues } from './values.js'
+import { calculate } from './calc.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
 const { render } = lighterhtml
@@ -25,5 +26,7 @@ export function updateView() {
   })
 }
 
-updateView()
 window.onresize = debounce(updateView, 100, true)
+
+calculate()
+updateView()
