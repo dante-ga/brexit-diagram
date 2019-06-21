@@ -16,12 +16,11 @@ const defaultVals = {
   range: () => 0.5,
   MOTPE: ({optionsFrom}) => {
     //Multiple option three point estimates
-    const estimates = []
+    const estimates = {}
     const options = domain[optionsFrom].options
-    for (const option in options) {
-      estimates.push({
-        option,
-        label: options[option],
+    for (const key in options) {
+      estimates[key] = ({
+        label: options[key],
         optimistic: 0.25,
         mostLikely: 0.5,
         pessimistic: 0.75,

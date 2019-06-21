@@ -73,10 +73,10 @@ export const Slider = ({value, onChange}) => {
   `
 }
 
-const TpeSlider = ({label, value}) => html`
+const TpeSlider = ({label, value, onchange}) => html`
   <div class="is-flex">
     <span class="has-text-right" style="width: 70px; padding-right: 10px;">
-      ${label} = ${value * 100}
+      ${label} = ${Math.round(value * 100)}
     </span>
     <input
       style="flex: 1;"
@@ -85,6 +85,7 @@ const TpeSlider = ({label, value}) => html`
       max="1"
       value=${value}
       type="range"
+      onchange=${(e) => onchange(parseFloat(e.target.value))}
     >
   </div>
 `
@@ -98,15 +99,25 @@ const ThreePointEstimate = (label, sliders) => html`
   </div>
 `
 
-export const ThreePointEstimates = (optionEstimates) => {
-  const options = optionEstimates.map(({label, optimistic, mostLikely, pessimistic}) => {
-    const sliders = [
-      {label: 'O', value: optimistic},
-      {label: 'ML', value: mostLikely},
-      {label: 'P', value: pessimistic},
-    ]
-    return ThreePointEstimate(label, sliders)
-  })
+const estimateLabels = {
+  optimistic: 'O',
+  mostLikely: 'ML',
+  pessimistic: 'P',
+}
+
+export const ThreePointEstimates = (optionEstimates, onChange) => {
+  const options = Object.keys(optionEstimates)
+    .map((option) => {
+      const sliders = []
+      const estimate = optionEstimates[option]
+      for (const est in estimateLabels) {
+        const label = estimateLabels[est]
+        const value = estimate[est]
+        const onchange = val => onChange(option, est, val)
+        sliders.push({label, value, onchange})
+      }
+      return ThreePointEstimate(estimate.label, sliders)
+    })
   return html`
     <br>
     ${options}

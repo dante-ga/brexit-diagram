@@ -16,6 +16,9 @@ const toggleStar = (id, starred) => () => {
 
 const tagFactors = [
   {label: 'Scotland', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
+  {label: 'Scotland2', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
+  {label: 'Scotland3', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
+  {label: 'Scotland4', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
 ]
 
 let activeTag = 'starred'

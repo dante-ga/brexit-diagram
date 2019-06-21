@@ -1,6 +1,6 @@
 import { Title, Desc, Factors } from '../components/factors.js'
 import { Radio, Checkbox, Slider, ThreePointEstimates } from '../components/inputs.js'
-import { calcVals, setCalcVals } from '../calc.js'
+import { calcVals, setCalcVals, calculate } from '../calc.js'
 import { updateView } from '../app.js'
 import { domain, mergeFrom } from '../domain/domain.js'
 import { visibleById, GroupingById, Filter } from './grouping.js'
@@ -17,7 +17,15 @@ const inputs = {
   ),
   boolean: ({key}) => Checkbox(key, calcVals[key], set(key)),
   probability: ({key}) => Slider({value: calcVals[key], onChange: set(key) }),
-  MOTPE: ({key}) => ThreePointEstimates(calcVals[key]),
+  MOTPE: ({key}) => ThreePointEstimates(
+    calcVals[key],
+    (option, estimate, value) => {
+      //Update deep calcVals value directly
+      calcVals[key][option][estimate] = value
+      calculate()
+      updateView()
+    }
+  ),
 }
 
 const getDomainFactors = () => Object.keys(domain)

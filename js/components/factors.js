@@ -11,38 +11,23 @@ export const Title = (text, calcVal, type) => html`
   </h1>
 `
 
+const value2text = {
+  option: v => camel2space(v),
+  boolean: v => (v) ? 'YES' : 'NO',
+  range: v => round2tenth(v * 100),
+  value: v => round2tenth(v),
+}
+
+const value2color = {
+  option: () => 'is-dark',
+  boolean: v => (v) ? 'is-success' : 'is-danger',
+  range: () => 'is-dark',
+  value: v => (v === 0) ? 'is-dark' : ((v > 0) ? 'is-success' : 'is-danger'),
+}
+
 export const FactorValue = (value, type) => {
-  let text, color
-  if (value === true) {
-    text = 'YES'
-    color = 'is-success'
-  } else if (value === false) {
-    text = 'NO'
-    color = 'is-danger'
-  } else {
-    if (type === 'option') {
-      text = camel2space(value)
-    } else if (type === 'value') {
-      text = round2tenth(value)
-    } else if (type === 'range') {
-      text = value * 100
-    } {
-      text = value
-    }
-    if (typeof value === 'number') {
-      if (type === 'range') {
-        color = 'is-dark'
-      } else if (value > 0) {
-        color = 'is-success'
-      } else if (value < 0) {
-        color = 'is-danger'
-      } else {
-        color = 'is-dark'
-      }
-    } else {
-      color= 'is-dark'
-    }
-  }
+  const text = value2text[type](value)
+  const color = value2color[type](value)
   const classes = ['tag', 'is-medium', color].join(' ')
   return html`
     <span class=${classes}>
