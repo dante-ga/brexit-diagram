@@ -2,6 +2,7 @@ import { brexit } from './brexit.js'
 import { scotland } from './scotland.js'
 import { ireland } from './ireland.js'
 import { gibraltar } from './gibraltar.js'
+import { security } from './security.js'
 import { government } from './government.js'
 
 export const domain = {
@@ -9,6 +10,7 @@ export const domain = {
   ...scotland,
   ...ireland,
   ...gibraltar,
+  ...security,
   ...government,
 }
 

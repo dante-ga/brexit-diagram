@@ -55,10 +55,10 @@ const getValueFactors = () => {
     for (const factorKey in factorVals) {
       const id = factorKey + ':' + agent + ':value'
       if (visibleById(id)) {
-        const title = `${domain[factorKey].title} [${agent}\xa0value]`
-        let {value, positive} = factorVals[factorKey]
+        let {value, positive, title} = factorVals[factorKey]
+        const fullTitle = `${title} [${agent}\xa0value]`
         if (!positive) value *= -1
-        const factor = [ Title(title, value, 'value') ]
+        const factor = [ Title(fullTitle, value, 'value') ]
         const grouping = GroupingById(id)
         if (grouping) factor.push(grouping)
         valueFactors.push(factor)

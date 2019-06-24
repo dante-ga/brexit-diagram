@@ -47,5 +47,6 @@ export const ireland = {
     type: 'boolean',
     title: 'Irish border Brexit deal is broken',
     calc: c => (c.brexitApproval === 'deal') && (c.irishBorder === 'hardBorder'),
+    valuedBy: ['Northern Ireland', 'UK', 'EU'],
   },
 }

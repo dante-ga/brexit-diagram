@@ -35,14 +35,14 @@ const getAgentValueTotals = () => {
   const { valueData } = calcVals
   for (const agent in valueData) {
     let total = 0
-    for (const factor in valueData[agent]) {
-      const {positive, value} = valueData[agent][factor]
-      if (calcVals[factor] === true) {
-        if (positive) {
-          total += value
-        } else {
-          total -= value
-        }
+    for (const valueFactor in valueData[agent]) {
+      const valueObj = valueData[agent][valueFactor]
+      let {factor = valueFactor, option} = valueObj
+      const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
+      if (domain[factor].type === 'range') {
+        total += calcVals[factor] * value / valueObj.points
+      } else if (calcVals[factor] === (option || true)) {
+        total += value
       }
     }
     totalValues[agent] = total

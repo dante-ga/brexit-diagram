@@ -8,15 +8,36 @@ import { updateView } from './app.js'
 const getInitValueData = () => {
   const valueData = {}
   for (const factor in domain) {
-    const { valuedBy } = domain[factor]
+    const { valuedBy, type, options } = domain[factor]
     if (valuedBy) {
       for (const agent of valuedBy) {
         if (!valueData[agent]) {
           valueData[agent] = {}
         }
-        valueData[agent][factor] = {
-          positive: true,
-          value: 0,
+        if (type === 'boolean') {
+          valueData[agent][factor] = {
+            positive: true,
+            value: 0,
+            title: domain[factor].title
+          }
+        } else if (type === 'option') {
+          for (const option in options) {
+            valueData[agent][factor + ':' + option] = {
+              positive: true,
+              value: 0,
+              factor,
+              option,
+              title: domain[factor].title + ': ' + domain[factor].options[option],
+            }
+          }
+        } else if (type === 'range') {
+          const points = 10
+          valueData[agent][factor] = {
+            positive: true,
+            value: 0,
+            title: `${domain[factor].title} [${points}\xa0points]`,
+            points,
+          }
         }
       }
     }
@@ -92,13 +113,7 @@ function getValueList() {
       const gap = value - prevValue
       prevValue = value
       const valObj = factors[factor]
-      const valueItem = {
-        factor,
-        gap,
-        title: domain[factor].title,
-        ...valObj,
-        refObj: valObj
-      }
+      const valueItem = { factor, gap, refObj: valObj, ...valObj}
       //Tie callbacks to the context
       valueItem.toggleSign = toggleSign(valObj)
       valueItem.onValueChange = onValueChange(valObj)
@@ -114,9 +129,9 @@ export const getValues = () => {
     value: agent,
     selected: agent === activeAgent,
   }))
-  return Div([
+  return [
     Select('Agent', agentOptions, setAgent),
     ValuesTable(getValueList()),
     Button({ label: 'Rescale to 100', onClick: rescaleValues }),
-  ])
+  ]
 }
