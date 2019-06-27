@@ -2,8 +2,8 @@ import { Title, Desc, Factors } from '../components/factors.js'
 import { Radio, Checkbox, Slider, ThreePointEstimates } from '../components/inputs.js'
 import { calcVals, setCalcVals, calculate } from '../calc.js'
 import { updateView } from '../app.js'
-import { domain, mergeFrom } from '../domain/domain.js'
-import { visibleById, GroupingById, Filter } from './grouping.js'
+import { domain } from '../domain/domain.js'
+import { isVisible, getGrouping, Filter } from './grouping.js'
 
 const set = (key) => (value) => {
   setCalcVals({[key]: value})
@@ -15,9 +15,14 @@ const inputs = {
     key, options, calcVals[key], set(key),
     disableOptions && disableOptions(calcVals)
   ),
-  boolean: ({key}) => Checkbox(key, calcVals[key], set(key)),
-  probability: ({key}) => Slider({value: calcVals[key], onChange: set(key) }),
+  boolean: ({key, choiceLabel}) => Checkbox(key, calcVals[key], choiceLabel, set(key)),
+  probability: ({key, probability}) => Slider({
+    value: calcVals[key],
+    onChange: set(key),
+    settings: probability,
+  }),
   MOTPE: ({key}) => ThreePointEstimates(
+    key,
     calcVals[key],
     (option, estimate, value) => {
       //Update deep calcVals value directly
@@ -29,7 +34,8 @@ const inputs = {
 }
 
 const getDomainFactors = () => Object.keys(domain)
-  .filter(factorKey => visibleById(factorKey + ':domain') && !domain[factorKey].mergeInto)
+  .filter(factorKey => isVisible(factorKey + ':domain', factorKey)
+    && !domain[factorKey].mergeInto)
   .map(factorKey => {
     const factor = []
     const domainFactor = domain[factorKey]
@@ -38,12 +44,11 @@ const getDomainFactors = () => Object.keys(domain)
     factor.push(Title(title, calcVal, type))
     if (desc) factor.push(Desc(desc))
     if (choice) factor.push(inputs[type](domainFactor))
-    const source = mergeFrom[key]
-    if (source) {
+    for (const source of domainFactor.mergeFrom) {
       const ds = domain[source]
       if (ds.choice) factor.push(inputs[ds.type](ds))
     }
-    const grouping = GroupingById(factorKey + ':domain')
+    const grouping = getGrouping(factorKey + ':domain', factorKey)
     if (grouping) factor.push(grouping)
     return factor
   })
@@ -54,12 +59,12 @@ const getValueFactors = () => {
     const factorVals = calcVals.valueData[agent]
     for (const factorKey in factorVals) {
       const id = factorKey + ':' + agent + ':value'
-      if (visibleById(id)) {
-        let {value, positive, title} = factorVals[factorKey]
+      let {value, positive, title, key} = factorVals[factorKey]
+      if (isVisible(id, key)) {
         const fullTitle = `${title} [${agent}\xa0value]`
         if (!positive) value *= -1
         const factor = [ Title(fullTitle, value, 'value') ]
-        const grouping = GroupingById(id)
+        const grouping = getGrouping(id, key)
         if (grouping) factor.push(grouping)
         valueFactors.push(factor)
       }
@@ -72,11 +77,11 @@ const getTotalValueFactors = () => {
   const totalValueFactors = []
   for (const agent in calcVals.agentValueTotals) {
     const id = agent + ':totalValue'
-    if (visibleById(id)) {
+    if (isVisible(id, null)) {
       const title = `Total ${agent} value`
       const value = calcVals.agentValueTotals[agent]
       const factor = [ Title(title, value, 'value') ]
-      const grouping = GroupingById(id)
+      const grouping = getGrouping(id, null)
       if (grouping) factor.push(grouping)
       totalValueFactors.push(factor)
     }

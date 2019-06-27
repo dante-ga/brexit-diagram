@@ -3,6 +3,7 @@ export const scotland = {
     title: "Scottish independence intention",
     type: 'boolean',
     choice: true,
+    choiceLabel: 'Intends',
   },
   indScotProb: {
     type: 'probability',

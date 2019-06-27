@@ -35,7 +35,7 @@ export const ireland = {
   violenceNi: {
     type: 'range',
     title: 'Violence in Northern Ireland',
-    desc: "Violence in Northern Ireland is represented on the scale from the most peaceful region in the world (0) to the most violent (100). Please make an optimisic (O), pessimistic (P) and most likely (ML) estimates of violence under each of the following border arrangements.",
+    desc: "Please make an optimisic, pessimistic and most likely estimates of violence on a scale from 0 (no violence) to 100 (war) under each of the following border arrangements.",
     calc: c => {
       const {pessimistic, mostLikely, optimistic} = c.violenceNiByOption[c.irishBorder]
       const sample = new Random().triangular(optimistic, pessimistic, mostLikely)

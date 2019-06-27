@@ -15,6 +15,7 @@ const value2text = {
   option: v => camel2space(v),
   boolean: v => (v) ? 'YES' : 'NO',
   range: v => round2tenth(v * 100),
+  probability: v => round2tenth(v * 100) + '%',
   value: v => round2tenth(v),
 }
 
@@ -22,6 +23,7 @@ const value2color = {
   option: () => 'is-dark',
   boolean: v => (v) ? 'is-success' : 'is-danger',
   range: () => 'is-dark',
+  probability: () => 'is-dark',
   value: v => (v === 0) ? 'is-dark' : ((v > 0) ? 'is-success' : 'is-danger'),
 }
 
@@ -37,7 +39,9 @@ export const FactorValue = (value, type) => {
 }
 
 export const Desc = (text) => html`
-  <div>${text}</div>
+  <div class="field">
+    ${text}
+  </div>
 `
 
 const Tag = (label) => html`

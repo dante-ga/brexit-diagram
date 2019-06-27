@@ -18,7 +18,8 @@ const getInitValueData = () => {
           valueData[agent][factor] = {
             positive: true,
             value: 0,
-            title: domain[factor].title
+            title: domain[factor].title,
+            key: factor,
           }
         } else if (type === 'option') {
           for (const option in options) {
@@ -28,6 +29,7 @@ const getInitValueData = () => {
               factor,
               option,
               title: domain[factor].title + ': ' + domain[factor].options[option],
+              key: factor,
             }
           }
         } else if (type === 'range') {
@@ -35,8 +37,18 @@ const getInitValueData = () => {
           valueData[agent][factor] = {
             positive: true,
             value: 0,
-            title: `${domain[factor].title} [${points}\xa0points]`,
+            title: `${domain[factor].title} (+${points}\xa0points)`,
             points,
+            key: factor,
+          }
+        } else if (type === 'probability') {
+          const percent = 10
+          valueData[agent][factor] = {
+            positive: true,
+            value: 0,
+            title: `${domain[factor].title} (+${percent}%)`,
+            percent,
+            key: factor,
           }
         }
       }

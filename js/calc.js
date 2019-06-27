@@ -40,7 +40,9 @@ const getAgentValueTotals = () => {
       let {factor = valueFactor, option} = valueObj
       const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
       if (domain[factor].type === 'range') {
-        total += calcVals[factor] * value / valueObj.points
+        total += calcVals[factor] * value / valueObj.points * 100
+      } else if (domain[factor].type === 'probability') {
+        total += calcVals[factor] * value / valueObj.percent * 100
       } else if (calcVals[factor] === (option || true)) {
         total += value
       }

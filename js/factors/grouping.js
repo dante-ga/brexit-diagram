@@ -2,6 +2,7 @@ import { Grouping } from '../components/factors.js'
 import { Select } from '../components/inputs.js'
 import { Div } from '../components/global.js'
 import { updateView } from '../app.js'
+import { domain, subKeys } from '../domain/domain.js'
 
 let starredIds = new Set()
 if (localStorage.getItem('starredIds')) {
@@ -14,36 +15,33 @@ const toggleStar = (id, starred) => () => {
   localStorage.setItem('starredIds', JSON.stringify([...starredIds]))
 }
 
-const tagFactors = [
-  {label: 'Scotland', ids: new Set(["independentScotland:Scotland:value","scotlandInEu:Scotland:value","scotlandApproval:domain","independentScotland:domain","scotlandEuMember:domain","Scotland:totalValue","scotlandInEu:domain","brexitApproval:domain"])},
-]
-
 let activeTag = 'starred'
 
-export const visibleById = (id) => {
+export const isVisible = (id, key) => {
   if (activeTag === 'all') {
     return true
   } else if (activeTag === 'starred') {
     return starredIds.has(id)
   } else {
-    return tagFactors
-      .find(({label}) => label === activeTag)
-      .ids
-      .has(id)
+    if (starredIds.has(id)) {
+      return true
+    } else if (key) {
+      return domain[key].subKey === activeTag
+    } else {
+      return false
+    }
   }
 }
 
-export const GroupingById = (id) => {
+export const getGrouping = (id, key) => {
   if (activeTag === 'all') {
     const starred = starredIds.has(id)
-    const tags = tagFactors
-      .filter(({ids}) => ids.has(id))
-      .map(({label}) => label)
+    const tags = (key) ? [ domain[key].subKey ] : []
     return Grouping(tags, starred, toggleStar(id, starred))
   }
 }
 
-const tagLabels = ['all', 'starred', ...tagFactors.map(({label}) => label)]
+const tagLabels = ['all', 'starred', ...subKeys]
 
 const setTag = (tag) => {
   activeTag = tag

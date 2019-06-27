@@ -1,3 +1,5 @@
+// import { updateView } from '../app.js'
+import { camel2space } from '../util.js'
 const { html } = lighterhtml
 
 const RadioOption = ({name, label, value, checked, onChange, disabled}) => html`
@@ -35,7 +37,7 @@ export const Radio = (name, options, value, onChange, disabled) => {
   `
 }
 
-export const Checkbox = (id, checked, onChange) => html`
+export const Checkbox = (id, checked, choiceLabel, onChange) => html`
   <div class="field">
     <input
       class="is-checkradio"
@@ -44,14 +46,20 @@ export const Checkbox = (id, checked, onChange) => html`
       onchange=${(e) => onChange(e.target.checked)}
       id=${id}
     >
-    <label for=${id} >Intends</label>
+    <label for=${id} >
+      ${choiceLabel}
+    </label>
   </div>
 `
 
-export const Slider = ({value, onChange}) => {
-  const label = `Probability P = ${(value * 100).toFixed(1)}%`
+export const Slider = ({value, onChange, settings}) => {
+  settings = settings || ({
+    min: 'Impossible',
+    max: 'Definitely',
+    label: 'Probability P',
+  })
+  const label = `${settings.label} = ${(value * 100).toFixed(1)}%`
   return html`
-    <br>
     <div class="field">
       <div>${label}</div>
       <div>
@@ -62,68 +70,134 @@ export const Slider = ({value, onChange}) => {
           max="1"
           value=${value}
           type="range"
-          onchange=${(e) => onChange(e.target.value)}
+          onchange=${(e) => onChange(parseFloat(e.target.value))}
         >
         <div>
-          <span>Impossible</span>
-          <span class="is-pulled-right">Definitely</span>
+          <span>
+            ${settings.min}
+          </span>
+          <span class="is-pulled-right">
+            ${settings.max}
+          </span>
         </div>
       </div>
     </div>
   `
 }
 
-const TpeSlider = ({label, value, onchange}) => html`
-  <div class="is-flex">
-    <span class="has-text-right" style="width: 70px; padding-right: 10px;">
-      ${label} = ${Math.round(value * 100)}
-    </span>
-    <input
-      style="flex: 1;"
-      step="0.01"
-      min="0"
-      max="1"
-      value=${value}
-      type="range"
-      onchange=${(e) => onchange(parseFloat(e.target.value))}
-    >
-  </div>
-`
-
-const ThreePointEstimate = (label, sliders) => html`
-  <div class="field">
-    <div style="padding-left: 70px;">
-      ${label}
-    </div>
-    ${sliders.map(TpeSlider)}
-  </div>
-`
-
-const estimateLabels = {
-  optimistic: 'O',
-  mostLikely: 'ML',
-  pessimistic: 'P',
+const getRangeValue = (e) => {
+  if (e.clientX === 0) return null
+  const rect = e.target.parentElement.getBoundingClientRect()
+  let value = (e.clientX - rect.left) / rect.width
+  value = Math.min(Math.max(value, 0), 1)
+  return value
 }
 
-export const ThreePointEstimates = (optionEstimates, onChange) => {
-  const options = Object.keys(optionEstimates)
-    .map((option) => {
-      const sliders = []
-      const estimate = optionEstimates[option]
-      for (const est in estimateLabels) {
-        const label = estimateLabels[est]
-        const value = estimate[est]
-        const onchange = val => onChange(option, est, val)
-        sliders.push({label, value, onchange})
-      }
-      return ThreePointEstimate(estimate.label, sliders)
-    })
+const onTpePointDrag = (e, est, pointWidth) => {
+  const value = getRangeValue(e)
+  if (value === null) return false
+  //Update DOM styles without updating the whole view
+  e.target.style.left = `calc(${value * 100}% - ${pointWidth/2}px)`
+  if (est === 'optimistic') {
+    e.target.parentElement.querySelector('.tpe-range').style.left = value * 100 + '%'
+  } else if (est === 'pessimistic') {
+    e.target.parentElement.querySelector('.tpe-range').style.right = (1 - value) * 100 + '%'
+  }
+}
+
+const onTpePointDragEnd = (e, onEnd) => {
+  const value = getRangeValue(e)
+  if (value === null) return false
+  onEnd(value)
+}
+
+const clearDragImage = (e) => e.dataTransfer
+  .setDragImage(document.createElement('img'), 0, 0);
+
+const TpePoint = ({value, option, est, onChange}) => {
+  const left = value * 100
+  const pointWidth = 6;
+  const style = `left: calc(${left}% - ${pointWidth/2}px);`
+  const onEnd = (val) => onChange(option, est, val)
   return html`
-    <br>
-    ${options}
-    <div>
-      <span style="padding-left: 70px;">Most peaceful</span>
-      <span class="is-pulled-right">Most violent</span>
+    <div
+      class="tpe-point"
+      style=${style}
+      draggable="true"
+      ondrag=${(e) => onTpePointDrag(e, est, pointWidth)}
+      ondragend=${(e) => onTpePointDragEnd(e, onEnd)}
+      ondragstart=${clearDragImage}
+    />
+  `
+}
+
+const TpeOption = ({option, estimate, onChange}) => html`
+  <div class="is-flex field" >
+    <div  class="is-size-7 tpe-option-label tpe-padding">
+      ${camel2space(option)}
+    </div>
+    <div class="tpe-scale is-flex-one">
+      <div class="tpe-range" style=${`
+        left:${estimate.optimistic * 100}%;
+        right:${(1 - estimate.pessimistic) * 100}%;
+      `} />
+      ${['optimistic', 'mostLikely', 'pessimistic'].map((est) => TpePoint({
+        value: estimate[est],
+        option,
+        est,
+        onChange,
+      }))}
+    </div>
+  </div>
+`
+
+const TpeRulerDash = (value) => html`
+  <div
+    class="tpe-ruler-dash"
+    style=${`left:${value}%`}
+  />
+`
+
+const TpeRulerNumber = (value) => html`
+  <div
+    class="tpe-ruler-number"
+    style=${`left:calc(${value}% - 1.5em)`}
+  >
+    ${value}
+  </div>
+`
+
+const TpeRuler = () => {
+  const dashes = []
+  for (let i = 0; i <= 10; i++) {
+    dashes.push(i * 10)
+  }
+  const numbers = [0, 25, 50, 75, 100]
+  return html`
+    <div class="is-flex">
+      <div class="tpe-padding" />
+      <div class="tpe-ruler-scale is-flex-one">
+        ${dashes.map(TpeRulerDash)}
+        ${numbers.map(TpeRulerNumber)}
+      </div>
+    </div>
+  `
+}
+
+export const ThreePointEstimates = (key, optionEstimates, onChange) => {
+  const options = []
+  for (const option in optionEstimates) {
+    const estimates = []
+    options.push({
+      option,
+      estimate: optionEstimates[option],
+      onChange,
+    })
+  }
+  return html`
+    <div class="field is-size-7">
+      ${options.map(TpeOption)}
+      ${TpeRuler()}
     </div>
   `
 }
@@ -149,11 +223,11 @@ const Option = ({label, value, selected}) => html`
 
 export const Select = (label, options, onChange) => html`
   <div class="field">
-  <span class="has-text-weight-bold is-va-middle" >${label}: &nbsp;</span>
-  <span class="select is-va-middle">
-    <select onchange=${(e) => onChange(e.target.value)} class="select">
-      ${options.map(Option)}
-    </select>
-  </span>
-</div>
+    <span class="has-text-weight-bold is-va-middle" >${label}: &nbsp;</span>
+    <span class="select is-va-middle">
+      <select onchange=${(e) => onChange(e.target.value)} class="select">
+        ${options.map(Option)}
+      </select>
+    </span>
+  </div>
 `
