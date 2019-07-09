@@ -8,9 +8,3 @@ export const Button = ({label, onClick}) => html`
     ${label}
   </button>
 `
-
-export const Div = (content) => html`
-  <div>
-    ${content}
-  </div>
-`

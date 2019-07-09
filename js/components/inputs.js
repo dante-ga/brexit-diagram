@@ -58,27 +58,57 @@ export const Slider = ({value, onChange, settings}) => {
     max: 'Definitely',
     label: 'Probability P',
   })
-  const label = `${settings.label} = ${(value * 100).toFixed(1)}%`
+  const change = !!settings.change
+  const ratio = settings.type === 'ratio'
+  if (ratio) {
+    settings.label = 'Impact ratio'
+  }
+  let label, step, min, max, minLabel, maxLabel
+  if (change) {
+    label = `${settings.label} = ${(value * 100).toFixed(1)}%`
+    step = 0.01
+    min = settings.min
+    max = settings.max
+    minLabel = settings.min * 100 + '%'
+    maxLabel = '+' + settings.max * 100 + '%'
+  } else if (ratio) {
+    label = 'Impact ratio = ' + value
+    step = 0.1
+    if (settings.start === 0) {
+      min = -3
+      max = 3
+      minLabel = 'Drastic decrease'
+      maxLabel = 'Drastic increase'
+    } else if (settings.start === 1) {
+      min = 0
+      max = 3
+      minLabel = 'No impact'
+      maxLabel = 'Drastic impact'
+    }
+  } else {
+    label = `${settings.label} = ${(value * 100).toFixed(1)}%`
+    step = 0.005
+    min = 0
+    max = 1
+    minLabel = settings.min
+    maxLabel = settings.max
+  }
   return html`
     <div class="field">
       <div>${label}</div>
       <div>
         <input
           class="is-fullwidth"
-          step="0.005"
-          min="0"
-          max="1"
+          step=${step}
+          min=${min}
+          max=${max}
           value=${value}
           type="range"
           onchange=${(e) => onChange(parseFloat(e.target.value))}
         >
         <div>
-          <span>
-            ${settings.min}
-          </span>
-          <span class="is-pulled-right">
-            ${settings.max}
-          </span>
+          <span>${minLabel}</span>
+          <span class="is-pulled-right">${maxLabel}</span>
         </div>
       </div>
     </div>

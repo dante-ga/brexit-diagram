@@ -13,6 +13,8 @@ const defaultVals = {
   option: ({options}) => Object.keys(options)[0],
   boolean: () => false,
   probability: () => 0.5,
+  ratio: ({ratio}) => ratio.start,
+  change: () => 0,
   range: () => 0.5,
   MOTPE: ({optionsFrom}) => {
     //Multiple option three point estimates
@@ -42,6 +44,8 @@ const getAgentValueTotals = () => {
       if (domain[factor].type === 'range') {
         total += calcVals[factor] * value / valueObj.points * 100
       } else if (domain[factor].type === 'probability') {
+        total += calcVals[factor] * value / valueObj.percent * 100
+      } else if (domain[factor].type === 'change') {
         total += calcVals[factor] * value / valueObj.percent * 100
       } else if (calcVals[factor] === (option || true)) {
         total += value

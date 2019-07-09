@@ -8,6 +8,9 @@ import { security } from './security.js'; sub({security})
 import { influence } from './influence.js'; sub({influence})
 import { government } from './government.js'; sub({government})
 import { exchange } from './exchange.js'; sub({exchange})
+import { negotiation } from './negotiation.js'; sub({negotiation})
+import { trade } from './trade.js'; sub({trade})
+import { movement } from './movement.js'; sub({movement})
 
 export const subKeys = Object.keys(subdomains)
 export const domain = {}

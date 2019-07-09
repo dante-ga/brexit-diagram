@@ -21,6 +21,16 @@ const inputs = {
     onChange: set(key),
     settings: probability,
   }),
+  ratio: ({key, ratio}) => Slider({
+    value: calcVals[key],
+    onChange: set(key),
+    settings: { type: 'ratio', ...ratio },
+  }),
+  change: ({key, change}) => Slider({
+    value: calcVals[key],
+    onChange: set(key),
+    settings: change,
+  }),
   MOTPE: ({key}) => ThreePointEstimates(
     key,
     calcVals[key],

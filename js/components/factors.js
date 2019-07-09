@@ -16,15 +16,21 @@ const value2text = {
   boolean: v => (v) ? 'YES' : 'NO',
   range: v => round2tenth(v * 100),
   probability: v => round2tenth(v * 100) + '%',
+  change: v => ((v > 0) ? '+' : '') + Math.round(v * 100) + '%',
   value: v => round2tenth(v),
+  ratio: v => v,
 }
+
+const positivityColor = v => (v === 0) ? 'is-dark' : ((v > 0) ? 'is-success' : 'is-danger')
 
 const value2color = {
   option: () => 'is-dark',
   boolean: v => (v) ? 'is-success' : 'is-danger',
   range: () => 'is-dark',
   probability: () => 'is-dark',
-  value: v => (v === 0) ? 'is-dark' : ((v > 0) ? 'is-success' : 'is-danger'),
+  ratio: positivityColor,
+  change: positivityColor,
+  value: positivityColor,
 }
 
 export const FactorValue = (value, type) => {

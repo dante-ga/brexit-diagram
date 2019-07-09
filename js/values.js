@@ -1,5 +1,5 @@
 import { ValuesTable } from './components/values.js'
-import { Button, Div } from './components/global.js'
+import { Button } from './components/global.js'
 import { Select } from './components/inputs.js'
 import { calcVals, calculate, setValueData } from './calc.js'
 import { domain } from './domain/domain.js'
@@ -42,6 +42,15 @@ const getInitValueData = () => {
             key: factor,
           }
         } else if (type === 'probability') {
+          const percent = 10
+          valueData[agent][factor] = {
+            positive: true,
+            value: 0,
+            title: `${domain[factor].title} (+${percent}%)`,
+            percent,
+            key: factor,
+          }
+        } else if (type === 'change') {
           const percent = 10
           valueData[agent][factor] = {
             positive: true,

@@ -1,6 +1,5 @@
 import { Grouping } from '../components/factors.js'
 import { Select } from '../components/inputs.js'
-import { Div } from '../components/global.js'
 import { updateView } from '../app.js'
 import { domain, subKeys } from '../domain/domain.js'
 
@@ -15,7 +14,7 @@ const toggleStar = (id, starred) => () => {
   localStorage.setItem('starredIds', JSON.stringify([...starredIds]))
 }
 
-let activeTag = 'starred'
+let activeTag = localStorage.getItem('activeTag') || 'starred'
 
 export const isVisible = (id, key) => {
   if (activeTag === 'all') {
@@ -45,6 +44,7 @@ const tagLabels = ['all', 'starred', ...subKeys]
 
 const setTag = (tag) => {
   activeTag = tag
+  localStorage.setItem('activeTag', tag)
   updateView()
 }
 
