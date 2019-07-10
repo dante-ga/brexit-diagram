@@ -4,63 +4,29 @@ import { Select } from './components/inputs.js'
 import { calcVals, calculate, setValueData } from './calc.js'
 import { domain } from './domain/domain.js'
 import { updateView } from './app.js'
+import { types } from './types.js'
 
 const getInitValueData = () => {
   const valueData = {}
   for (const factor in domain) {
-    const { valuedBy, type, options } = domain[factor]
+    const { valuedBy, type } = domain[factor]
     if (valuedBy) {
       for (const agent of valuedBy) {
-        if (!valueData[agent]) {
-          valueData[agent] = {}
-        }
-        if (type === 'boolean') {
-          valueData[agent][factor] = {
-            positive: true,
-            value: 0,
-            title: domain[factor].title,
-            key: factor,
-          }
-        } else if (type === 'option') {
-          for (const option in options) {
-            valueData[agent][factor + ':' + option] = {
-              positive: true,
-              value: 0,
-              factor,
-              option,
-              title: domain[factor].title + ': ' + domain[factor].options[option],
-              key: factor,
-            }
-          }
-        } else if (type === 'range') {
-          const points = 10
-          valueData[agent][factor] = {
-            positive: true,
-            value: 0,
-            title: `${domain[factor].title} (+${points}\xa0points)`,
-            points,
-            key: factor,
-          }
-        } else if (type === 'probability') {
-          const percent = 10
-          valueData[agent][factor] = {
-            positive: true,
-            value: 0,
-            title: `${domain[factor].title} (+${percent}%)`,
-            percent,
-            key: factor,
-          }
-        } else if (type === 'change') {
-          const percent = 10
-          valueData[agent][factor] = {
-            positive: true,
-            value: 0,
-            title: `${domain[factor].title} (+${percent}%)`,
-            percent,
-            key: factor,
-          }
-        }
+        if (!valueData[agent]) valueData[agent] = {}
+        Object.assign(
+          valueData[agent],
+          types[type].getValueObjs(domain[factor])
+        )
       }
+    }
+  }
+  for (const agent in valueData) {
+    for (const key in valueData[agent]) {
+      Object.assign(valueData[agent][key], {
+        positive: true,
+        value: 0,
+        key
+      })
     }
   }
   return valueData

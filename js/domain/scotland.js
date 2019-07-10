@@ -3,12 +3,15 @@ export const scotland = {
     title: "Scottish independence intention",
     type: 'boolean',
     choice: true,
-    choiceLabel: 'Intends',
+    checkboxLabel: 'Intends',
   },
   indScotProb: {
-    type: 'probability',
+    type: 'unitInterval',
     mergeInto: 'independentScotland',
     choice: true,
+    sliderLabel: 'Probability P',
+    minLabel: 'Impossible',
+    maxLabel: 'Absolutely certain',
   },
   independentScotland: {
     title: 'Scottish independence',
@@ -18,9 +21,12 @@ export const scotland = {
     calc: c => c.scotlandApproval && (Math.random() < c.indScotProb)
   },
   scotEuMemberProb: {
-    type: 'probability',
+    type: 'unitInterval',
     mergeInto: 'scotlandEuMember',
     choice: true,
+    sliderLabel: 'Probability P',
+    minLabel: 'Impossible',
+    maxLabel: 'Absolutely certain',
   },
   scotlandEuMember: {
     title: 'Scotland is a member of the EU',

@@ -1,8 +1,11 @@
 export const gibraltar = {
   gibraltarInUkProb: {
-    type: 'probability',
+    type: 'unitInterval',
     mergeInto: 'gibraltarInUk',
     choice: true,
+    sliderLabel: 'Probability P',
+    minLabel: 'Impossible',
+    maxLabel: 'Absolutely certain',
   },
   gibraltarInUk: {
     type: 'boolean',

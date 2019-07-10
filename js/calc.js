@@ -1,4 +1,5 @@
 import { domain } from './domain/domain.js'
+import { types } from './types.js'
 
 export const calcVals = {}
 
@@ -9,29 +10,6 @@ export const setCalcVals = (newVals, runCalc) => {
 
 export const setValueData = vd =>  calcVals.valueData = vd
 
-const defaultVals = {
-  option: ({options}) => Object.keys(options)[0],
-  boolean: () => false,
-  probability: () => 0.5,
-  ratio: ({ratio}) => ratio.start,
-  change: () => 0,
-  range: () => 0.5,
-  MOTPE: ({optionsFrom}) => {
-    //Multiple option three point estimates
-    const estimates = {}
-    const options = domain[optionsFrom].options
-    for (const key in options) {
-      estimates[key] = ({
-        label: options[key],
-        optimistic: 0.25,
-        mostLikely: 0.5,
-        pessimistic: 0.75,
-      })
-    }
-    return estimates
-  }
-}
-
 const getAgentValueTotals = () => {
   const totalValues = {}
   const { valueData } = calcVals
@@ -39,17 +17,10 @@ const getAgentValueTotals = () => {
     let total = 0
     for (const valueFactor in valueData[agent]) {
       const valueObj = valueData[agent][valueFactor]
-      let {factor = valueFactor, option} = valueObj
+      const factor = valueObj.factor || valueFactor
       const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
-      if (domain[factor].type === 'range') {
-        total += calcVals[factor] * value / valueObj.points * 100
-      } else if (domain[factor].type === 'probability') {
-        total += calcVals[factor] * value / valueObj.percent * 100
-      } else if (domain[factor].type === 'change') {
-        total += calcVals[factor] * value / valueObj.percent * 100
-      } else if (calcVals[factor] === (option || true)) {
-        total += value
-      }
+      const typeObj = types[domain[factor].type]
+      total += typeObj.getValue(calcVals[factor], value, valueObj)
     }
     totalValues[agent] = total
   }
@@ -64,7 +35,7 @@ export const calculate = () => {
     if (calc) {
       val = calc(calcVals)
     } else if (!calcVals.hasOwnProperty(key)) {
-      val = defaultVals[type](factor)
+      val = types[type].getDefault(factor)
     } else {
       val = calcVals[key]
     }
