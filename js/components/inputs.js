@@ -2,7 +2,7 @@ import { camel2space } from '../util.js'
 import { types } from '../types.js'
 const { html } = lighterhtml
 
-export const Checkbox = (checked, onChange, { key, checkboxLabel }) => html`
+export const Checkbox = (checked, onChange, { key, checkboxLabel, disabled }) => html`
   <div class="field">
     <input
       class="is-checkradio"
@@ -10,6 +10,7 @@ export const Checkbox = (checked, onChange, { key, checkboxLabel }) => html`
       checked=${checked}
       onchange=${(e) => onChange(e.target.checked)}
       id=${key}
+      disabled=${disabled}
     >
     <label for=${key} >
       ${checkboxLabel}

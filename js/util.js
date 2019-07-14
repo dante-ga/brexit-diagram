@@ -4,6 +4,7 @@ export function round2tenth(num) {
 
 export const camel2space = str => str.replace( /([A-Z])/g, " $1" ).toLowerCase()
 
+export const bn = 1000000000
 
 export function debounce(func, wait, initial) {
   var timeout

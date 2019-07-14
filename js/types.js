@@ -1,4 +1,4 @@
-import { round2tenth, camel2space } from './util.js'
+import { round2tenth, camel2space, bn } from './util.js'
 import { Radio, Checkbox, Slider } from './components/inputs.js'
 import { ThreePointEstimates } from './components/tpe.js'
 import { domain } from './domain/domain.js'
@@ -10,7 +10,10 @@ export const types = {
     getDefault: () => false,
     getText: val => (val) ? 'YES' : 'NO',
     getColor: val => (val) ? 'is-success' : 'is-danger',
-    getInput: (val, cb, df) => Checkbox(val, cb, df),
+    getInput: (val, cb, df, calcVals) => Checkbox(val, cb, {
+      disabled: df.getDisabled && df.getDisabled(calcVals),
+      ...df,
+    }),
     getValueObjs: ({key, title}) => ({[key]: {title}}),
     getValue: (val, value) => (val) ? value : 0,
   },
@@ -39,6 +42,11 @@ export const types = {
     getDefault: () => 0,
     getText: val => round2tenth(val),
     getColor: (val) => (val === 0) ? 'is-dark' : ((val > 0) ? 'is-success' : 'is-danger'),
+  },
+  gbp: {
+    getDefault: () => 0,
+    getText: val => '£' + round2tenth(val / bn) + ' bn',
+    getColor: (val) => 'is-dark',
   },
   unitInterval: {
     getDefault: () => 0.5,

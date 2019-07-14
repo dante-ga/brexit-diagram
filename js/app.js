@@ -17,7 +17,6 @@ function onNav(target) {
   updateView()
 }
 
-//lighterhtml seems to re-render everything now
 export function updateView() {
   render(document.body, () => {
     const nav = NavBar({ activeScreen, screens, onNav })
