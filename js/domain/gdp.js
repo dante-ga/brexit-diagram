@@ -76,6 +76,7 @@ export const gdp = {
       const change = - (billNow - billBefore) / totalBefore
       return change
     },
+    valuedBy: ['UK'],
   },
   exportsChange: {
     title: 'Change in total UK exports',
