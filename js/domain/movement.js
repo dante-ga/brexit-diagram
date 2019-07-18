@@ -1,4 +1,4 @@
-export const movement = {
+const factors = {
   ukPopulationChangeOpen: {
     type: 'mirrorUnitInterval',
     choice: true,
@@ -51,7 +51,7 @@ export const movement = {
     desc: 'Please estimate the % of non-British population from the total UK population now and in 2030 for two cases of migration policy.',
     calc: c => (c.freedomOfMovement) ? c.nonBritishOpen : c.nonBritishClosed
   },
-  populationChangeDueImmigration: {
+  popChngDueImmgr: {
     title: 'Poulation change due to immigration',
     type: 'mirrorUnitInterval',
     desc: 'The % change in the total UK population in 2030 due to immigration.',
@@ -111,3 +111,13 @@ export const movement = {
     valuedBy: ['UK'],
   },
 }
+
+const grid = `
+  -                 -                  britishIdentity $britishIdentity
+  -                 -                  socialCohesion  $socialCohesion
+  -                 -                  unemployment    $unemployment
+  freedomOfMovement nonBritish2030     medianIncome    $medianIncome
+  -                 ukPopulationChange popChngDueImmgr -
+`
+
+export const movement = { factors, grid }

@@ -1,4 +1,4 @@
-export const gibraltar = {
+const factors = {
   gibraltarInUkProb: {
     type: 'unitInterval',
     mergeInto: 'gibraltarInUk',
@@ -15,3 +15,9 @@ export const gibraltar = {
     calc: c => c.ukInEu || (Math.random() < c.gibraltarInUkProb),
   },
 }
+
+const grid = `
+  ukInEu gibraltarInUk $gibraltarInUk
+`
+
+export const gibraltar = { factors, grid }

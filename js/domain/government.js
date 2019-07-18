@@ -1,4 +1,4 @@
-export const government = {
+const factors = {
   ukLawsForced: {
     type: 'boolean',
     title: 'UK laws forced by the EU',
@@ -49,3 +49,11 @@ export const government = {
     valuedBy: ['UK'],
   }
 }
+
+const grid = `
+  -      -                  $ukLawsForced
+  ukInEu ukLawsForced       govtEffectiveness   $govtEffectiveness
+  -      rejectedReferendum $rejectedReferendum
+`
+
+export const government = { factors, grid }

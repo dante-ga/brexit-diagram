@@ -1,4 +1,4 @@
-export const gdppc = {
+const factors = {
   gdppcChange: {
     title: 'Change in UK GDP per person',
     type: 'mirrorUnitInterval',
@@ -13,3 +13,10 @@ export const gdppc = {
     calc: c => (1 + c.gdpChange)/(1 + c.ukPopulationChange) - 1,
   }
 }
+
+const grid = `
+  gdpChange          gdppcChange $gdppcChange
+  ukPopulationChange
+`
+
+export const gdppc = { factors, grid }

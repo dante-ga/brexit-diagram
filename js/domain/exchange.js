@@ -1,4 +1,4 @@
-export const exchange = {
+const factors = {
   exchangeRateChangeIn: {
     type: 'mirrorUnitInterval',
     choice: true,
@@ -19,3 +19,9 @@ export const exchange = {
     valuedBy: ['UK']
   },
 }
+
+const grid = `
+  ukInEu exchangeRateChange $exchangeRateChange
+`
+
+export const exchange = { factors, grid }

@@ -1,4 +1,4 @@
-export const brexit = {
+const factors = {
   brexitApproval: {
     type: 'option',
     title: 'UK Brexit decision',
@@ -17,3 +17,9 @@ export const brexit = {
     calc: c => c.brexitApproval === 'remain',
   },
 }
+
+const grid = `
+  brexitApproval ukInEu
+`
+
+export const brexit = { factors, grid }

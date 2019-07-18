@@ -1,4 +1,4 @@
-const subdomains = {}
+export const subdomains = {}
 const sub = obj => Object.assign(subdomains, obj)
 import { brexit } from './brexit.js'; sub({brexit})
 import { scotland } from './scotland.js'; sub({scotland})
@@ -23,12 +23,13 @@ export const domain = {}
 
 //Flatten subdomains into domain
 for (const subKey in subdomains) {
-  const subdomain = subdomains[subKey]
-  for (const key in subdomain) {
-    domain[key] = { key, subKey, ...subdomain[key], mergeFrom: [] }
+  const { factors } = subdomains[subKey]
+  for (const key in factors) {
+    domain[key] = { key, subKey, ...factors[key], mergeFrom: [] }
   }
 }
 
+//Populate mergeFrom property
 for (const source in domain) {
   const target = domain[source].mergeInto
   if (target) {

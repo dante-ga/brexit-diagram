@@ -1,4 +1,4 @@
-export const security = {
+export const factors = {
   securityCoOp: {
     type: 'boolean',
     title: 'Full EU-UK cooperation to fight transnational crime',
@@ -7,3 +7,9 @@ export const security = {
     calc: c => c.ukInEu,
   },
 }
+
+const grid = `
+  ukInEu securityCoOp $securityCoOp
+`
+
+export const security = { factors, grid }

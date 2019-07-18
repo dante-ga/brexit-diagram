@@ -1,4 +1,4 @@
-export const rights = {
+const factors = {
   legalRights_remain: {
     type: 'unitInterval',
     choice: true,
@@ -31,3 +31,9 @@ export const rights = {
     valuedBy: ['UK'],
   },
 }
+
+const grid = `
+  brexitApproval legalRights $legalRights
+`
+
+export const rights = { factors, grid }

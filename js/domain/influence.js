@@ -1,4 +1,4 @@
-export const influence = {
+const factors = {
   ukInfluenceOnEuIn: {
     type: 'unitInterval',
     choice: true,
@@ -73,3 +73,11 @@ export const influence = {
     valuedBy: ['UK'],
   },
 }
+
+const grid = `
+  -      ukInfluenceOnEu
+  ukInEu euInfluenceOnGlobal ukInfluenceOnGlobal $ukInfluenceOnGlobal
+  -      ukInfluenceNotViaEu
+`
+
+export const influence = { factors, grid }

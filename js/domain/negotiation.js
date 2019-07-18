@@ -1,4 +1,4 @@
-export const negotiation = {
+const factors = {
   marketMovement: {
     type: 'option',
     title: 'UK-EU negotiations',
@@ -33,3 +33,11 @@ export const negotiation = {
     valuedBy: ['EU'],
   }
 }
+
+const grid = `
+  -      -              singleMarket      -                  -
+  ukInEu marketMovement -                 marketMovementTied $marketMovementTied
+  -      -              freedomOfMovement -                  -
+`
+
+export const negotiation = { factors, grid }

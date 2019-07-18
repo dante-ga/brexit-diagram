@@ -23,17 +23,17 @@ const X_GDP = 0.3053
 //https://www.theglobaleconomy.com/United-Kingdom/Imports/
 const M_GDP = -0.3193
 
-export const gdp = {
+const factors = {
   movement2householdConsumption: {
     type: 'ratio',
     choice: true,
-    mergeInto: 'householdConsumptionChange',
+    mergeInto: 'consumptionChange',
   },
-  householdConsumptionChange: {
+  consumptionChange: {
     title: 'Change in total UK household consumption',
     type: 'mirrorUnitInterval',
     desc: "How much does the % increase in the total UK population due to immigration cause % increase of the total UK household consumption.",
-    calc: c => c.populationChangeDueImmigration * c.movement2householdConsumption,
+    calc: c => c.popChngDueImmgr * c.movement2householdConsumption,
   },
   investmentChange_remain: {
     type: 'mirrorUnitInterval',
@@ -70,8 +70,8 @@ export const gdp = {
     title: 'Change in total government spending',
     desc: "Government spending will be affected by UK's net contributions to the EU budget, Brexit divorce bill and changes to the foreign debt service payments.",
     calc: c => {
-      const billBefore = (c.debtServiceBefore + c.euNetCost) * by2030
-      const billNow = (c.debtService + ((c.ukInEu) ? c.euNetCost : 0)) * by2030 + ((c.billIntention) ? c.divorceBill : 0)
+      const billBefore = (c.debtServiceBefore + c.euNetCostBefore) * by2030
+      const billNow = (c.debtService + c.euNetCost) * by2030 + c.divorceBill
       const totalBefore = 772 * bn
       const change = - (billNow - billBefore) / totalBefore
       return change
@@ -101,10 +101,24 @@ export const gdp = {
     type: 'mirrorUnitInterval',
     desc: 'This combines changes in consumption, govt. spending, investment, imports and exports.',
     valuedBy: ['UK'],
-    calc: c => C_GDP * c.householdConsumptionChange
+    calc: c => C_GDP * c.consumptionChange
       + I_GDP * c.investmentChange
       + G_GDP * c.govtSpendingChange
       + X_GDP * c.exportsChange
       + M_GDP * c.importsChange
   }
 }
+
+const grid = `
+  euNetCost        -
+  divorceBill      -
+  debtService      govtSpendingChange $govtSpendingChange
+  popChngDueImmgr  consumptionChange
+  brexitApproval   investmentChange   gdpChange           $gdpChange
+  exportsToEu      exportsChange
+  exportsToNonEu   -
+  importsFromEu    importsChange
+  importsFromNonEu -
+`
+
+export const gdp = { factors, grid }

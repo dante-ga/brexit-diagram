@@ -1,4 +1,4 @@
-export const ireland = {
+const factors = {
   irishBorder: {
     type: 'option',
     title: 'Irish borders',
@@ -50,3 +50,11 @@ export const ireland = {
     valuedBy: ['Northern Ireland', 'UK', 'EU'],
   },
 }
+
+const grid = `
+  -      brexitApproval brokenDeal   $brokenDeal
+  ukInEu irishBorder    violenceNi   $violenceNi
+  -      -              $irishBorder -
+`
+
+export const ireland = { factors, grid }

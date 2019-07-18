@@ -1,4 +1,4 @@
-export const research = {
+const factors = {
   researchColab_remain: {
     type: 'unitInterval',
     choice: true,
@@ -31,3 +31,9 @@ export const research = {
     valuedBy: ['UK'],
   },
 }
+
+const grid = `
+  brexitApproval researchColab $researchColab
+`
+
+export const research = { factors, grid }

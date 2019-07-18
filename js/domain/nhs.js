@@ -1,4 +1,4 @@
-export const nhs = {
+const factors = {
   movement2nhsLabour: {
     type: 'ratio',
     choice: true,
@@ -8,7 +8,7 @@ export const nhs = {
     title: 'Availability of labour for NHS positions',
     type: 'mirrorUnitInterval',
     desc: "How much does the % increase in the total UK population due to immigration cause % increase of the total supply of labour available for NHS positions.",
-    calc: c => c.populationChangeDueImmigration * c.movement2nhsLabour,
+    calc: c => c.popChngDueImmgr * c.movement2nhsLabour,
   },
   movement2nhsDemand: {
     type: 'ratio',
@@ -19,7 +19,7 @@ export const nhs = {
     title: 'Demand for NHS services',
     type: 'mirrorUnitInterval',
     desc: "How much does the % increase in the total UK population due to immigration cause % increase of the total demand for NHS services.",
-    calc: c => c.populationChangeDueImmigration * c.movement2nhsDemand,
+    calc: c => c.popChngDueImmgr * c.movement2nhsDemand,
   },
   euMedicineForNhs: {
     title: "Impact of EU medicine availability",
@@ -29,6 +29,7 @@ export const nhs = {
     minLabel: 'No impact',
     maxLabel: 'End of NHS',
     choice: true,
+    calc: c => (c.ukInEu) ? 0 : c.euMedicineForNhs,
   },
   euResearchForNhs: {
     title: "Impact of EU medical research",
@@ -38,6 +39,7 @@ export const nhs = {
     minLabel: 'No impact',
     maxLabel: 'End of NHS',
     choice: true,
+    calc: c => (c.ukInEu) ? 0 : c.euResearchForNhs,
   },
   nhsBudgetChange: {
     title: "Change to NHS budget",
@@ -49,7 +51,21 @@ export const nhs = {
     title: "NHS performance",
     type: 'mirrorUnitInterval',
     desc: 'Change in quality/quanitity of services provided by the NHS based on a combination of factors.',
-    calc: c => ((1 + ((!c.ukInEu) ? -(c.euMedicineForNhs + c.euResearchForNhs) : 0)) * (1 + c.nhsLabourChange) * (1 + c.nhsBudgetChange)) / (1 + c.nhsDemandChange) - 1,
+    calc: c => (
+      (1 - c.euMedicineForNhs - c.euResearchForNhs)
+      * (1 + c.nhsLabourChange)
+      * (1 + c.nhsBudgetChange)
+    ) / (1 + c.nhsDemandChange) - 1,
     valuedBy: ['UK'],
   }
 }
+
+const grid = `
+  -                  nhsLabourChange
+  popChngDueImmgr    nhsDemandChange
+  -                  euMedicineForNhs nhsPerformance $nhsPerformance
+  ukInEu             euResearchForNhs
+  govtSpendingChange nhsBudgetChange
+`
+
+export const nhs = { factors, grid }

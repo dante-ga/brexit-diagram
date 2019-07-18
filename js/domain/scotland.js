@@ -1,4 +1,4 @@
-export const scotland = {
+const factors = {
   scotlandApproval: {
     title: "Scottish independence intention",
     type: 'boolean',
@@ -42,3 +42,11 @@ export const scotland = {
     calc: c => c.scotlandEuMember || (c.ukInEu && !c.independentScotland)
   },
 }
+
+const grid = `
+  -                -                   $independentScotland -
+  scotlandApproval independentScotland scotlandEuMember     scotlandInEu $scotlandInEu
+  -                -                   ukInEu               -
+`
+
+export const scotland = { factors, grid }
