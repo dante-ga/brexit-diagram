@@ -1,14 +1,16 @@
 import { getFactors } from './factors/factors.js'
 import { getValues } from './values.js'
+import { getGrid } from './grid.js'
 import { calculate } from './calc.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
 const { render } = lighterhtml
 
-let activeScreen = 'factors'
+let activeScreen = 'grid'
 const getters = {
   factors: getFactors,
   values: getValues,
+  grid: getGrid,
 }
 const screens = Object.keys(getters)
 

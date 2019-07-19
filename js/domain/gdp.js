@@ -111,8 +111,8 @@ const factors = {
 
 const grid = `
   euNetCost        -
-  divorceBill      -
-  debtService      govtSpendingChange $govtSpendingChange
+  divorceBill      govtSpendingChange $govtSpendingChange
+  debtService      -
   popChngDueImmgr  consumptionChange
   brexitApproval   investmentChange   gdpChange           $gdpChange
   exportsToEu      exportsChange

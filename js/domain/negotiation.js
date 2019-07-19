@@ -29,7 +29,7 @@ const factors = {
     type: 'boolean',
     title: 'Market tied to movement',
     desc: "The access to the single market and the freedom of movement across the EU are tied together.",
-    calc: c => ['marketAndMovement', 'noMarketNoMovement'].includes(c.marketMovement),
+    calc: c => c.singleMarket === c.freedomOfMovement,
     valuedBy: ['EU'],
   }
 }

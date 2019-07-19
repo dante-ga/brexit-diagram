@@ -115,8 +115,8 @@ const factors = {
 const grid = `
   -                 -                  britishIdentity $britishIdentity
   -                 -                  socialCohesion  $socialCohesion
-  -                 -                  unemployment    $unemployment
   freedomOfMovement nonBritish2030     medianIncome    $medianIncome
+  -                 -                  unemployment    $unemployment
   -                 ukPopulationChange popChngDueImmgr -
 `
 

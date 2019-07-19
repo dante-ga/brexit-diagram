@@ -61,10 +61,10 @@ const factors = {
 }
 
 const grid = `
-  -                  nhsLabourChange
-  popChngDueImmgr    nhsDemandChange
-  -                  euMedicineForNhs nhsPerformance $nhsPerformance
-  ukInEu             euResearchForNhs
+  popChngDueImmgr    nhsLabourChange
+  -                  nhsDemandChange
+  ukInEu             euMedicineForNhs nhsPerformance $nhsPerformance
+  -                  euResearchForNhs
   govtSpendingChange nhsBudgetChange
 `
 

@@ -51,8 +51,8 @@ const factors = {
 }
 
 const grid = `
-  -      -                  $ukLawsForced
-  ukInEu ukLawsForced       govtEffectiveness   $govtEffectiveness
+  -      ukLawsForced       $ukLawsForced
+  ukInEu -                  govtEffectiveness   $govtEffectiveness
   -      rejectedReferendum $rejectedReferendum
 `
 
