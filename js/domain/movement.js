@@ -52,7 +52,7 @@ const factors = {
     calc: c => (c.freedomOfMovement) ? c.nonBritishOpen : c.nonBritishClosed
   },
   popChngDueImmgr: {
-    title: 'Poulation change due to immigration',
+    title: 'Population change due to immigration',
     type: 'mirrorUnitInterval',
     desc: 'The % change in the total UK population in 2030 due to immigration.',
     /* X =

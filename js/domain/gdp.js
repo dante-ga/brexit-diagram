@@ -77,6 +77,7 @@ const factors = {
       return change
     },
     valuedBy: ['UK'],
+    flipExtArrow: true,
   },
   exportsChange: {
     title: 'Change in total UK exports',

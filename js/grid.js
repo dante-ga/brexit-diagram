@@ -9,6 +9,7 @@ const parseDepends = (fn) => {
   return depends
 }
 
+const hasExternal = {}
 const parseGrid = (str, subKey) => {
   let locs = {}
   let arrows = []
@@ -44,9 +45,12 @@ const parseGrid = (str, subKey) => {
         //Exclude external arrows
         if (domain[key].subKey === subKey) {
           parseDepends(calc)
-            .filter(dk => dk in locs)
+            .filter(dk => (dk in locs) && dk !== key)
             .map(dk => locs[dk])
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
+        } else {
+          cell.external = true
+          hasExternal[key] = true
         }
       }
     }
@@ -58,6 +62,22 @@ const grids = []
 for (const subKey in subdomains) {
   const { grid } = subdomains[subKey]
   grids.push({ subKey, ...parseGrid(grid, subKey) })
+
+  //Add external arrows
+  for (const grid of grids) {
+    grid.extArrows = []
+    for (const row of grid.rows) {
+      for (let j = 0; j < row.length; j++) {
+        const { value, external, key, loc } = row[j]
+        const extArrow = key && !value && !external && hasExternal[key]
+        if (extArrow) {
+          const blocked = row[j+1] && row[j+1].key
+          const flip = domain[key].flipExtArrow
+          grid.extArrows.push({ loc, blocked, flip })
+        }
+      }
+    }
+  }
 }
 
 export const getGrid = () => Grids(grids)

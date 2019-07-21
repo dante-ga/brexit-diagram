@@ -1,12 +1,18 @@
 import { Arrows } from './arrows.js'
 const { html } = lighterhtml
 
-const Cell = ({ key, value, title }) => {
+const Cell = ({ key, value, title, external, hasExternal }) => {
   let box
   if (!key) {
     box = ''
   } else {
-    box = html`<div class="box">${title}</div>`
+    let classStr = 'button is-block is-flex'
+    if (external) classStr += ' is-dashed has-text-grey'
+    box = html`
+      <a class=${classStr}>
+        <span>${title}</span>
+      </a>
+    `
   }
   return html`<div class='grid-cell'>${box}</div>`
 }
@@ -17,10 +23,10 @@ const Row = (row) => html`
   </div>
 `
 
-const Grid = ({subKey, rows, arrows }) => html`
+const Grid = ({subKey, rows, arrows, extArrows }) => html`
   <h1 class="subtitle is-uppercase">${subKey}</h1>
   <div class="grid">
-    ${Arrows(arrows)}
+    ${Arrows(arrows, extArrows)}
     ${rows.map(Row)}
   </div>
 `

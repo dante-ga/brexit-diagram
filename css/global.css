@@ -85,14 +85,16 @@ td.is-gap > * {
   vertical-align: top;
   display: inline-block;
   width: 250px;
-  height: 128px;
+  height: 102px;
   text-align: center;
   white-space: normal;
   padding-right: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
 }
-.grid-cell .box {
-  height: 88px;
+.grid-cell .button {
+  height: 62px;
+  white-space: normal;
+  border-width: 2px;
 }
 .grid-bg {
   position: absolute;
@@ -101,4 +103,7 @@ td.is-gap > * {
   height: 100%;
   width: 100%;
   z-index: -1;
+}
+.is-dashed {
+  border-style: dashed;
 }
