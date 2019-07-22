@@ -1,0 +1,60 @@
+.grid {
+  position: relative;
+}
+.grid-row {
+  white-space: nowrap;
+}
+.grid-cell {
+  vertical-align: top;
+  display: inline-block;
+  width: 250px;
+  height: 92px;
+  text-align: center;
+  white-space: normal;
+  padding-right: 40px;
+  padding-bottom: 30px;
+}
+.grid-cell .button {
+  height: 62px;
+  width: 100%;
+  white-space: normal;
+  border-width: 2px;
+  border-color: black;
+}
+.grid-cell .button:hover {
+  border-color: gray;
+}
+.grid-bg {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+.is-dashed {
+  border-color: gray !important;
+  border-style: dashed;
+}
+
+svg #arrow {
+  fill:black;
+}
+svg #hollowArrow {
+  stroke:black;
+  stroke-width: 1px;
+  fill: white;
+}
+svg .arrow-path {
+  stroke:black;
+  stroke-width: 2px;
+  fill: none;
+  marker-end: url(#arrow);
+}
+svg .ext-arrow-path {
+  stroke:black;
+  stroke-width: 2px;
+  fill: none;
+  marker-end: url(#hollowArrow);
+  stroke-dasharray: 6px;
+}

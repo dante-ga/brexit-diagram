@@ -1,5 +1,6 @@
 import { domain, subdomains } from './domain/domain.js'
 import { Grids } from './components/grid.js'
+import { activateFactor } from './app.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -80,4 +81,4 @@ for (const subKey in subdomains) {
   }
 }
 
-export const getGrid = () => Grids(grids)
+export const getGrid = () => Grids(grids, activateFactor)

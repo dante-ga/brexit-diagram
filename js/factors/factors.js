@@ -5,7 +5,7 @@ import { domain } from '../domain/domain.js'
 import { isVisible, getGrouping, Filter } from './grouping.js'
 import { types } from '../types.js'
 
-const getInput = (domainFactor) => {
+export const getInput = (domainFactor) => {
   const { type, key } = domainFactor
   let onChange
   if (type === 'tpe') {
@@ -25,7 +25,7 @@ const getInput = (domainFactor) => {
   return input
 }
 
-const getTag = (val, type) => ({
+export const getTag = (val, type) => ({
   text: types[type].getText(val),
   color: types[type].getColor(val),
 })

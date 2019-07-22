@@ -1,7 +1,7 @@
-import { Arrows } from './arrows.js'
+import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
-const Cell = ({ key, value, title, external, hasExternal }) => {
+const Cell = ({ key, value, title, external, hasExternal }, onClick) => {
   let box
   if (!key) {
     box = ''
@@ -9,26 +9,26 @@ const Cell = ({ key, value, title, external, hasExternal }) => {
     let classStr = 'button is-block is-flex'
     if (external) classStr += ' is-dashed has-text-grey'
     box = html`
-      <a class=${classStr}>
+      <button class=${classStr} onclick=${() => onClick(key)} >
         <span>${title}</span>
-      </a>
+      </button>
     `
   }
   return html`<div class='grid-cell'>${box}</div>`
 }
 
-const Row = (row) => html`
+const Row = (row, onClick) => html`
   <div class="grid-row">
-    ${row.map(Cell)}
+    ${row.map(c => Cell(c, onClick))}
   </div>
 `
 
-const Grid = ({subKey, rows, arrows, extArrows }) => html`
+const Grid = ({subKey, rows, arrows, extArrows }, onClick) => html`
   <h1 class="subtitle is-uppercase">${subKey}</h1>
   <div class="grid">
     ${Arrows(arrows, extArrows)}
-    ${rows.map(Row)}
+    ${rows.map(r => Row(r, onClick))}
   </div>
 `
 
-export const Grids = (grids) => grids.map(Grid)
+export const Grids = (grids, onClick) => [ArrowDefs(), ...grids.map(g => Grid(g, onClick))]

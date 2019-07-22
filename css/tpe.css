@@ -1,0 +1,44 @@
+.tpe-scale {
+  /* border-left: 1px solid;
+  border-right: 1px solid; */
+  height: 2em;
+  position: relative;
+}
+.tpe-option-label {
+  padding-right: 0.5em;
+  line-height: 1em;
+}
+.tpe-point {
+  position: absolute;
+  background: #00d1b2;
+  height: 2em;
+  width: 6px;
+  cursor: ew-resize;
+  border-radius: 3px;
+}
+.tpe-range {
+  position: absolute;
+  height: 2px;
+  background: #00d1b2;
+  top: calc(50% - 1px);
+}
+.tpe-padding {
+  flex: 0 0 4em;
+}
+.tpe-ruler-scale {
+  position: relative;
+  height: 0.75em;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid;
+}
+.tpe-ruler-dash {
+  height: 0.75em;
+  border-left: 1px solid;
+  position: absolute;
+}
+.tpe-ruler-number {
+  position: absolute;
+  top: 1em;
+  width: 3em;
+  text-align: center;
+}
