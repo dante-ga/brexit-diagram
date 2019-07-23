@@ -32,7 +32,12 @@ const getInitValueData = () => {
   return valueData
 }
 
-const valueData = getInitValueData()
+let valueData
+if (localStorage.getItem('valueData')) {
+  valueData = JSON.parse(localStorage.getItem('valueData'))
+} else {
+  valueData = getInitValueData()
+}
 setValueData(valueData)
 const agents = Object.keys(valueData)
 let activeAgent = agents[0]
@@ -45,6 +50,7 @@ const setAgent = (agent) => {
 const update = () => {
   calculate()
   updateView()
+  localStorage.setItem('valueData', JSON.stringify(valueData))
 }
 
 const toggleSign = (valObj) => () => {

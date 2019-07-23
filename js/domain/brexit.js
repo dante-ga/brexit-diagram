@@ -9,6 +9,7 @@ const factors = {
       noDeal: 'No-deal',
     },
     choice: true,
+    decidedBy: ['UK'],
   },
   ukInEu: {
     type: 'boolean',

@@ -10,6 +10,11 @@ const parseDepends = (fn) => {
   return depends
 }
 
+const hasChoice = (key) => {
+  const { choice, mergeFrom, decidedBy } = domain[key]
+  return (choice && !decidedBy) || mergeFrom.some(hasChoice)
+}
+
 const hasExternal = {}
 const parseGrid = (str, subKey) => {
   let locs = {}
@@ -49,9 +54,12 @@ const parseGrid = (str, subKey) => {
             .filter(dk => (dk in locs) && dk !== key)
             .map(dk => locs[dk])
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
+          cell.choice = hasChoice(key)
+          cell.decision = !!domain[key].decidedBy
         } else {
           cell.external = true
           hasExternal[key] = true
+          cell.choice = false
         }
       }
     }

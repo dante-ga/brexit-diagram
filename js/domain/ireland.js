@@ -25,6 +25,7 @@ const factors = {
       }
     },
     valuedBy: ['Northern Ireland', 'UK', 'EU'],
+    decidedBy: ['Northern Ireland', 'UK', 'EU'],
   },
   violenceNiByOption: {
     type: 'tpe',

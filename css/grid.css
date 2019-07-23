@@ -20,6 +20,13 @@
   white-space: normal;
   border-width: 2px;
   border-color: black;
+  position: relative;
+}
+.grid-cell .button .badge {
+  position: absolute;
+  bottom: -10px;
+  right: 5px;
+  background: inherit;
 }
 .grid-cell .button:hover {
   border-color: gray;

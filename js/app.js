@@ -7,22 +7,26 @@ import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
 const { render } = lighterhtml
 
+let gridScrollY = 0
 let activeScreen = 'grid'
 let activeFactor = null
 const getters = {
   grid: getGrid,
-  factors: getFactors,
   values: getValues,
+  factors: getFactors,
 }
 const screens = Object.keys(getters)
 
 function onNav(target) {
+  if (activeScreen === 'grid') gridScrollY = window.scrollY
   activeScreen = target
   activeFactor = null
   updateView()
+  if (activeScreen === 'grid') window.scrollTo(0, gridScrollY);
 }
 
 export const activateFactor = (key) => {
+  if (activeScreen === 'grid') gridScrollY = window.scrollY
   activeFactor = key
   activeScreen = null
   updateView()

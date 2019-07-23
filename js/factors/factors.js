@@ -1,5 +1,5 @@
 import { Title, Desc, Factors } from '../components/factors.js'
-import { calcVals, setCalcVals, calculate } from '../calc.js'
+import { calcVals, setCalcVals, setTpeCalcVal } from '../calc.js'
 import { updateView } from '../app.js'
 import { domain } from '../domain/domain.js'
 import { isVisible, getGrouping, Filter } from './grouping.js'
@@ -10,9 +10,7 @@ export const getInput = (domainFactor) => {
   let onChange
   if (type === 'tpe') {
     onChange = (option, estimate, value) => {
-      //Update deep calcVals value directly
-      calcVals[key][option][estimate] = value
-      calculate()
+      setTpeCalcVal(key, option, estimate, value)
       updateView()
     }
   } else {

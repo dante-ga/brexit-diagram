@@ -6,6 +6,15 @@ export const calcVals = {}
 export const setCalcVals = (newVals, runCalc) => {
   Object.assign(calcVals, newVals)
   calculate()
+  for (const key in newVals) {
+    localStorage.setItem('calcVal:'+key, JSON.stringify(newVals[key]))
+  }
+}
+
+export const setTpeCalcVal = (key, option, estimate, value) => {
+  calcVals[key][option][estimate] = value
+  calculate()
+  localStorage.setItem('calcVal:'+key, JSON.stringify(calcVals[key]))
 }
 
 export const setValueData = vd =>  calcVals.valueData = vd
@@ -35,7 +44,11 @@ export const calculate = () => {
     if (calc) {
       val = calc(calcVals)
     } else if (!calcVals.hasOwnProperty(key)) {
-      val = types[type].getDefault(factor)
+      if (localStorage.getItem('calcVal:'+key)) {
+        val = JSON.parse(localStorage.getItem('calcVal:'+key))
+      } else {
+        val = types[type].getDefault(factor)
+      }
     } else {
       val = calcVals[key]
     }

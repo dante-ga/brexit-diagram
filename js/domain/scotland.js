@@ -4,6 +4,7 @@ const factors = {
     type: 'boolean',
     choice: true,
     checkboxLabel: 'Intends',
+    decidedBy: ['Scotland'],
   },
   indScotProb: {
     type: 'unitInterval',

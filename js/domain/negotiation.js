@@ -12,6 +12,7 @@ const factors = {
     choice: true,
     disableOptions: c => (c.ukInEu) ? ['onlyMarket', 'onlyMovement', 'noMarketNoMovement'] : [],
     calc: c => (c.ukInEu) ? 'marketAndMovement' : c.marketMovement,
+    decidedBy: ['UK', 'EU'],
   },
   singleMarket: {
     type: 'boolean',
