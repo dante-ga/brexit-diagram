@@ -1,3 +1,6 @@
+import { getNegotiationDistribution } from '../calc/negotiation.js'
+import { getAgentValue } from '../calc/value.js'
+
 const factors = {
   irishBorder: {
     type: 'option',
@@ -24,8 +27,8 @@ const factors = {
         return c.irishBorder
       }
     },
-    valuedBy: ['Northern Ireland', 'UK', 'EU'],
-    decidedBy: ['Northern Ireland', 'UK', 'EU'],
+    valuedBy: ['NI', 'UK', 'EU'],
+    decidedBy: ['NI', 'UK', 'EU'],
   },
   violenceNiByOption: {
     type: 'tpe',
@@ -42,13 +45,13 @@ const factors = {
       const sample = new Random().triangular(optimistic, pessimistic, mostLikely)
       return sample
     },
-    valuedBy: ['Northern Ireland', 'UK', 'EU'],
+    valuedBy: ['NI', 'UK', 'EU'],
   },
   brokenDeal: {
     type: 'boolean',
     title: 'Irish border Brexit deal is broken',
     calc: c => (c.brexitApproval === 'deal') && (c.irishBorder === 'hardBorder'),
-    valuedBy: ['Northern Ireland', 'UK', 'EU'],
+    valuedBy: ['NI', 'UK', 'EU'],
   },
 }
 
@@ -58,4 +61,42 @@ const grid = `
   -      -              $irishBorder -
 `
 
-export const ireland = { factors, grid }
+//Note: due to complexity of generalization, values are calculated explicitly without reuse of 'calc' functions.
+const agents = factors.irishBorder.decidedBy
+const options = Object.keys(factors.irishBorder.options).filter(opt => opt !== 'openBorder')
+
+const getValue = (vals, values) => {
+  const { ukInEu, brexitApproval, violenceNiByOption } = vals
+  let value = 0
+  if (ukInEu) {
+    value = getAgentValue('violenceNi', tpeExpected(violenceNiByOption['openBorder']), 'UK', values)
+  } else {
+    const agentValues = getBorderValues(vals, values)
+    const borderDist = getNegotiationDistribution(options, agentValues)
+    for (const option of options) {
+      value += agentValues['UK'][option] * borderDist[option]
+    }
+  }
+  return value
+}
+
+const getBorderValues = (vals, values) => {
+  const { brexitApproval, violenceNiByOption } = vals
+  let agentValues = {}
+  for (const agent of agents) {
+    agentValues[agent] = {}
+    for (const option of options) {
+      const brokenDeal = (brexitApproval === 'deal') && (option === 'hardBorder')
+      const value = getAgentValue('brokenDeal', brokenDeal, agent, values)
+        + getAgentValue('violenceNi', tpeExpected(violenceNiByOption[option]), agent, values)
+        + getAgentValue('irishBorder', option, agent, values)
+      agentValues[agent][option] = value
+    }
+  }
+  return agentValues
+}
+
+const tpeExpected = ({pessimistic, mostLikely, optimistic}) =>
+  (pessimistic + 4 * mostLikely + optimistic) / 6
+
+export const ireland = { factors, grid, getValue }

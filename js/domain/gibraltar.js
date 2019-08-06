@@ -1,3 +1,5 @@
+import { getAgentValue } from '../calc/value.js'
+
 const factors = {
   gibraltarInUkProb: {
     type: 'unitInterval',
@@ -20,4 +22,9 @@ const grid = `
   ukInEu gibraltarInUk $gibraltarInUk
 `
 
-export const gibraltar = { factors, grid }
+const getValue = (vals, values) => (
+  ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
+  * getAgentValue('gibraltarInUk', true, 'UK', values)
+)
+
+export const gibraltar = { factors, grid, getValue }

@@ -1,6 +1,6 @@
 import { getInput, getTag } from './factors.js'
 import { domain } from '../domain/domain.js'
-import { calcVals } from '../calc.js'
+import { calcVals } from '../calc/calc.js'
 import { Title, Desc } from '../components/factors.js'
 
 export const getFactorPage = (factorKey) => {

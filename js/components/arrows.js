@@ -1,5 +1,7 @@
 const { svg } = lighterhtml
 
+//TODO: Don't let arrows go under intermediate nodes
+
 const cellHeight = 92
 const nodeHeight = 62
 const cellWidth = 250

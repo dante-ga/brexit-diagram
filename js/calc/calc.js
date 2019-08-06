@@ -1,5 +1,6 @@
-import { domain } from './domain/domain.js'
-import { types } from './types.js'
+import { domain, subdomains } from '../domain/domain.js'
+import { types } from '../types.js'
+import { getAgentValueTotals, getContextValue } from './value.js'
 
 export const calcVals = {}
 
@@ -19,23 +20,6 @@ export const setTpeCalcVal = (key, option, estimate, value) => {
 
 export const setValueData = vd =>  calcVals.valueData = vd
 
-const getAgentValueTotals = () => {
-  const totalValues = {}
-  const { valueData } = calcVals
-  for (const agent in valueData) {
-    let total = 0
-    for (const valueFactor in valueData[agent]) {
-      const valueObj = valueData[agent][valueFactor]
-      const factor = valueObj.factor || valueFactor
-      const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
-      const typeObj = types[domain[factor].type]
-      total += typeObj.getValue(calcVals[factor], value, valueObj)
-    }
-    totalValues[agent] = total
-  }
-  return totalValues
-}
-
 export const calculate = () => {
   for (const key in domain) {
     const factor = domain[key]
@@ -54,5 +38,21 @@ export const calculate = () => {
     }
     calcVals[key] = val
   }
-  calcVals.agentValueTotals = getAgentValueTotals()
+  calcVals.agentValueTotals = getAgentValueTotals(calcVals)
+
+  const bestOption = subdomains.brexit.getBestOption(calcVals, calcVals.valueData, subdomains)
+  console.log(bestOption)
+}
+
+export const calcSubs = (context, subs, values) => {
+  for (const sub of subs) {
+    const { factors } = subdomains[sub]
+    for (const key in factors) {
+      const { calc } = factors[key]
+      if (calc) {
+        context[key] = calc(context)
+      }
+    }
+  }
+  return getContextValue(context, subs, values)
 }

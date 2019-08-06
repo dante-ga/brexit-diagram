@@ -24,3 +24,5 @@ export function debounce(func, wait, initial) {
     if (callNow) func.apply(context, args)
   }
 }
+
+export const clone = obj => JSON.parse(JSON.stringify(obj))

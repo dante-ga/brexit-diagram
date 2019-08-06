@@ -1,3 +1,7 @@
+import { getNegotiationDistribution } from '../calc/negotiation.js'
+import { calcSubs } from '../calc/calc.js'
+import { clone } from '../util.js'
+
 const factors = {
   marketMovement: {
     type: 'option',
@@ -41,4 +45,49 @@ const grid = `
   -      -              freedomOfMovement -                  -
 `
 
-export const negotiation = { factors, grid }
+const options = Object.keys(factors.marketMovement.options)
+
+const getValue = (vals, values, subdomains) => {
+  if (vals.ukInEu) {
+    const option = 'marketAndMovement'
+    const { UK } = getOptionValues(option, vals, values, subdomains)
+    return UK
+  } else {
+    const agentValues = { UK: {}, EU: {} }
+    for (const option of options) {
+      const { UK, EU } = getOptionValues(option, vals, values, subdomains)
+      agentValues.UK[option] = UK
+      agentValues.EU[option] = EU
+    }
+    const dist = getNegotiationDistribution(options, agentValues)
+    let value = 0
+    for (const option of options) {
+      value += agentValues['UK'][option] * dist[option]
+    }
+    return value
+  }
+}
+
+const getOptionValues = (option, vals, values, subdomains) => {
+  vals.marketMovement = option
+  let bestBI
+  let maxUK = -Infinity
+  let maxUKEU
+  for (const billIntention of [false, true]) {
+    //Filter out disabled bill/brexit combinations
+    if (vals.brexitApproval === 'remain' && billIntention) continue
+    const context = clone(vals)
+    context.marketMovement = option
+    context.billIntention = billIntention
+    const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'gdppc', 'nhs']
+    const {UK, EU} = calcSubs(context, subs, values)
+    if (UK > maxUK) {
+      maxUK = UK
+      maxUKEU = EU
+      bestBI = billIntention
+    }
+  }
+  return { UK: maxUK, EU: maxUKEU }
+}
+
+export const negotiation = { factors, grid, getValue }

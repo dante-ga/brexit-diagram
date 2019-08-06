@@ -1,7 +1,7 @@
 import { ValuesTable } from './components/values.js'
 import { Button } from './components/global.js'
 import { Select } from './components/inputs.js'
-import { calcVals, calculate, setValueData } from './calc.js'
+import { calcVals, calculate, setValueData } from './calc/calc.js'
 import { domain } from './domain/domain.js'
 import { updateView } from './app.js'
 import { types } from './types.js'

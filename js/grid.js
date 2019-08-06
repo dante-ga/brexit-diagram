@@ -43,7 +43,7 @@ const parseGrid = (str, subKey) => {
       const {key, value, loc} = cell
       if (!key) continue
       if (value) {
-        cell.title = '❤️'
+        cell.title = '❤️ '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
       } else {
         const { title, calc } = domain[key]

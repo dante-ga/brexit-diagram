@@ -2,7 +2,7 @@ import { getFactors } from './factors/factors.js'
 import { getFactorPage } from './factors/page.js'
 import { getValues } from './values.js'
 import { getGrid } from './grid.js'
-import { calculate } from './calc.js'
+import { calculate } from './calc/calc.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
 const { render } = lighterhtml

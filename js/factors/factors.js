@@ -1,5 +1,5 @@
 import { Title, Desc, Factors } from '../components/factors.js'
-import { calcVals, setCalcVals, setTpeCalcVal } from '../calc.js'
+import { calcVals, setCalcVals, setTpeCalcVal } from '../calc/calc.js'
 import { updateView } from '../app.js'
 import { domain } from '../domain/domain.js'
 import { isVisible, getGrouping, Filter } from './grouping.js'

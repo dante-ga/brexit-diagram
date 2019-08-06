@@ -1,3 +1,6 @@
+import { clone } from '../util.js'
+import { calcSubs } from '../calc/calc.js'
+
 const factors = {
   brexitApproval: {
     type: 'option',
@@ -23,4 +26,27 @@ const grid = `
   brexitApproval ukInEu
 `
 
-export const brexit = { factors, grid }
+const getBestOption = (vals, values, subdomains) => {
+  let bestOption
+  let maxTotalValue = -Infinity
+  const options = Object.keys(factors.brexitApproval.options)
+  for (const option of options) {
+    const context = clone(vals)
+    context.brexitApproval = option
+    context.ukInEu = (option === 'remain')
+    let totalValue = 0
+    for (const sub of ['scotland', 'ireland', 'gibraltar', 'negotiation']) {
+      totalValue += subdomains[sub].getValue(context, values, subdomains)
+    }
+    const subs = ['security', 'influence', 'government', 'rights', 'research', 'exchange']
+    totalValue += calcSubs(context, subs, values).UK
+    console.log({option, totalValue})
+    if (totalValue > maxTotalValue) {
+      maxTotalValue = totalValue
+      bestOption = option
+    }
+  }
+  return { bestOption, maxTotalValue }
+}
+
+export const brexit = { factors, grid, getBestOption }
