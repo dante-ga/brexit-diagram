@@ -1,29 +1,27 @@
 const { html } = lighterhtml
 
-const NavBarItem = (screen, active, onNav) => html`
+const NavBarItem = (title, active, onClick) => html`
   <a
-    class=${[
-      'navbar-item',
-      'is-tab',
-      'is-capitalized',
-      (active) ? 'is-active' : ''
-    ].join(' ')}
-    onClick=${() => onNav(screen)}
+    class=${['navbar-item', 'is-tab', (active) ? 'is-active' : ''].join(' ')}
+    onclick=${onClick}
   >
-    ${screen}
+    ${title}
   </a>
 `
 
 export const NavBar = ({activeScreen, screens, onNav}) => {
   return html`
-    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+    <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item">
           <img src="/img/logo.png" width="28" height="28">
         </a>
-        ${screens.map((screen) =>
-          NavBarItem(screen, (screen === activeScreen), onNav)
+        ${Object.entries(screens).map(([screen, {title}]) =>
+          NavBarItem(title, (screen === activeScreen), () => onNav(screen))
         )}
+      </div>
+      <div class="navbar-item is-expanded is-flex is-va-center">
+        <progress class="progress is-primary" value="10" max="100">10%</progress>
       </div>
     </nav>
   `

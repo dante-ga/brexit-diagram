@@ -1,6 +1,6 @@
 import { domain, subdomains } from './domain/domain.js'
 import { Grids } from './components/grid.js'
-import { activateFactor } from './app.js'
+import { updateView, activateFactor } from './app.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -43,7 +43,7 @@ const parseGrid = (str, subKey) => {
       const {key, value, loc} = cell
       if (!key) continue
       if (value) {
-        cell.title = '❤️ '+domain[key].valuedBy.join(', ')
+        cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
       } else {
         const { title, calc } = domain[key]
@@ -72,8 +72,8 @@ for (const subKey in subdomains) {
   const { grid } = subdomains[subKey]
   grids.push({ subKey, ...parseGrid(grid, subKey) })
 
-  //Add external arrows
   for (const grid of grids) {
+    //Add external arrows
     grid.extArrows = []
     for (const row of grid.rows) {
       for (let j = 0; j < row.length; j++) {
@@ -85,6 +85,13 @@ for (const subKey in subdomains) {
           grid.extArrows.push({ loc, blocked, flip })
         }
       }
+    }
+
+    //Add visibility controls
+    grid.collapsed = false
+    grid.toggle = () => {
+      grid.collapsed = !grid.collapsed
+      updateView()
     }
   }
 }

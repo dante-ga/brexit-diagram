@@ -26,9 +26,10 @@ const grid = `
   brexitApproval ukInEu
 `
 
-const getBestOption = (vals, values, subdomains) => {
+const getDecision = (vals, values, subdomains) => {
   let bestOption
   let maxTotalValue = -Infinity
+  const alternatives = {}
   const options = Object.keys(factors.brexitApproval.options)
   for (const option of options) {
     const context = clone(vals)
@@ -40,13 +41,13 @@ const getBestOption = (vals, values, subdomains) => {
     }
     const subs = ['security', 'influence', 'government', 'rights', 'research', 'exchange']
     totalValue += calcSubs(context, subs, values).UK
-    console.log({option, totalValue})
     if (totalValue > maxTotalValue) {
       maxTotalValue = totalValue
       bestOption = option
     }
+    alternatives[option] = totalValue
   }
-  return { bestOption, maxTotalValue }
+  return { bestOption, maxTotalValue, alternatives }
 }
 
-export const brexit = { factors, grid, getBestOption }
+export const brexit = { factors, grid, getDecision }

@@ -22,10 +22,19 @@ td.is-gap > * {
 .is-va-middle {
   vertical-align: middle !important;
 }
+.is-va-center {
+  align-items: center !important;
+}
+.is-cursor-pointer {
+  cursor: pointer;
+}
 
 .is-flex.is-space-between {
   justify-content: space-between;
 }
 .is-flex-one {
   flex: 1;
+}
+.is-flex {
+  display: flex !important;
 }

@@ -2,6 +2,7 @@ import { getFactors } from './factors/factors.js'
 import { getFactorPage } from './factors/page.js'
 import { getValues } from './values.js'
 import { getGrid } from './grid.js'
+import { getDecision } from './decision.js'
 import { calculate } from './calc/calc.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
@@ -10,12 +11,24 @@ const { render } = lighterhtml
 let gridScrollY = 0
 let activeScreen = 'grid'
 let activeFactor = null
-const getters = {
-  grid: getGrid,
-  values: getValues,
-  factors: getFactors,
+const screens = {
+  grid: {
+    get: getGrid,
+    title: 'Diagram',
+  },
+  values: {
+    get: getValues,
+    title: 'Values',
+  },
+  factors: {
+    get: getFactors,
+    title: 'Factors',
+  },
+  decision: {
+    get: getDecision,
+    title: 'Decision:',
+  }
 }
-const screens = Object.keys(getters)
 
 function onNav(target) {
   if (activeScreen === 'grid') gridScrollY = window.scrollY
@@ -39,7 +52,7 @@ export function updateView() {
     if (activeFactor) {
       content = getFactorPage(activeFactor)
     } else {
-      content = getters[activeScreen]()
+      content = screens[activeScreen].get()
     }
     return App(nav, content)
   })

@@ -28,6 +28,14 @@
   right: 5px;
   background: inherit;
 }
+.grid-cell .button .badge.fa-sliders-h {
+  padding: 0 1px;
+}
+.grid-cell .button .status {
+  position: absolute;
+  top: -13px;
+  right: -9px;
+}
 .grid-cell .button:hover {
   border-color: gray;
 }

@@ -1,4 +1,4 @@
-import { domain, subdomains } from '../domain/domain.js'
+import { domain, subdomains, getMainDecision } from '../domain/domain.js'
 import { types } from '../types.js'
 import { getAgentValueTotals, getContextValue } from './value.js'
 
@@ -39,9 +39,7 @@ export const calculate = () => {
     calcVals[key] = val
   }
   calcVals.agentValueTotals = getAgentValueTotals(calcVals)
-
-  const bestOption = subdomains.brexit.getBestOption(calcVals, calcVals.valueData, subdomains)
-  console.log(bestOption)
+  calcVals.mainDecision = getMainDecision(calcVals, calcVals.valueData)
 }
 
 export const calcSubs = (context, subs, values) => {

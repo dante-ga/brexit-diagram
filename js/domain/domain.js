@@ -1,9 +1,9 @@
 export const subdomains = {}
 const sub = obj => Object.assign(subdomains, obj)
 import { brexit } from './brexit.js'; sub({brexit})
+import { gibraltar } from './gibraltar.js'; sub({gibraltar})
 import { scotland } from './scotland.js'; sub({scotland})
 import { ireland } from './ireland.js'; sub({ireland})
-import { gibraltar } from './gibraltar.js'; sub({gibraltar})
 import { security } from './security.js'; sub({security})
 import { influence } from './influence.js'; sub({influence})
 import { government } from './government.js'; sub({government})
@@ -36,3 +36,5 @@ for (const source in domain) {
     domain[target].mergeFrom.push(source)
   }
 }
+
+export const getMainDecision = (vals, values) => subdomains.brexit.getDecision(vals, values, subdomains)
