@@ -46,9 +46,11 @@ const GridHeader = (title, collapsed, onClick) => {
   const faIcon = 'fa-chevron-' + ((collapsed) ? 'down' : 'right')
   const iconClass = 'icon is-small fas fa-sm ' + faIcon
   return html`
-    <h1 class="subtitle is-uppercase is-cursor-pointer" onclick=${onClick} >
-      <i class=${iconClass} />
-      <span class="is-va-middle">${title}</span>
+    <h1 class="subtitle" >
+      <span class="is-cursor-pointer" onclick=${onClick}>
+        <i class=${iconClass} />
+        <span class="is-va-middle is-uppercase">${title}</span>
+      </span>
     </h1>
   `
 }

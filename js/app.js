@@ -1,5 +1,4 @@
-import { getFactors } from './factors/factors.js'
-import { getFactorPage } from './factors/page.js'
+import { getFactor } from './factor.js'
 import { getValues } from './values.js'
 import { getGrid } from './grid.js'
 import { getDecision } from './decision.js'
@@ -19,10 +18,6 @@ const screens = {
   values: {
     get: getValues,
     title: 'Values',
-  },
-  factors: {
-    get: getFactors,
-    title: 'Factors',
   },
   decision: {
     get: getDecision,
@@ -50,7 +45,7 @@ export function updateView() {
     const nav = NavBar({ activeScreen, screens, onNav })
     let content
     if (activeFactor) {
-      content = getFactorPage(activeFactor)
+      content = getFactor(activeFactor)
     } else {
       content = screens[activeScreen].get()
     }

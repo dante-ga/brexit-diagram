@@ -40,11 +40,7 @@ const factors = {
     type: 'unitInterval',
     title: 'Violence in Northern Ireland',
     desc: "Please make an optimisic, pessimistic and most likely estimates of violence on a scale from 0% (no violence) to 100% (war) under each of the following border arrangements.",
-    calc: c => {
-      const {pessimistic, mostLikely, optimistic} = c.violenceNiByOption[c.irishBorder]
-      const sample = new Random().triangular(optimistic, pessimistic, mostLikely)
-      return sample
-    },
+    calc: c => tpeExpected(c.violenceNiByOption[c.irishBorder]),
     valuedBy: ['NI', 'UK', 'EU'],
   },
   brokenDeal: {
