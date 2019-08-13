@@ -22,9 +22,9 @@ const grid = `
   ukInEu gibraltarInUk $gibraltarInUk
 `
 
-const getValue = (vals, values) => (
+const getValue = (vals) => (
   ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
-  * getAgentValue('gibraltarInUk', true, 'UK', values)
+  * getAgentValue('gibraltarInUk', true, 'UK')
 )
 
 export const gibraltar = { factors, grid, getValue }

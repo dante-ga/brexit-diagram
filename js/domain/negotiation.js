@@ -14,7 +14,6 @@ const factors = {
       noMarketNoMovement: 'No single market and no freedom of movement',
     },
     choice: true,
-    disableOptions: c => (c.ukInEu) ? ['onlyMarket', 'onlyMovement', 'noMarketNoMovement'] : [],
     calc: c => (c.ukInEu) ? 'marketAndMovement' : c.marketMovement,
     decidedBy: ['UK', 'EU'],
   },
@@ -47,15 +46,15 @@ const grid = `
 
 const options = Object.keys(factors.marketMovement.options)
 
-const getValue = (vals, values, subdomains) => {
+const getValue = (vals, subdomains) => {
   if (vals.ukInEu) {
     const option = 'marketAndMovement'
-    const { UK } = getOptionValues(option, vals, values, subdomains)
+    const { UK } = getOptionValues(option, vals, subdomains)
     return UK
   } else {
     const agentValues = { UK: {}, EU: {} }
     for (const option of options) {
-      const { UK, EU } = getOptionValues(option, vals, values, subdomains)
+      const { UK, EU } = getOptionValues(option, vals, subdomains)
       agentValues.UK[option] = UK
       agentValues.EU[option] = EU
     }
@@ -68,7 +67,7 @@ const getValue = (vals, values, subdomains) => {
   }
 }
 
-const getOptionValues = (option, vals, values, subdomains) => {
+const getOptionValues = (option, vals, subdomains) => {
   vals.marketMovement = option
   let bestBI
   let maxUK = -Infinity
@@ -80,7 +79,7 @@ const getOptionValues = (option, vals, values, subdomains) => {
     context.marketMovement = option
     context.billIntention = billIntention
     const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'gdppc', 'nhs']
-    const {UK, EU} = calcSubs(context, subs, values)
+    const {UK, EU} = calcSubs(context, subs)
     if (UK > maxUK) {
       maxUK = UK
       maxUKEU = EU

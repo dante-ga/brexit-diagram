@@ -33,7 +33,6 @@ const factors = {
     choice: true,
     checkboxLabel: 'UK intends to pay the Brexit divorce bill.',
     calc: c => (c.brexitApproval === 'deal') || ((c.brexitApproval === 'noDeal') && (c.billIntention)),
-    getDisabled: c => c.brexitApproval !== 'noDeal',
     decidedBy: ['UK'],
   },
   divorceBill: {

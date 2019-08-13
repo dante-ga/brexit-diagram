@@ -26,7 +26,7 @@ const grid = `
   brexitApproval ukInEu
 `
 
-const getDecision = (vals, values, subdomains) => {
+const getDecision = (vals, subdomains) => {
   let bestOption
   let maxTotalValue = -Infinity
   const alternatives = {}
@@ -37,10 +37,10 @@ const getDecision = (vals, values, subdomains) => {
     context.ukInEu = (option === 'remain')
     let totalValue = 0
     for (const sub of ['scotland', 'ireland', 'gibraltar', 'negotiation']) {
-      totalValue += subdomains[sub].getValue(context, values, subdomains)
+      totalValue += subdomains[sub].getValue(context, subdomains)
     }
     const subs = ['security', 'influence', 'government', 'rights', 'research', 'exchange']
-    totalValue += calcSubs(context, subs, values).UK
+    totalValue += calcSubs(context, subs).UK
     if (totalValue > maxTotalValue) {
       maxTotalValue = totalValue
       bestOption = option

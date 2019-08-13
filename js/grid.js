@@ -1,5 +1,6 @@
 import { domain, subdomains } from './domain/domain.js'
 import { Grids } from './components/grid.js'
+import { userVals } from './calc/calc.js'
 import { updateView, activateFactor } from './app.js'
 
 const parseDepends = (fn) => {
@@ -13,6 +14,11 @@ const parseDepends = (fn) => {
 const hasChoice = (key) => {
   const { choice, mergeFrom, decidedBy } = domain[key]
   return (choice && !decidedBy) || mergeFrom.some(hasChoice)
+}
+
+const hasChoiceMissing = (key) => {
+  const { choice, mergeFrom, decidedBy } = domain[key]
+  return (choice && !decidedBy && !(key in userVals)) || mergeFrom.some(hasChoiceMissing)
 }
 
 const hasExternal = {}
@@ -45,6 +51,7 @@ const parseGrid = (str, subKey) => {
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
+        cell.notify = true
       } else {
         const { title, calc } = domain[key]
         cell.title = title
@@ -56,6 +63,7 @@ const parseGrid = (str, subKey) => {
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
           cell.choice = hasChoice(key)
           cell.decision = !!domain[key].decidedBy
+          cell.notify = cell.choice && hasChoiceMissing(key)
         } else {
           cell.external = true
           hasExternal[key] = true

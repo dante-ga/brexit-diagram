@@ -1,8 +1,7 @@
 import { getFactor } from './factor.js'
 import { getValues } from './values.js'
 import { getGrid } from './grid.js'
-import { getDecision } from './decision.js'
-import { calculate } from './calc/calc.js'
+import { getDecision, getProgress } from './decision.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
 const { render } = lighterhtml
@@ -42,7 +41,8 @@ export const activateFactor = (key) => {
 
 export function updateView() {
   render(document.body, () => {
-    const nav = NavBar({ activeScreen, screens, onNav })
+    const progress = getProgress()
+    const nav = NavBar({ activeScreen, screens, onNav, progress })
     let content
     if (activeFactor) {
       content = getFactor(activeFactor)
@@ -55,5 +55,4 @@ export function updateView() {
 
 window.onresize = debounce(updateView, 100, true)
 
-calculate()
 updateView()

@@ -9,7 +9,7 @@ const NavBarItem = (title, active, onClick) => html`
   </a>
 `
 
-export const NavBar = ({activeScreen, screens, onNav}) => {
+export const NavBar = ({activeScreen, screens, onNav, progress}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -20,9 +20,7 @@ export const NavBar = ({activeScreen, screens, onNav}) => {
           NavBarItem(title, (screen === activeScreen), () => onNav(screen))
         )}
       </div>
-      <div class="navbar-item is-expanded is-flex is-va-center">
-        <progress class="progress is-primary" value="10" max="100">10%</progress>
-      </div>
+      ${progress}
     </nav>
   `
 }

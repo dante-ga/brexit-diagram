@@ -9,22 +9,14 @@ export const types = {
   boolean: {
     getDefault: () => false,
     getText: val => (val) ? 'YES' : 'NO',
-    getColor: val => (val) ? 'is-success' : 'is-danger',
-    getInput: (val, cb, df, calcVals) => Checkbox(val, cb, {
-      disabled: df.getDisabled && df.getDisabled(calcVals),
-      ...df,
-    }),
+    getInput: (val, cb, df) => Checkbox(val, cb, df),
     getValueObjs: ({key, title}) => ({[key]: {title}}),
     getValue: (val, value) => (val) ? value : 0,
   },
   option: {
-    getDefault: ({options}) => Object.keys(options)[0],
+    getDefault: () => null,
     getText: val => camel2space(val),
-    getColor: () => 'is-dark',
-    getInput: (val, cb, df, calcVals) => Radio(val, cb, {
-      disabled: df.disableOptions && df.disableOptions(calcVals),
-      ...df,
-    }),
+    getInput: (val, cb, df) => Radio(val, cb, df),
     getValueObjs: ({key, title, options}) => {
       const valueObjs = {}
       for (const option in options) {
@@ -38,20 +30,13 @@ export const types = {
     },
     getValue: (val, value, {option}) => (val === option) ? value : 0,
   },
-  agentValue: {
-    getDefault: () => 0,
-    getText: val => round2tenth(val),
-    getColor: (val) => (val === 0) ? 'is-dark' : ((val > 0) ? 'is-success' : 'is-danger'),
-  },
   gbp: {
     getDefault: () => 0,
     getText: val => '£' + round2tenth(val / bn) + ' bn',
-    getColor: (val) => 'is-dark',
   },
   unitInterval: {
     getDefault: () => 0.5,
     getText: val => round2tenth(val * 100) + '%',
-    getColor: () => 'is-dark',
     getInput: (val, cb, df) => Slider(val, cb, {
       min: 0,
       max: 1,
@@ -67,7 +52,6 @@ export const types = {
   mirrorUnitInterval: {
     getDefault: () => 0,
     getText: val => ((val > 0) ? '+' : '') + Math.round(val * 100) + '%',
-    getColor: val => (val === 0) ? 'is-dark' : ((val > 0) ? 'is-success' : 'is-danger'),
     getInput: (val, cb, df) => Slider(val, cb, {
       min: -1,
       max: 1,
@@ -85,7 +69,6 @@ export const types = {
   ratio: {
     getDefault: () => 1,
     getText: val => val,
-    getColor: val => (val === 1) ? 'is-dark' : ((val > 1) ? 'is-success' : 'is-danger'),
     getInput: (val, cb, df) => Slider(val, cb, {
       min: 0,
       max: 3,
@@ -99,7 +82,6 @@ export const types = {
   mirrorRatio: {
     getDefault: () => 0,
     getText: val => val,
-    getColor: val => (val === 0) ? 'is-dark' : ((val > 0) ? 'is-success' : 'is-danger'),
     getInput: (val, cb, df) => Slider(val, cb, {
       min: -3,
       max: 3,

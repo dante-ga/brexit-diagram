@@ -52,50 +52,50 @@ const grid = `
   -                -                   ukInEu               -
 `
 
-//Note: due to complexity of generalization, values are calculated explicitly without reuse of 'calc' functions.
-const getValue = (vals, values) => {
+//Note: due to complexity of generalization are calculated explicitly without reuse of 'calc' functions.
+const getValue = (vals) => {
   const { ukInEu } = vals
-  const scotlandApproval = getScotlandApproval({ukInEu}, vals, values)
-  const value = getIndependentScotlandValueUK({scotlandApproval}, vals, values)
+  const scotlandApproval = getScotlandApproval({ukInEu}, vals)
+  const value = getIndependentScotlandValueUK({scotlandApproval}, vals)
   return value
 }
 
-const getScotlandApproval = ({ukInEu}, vals, values) => {
-  const valueTrue = getIndependentScotlandValue({ukInEu, scotlandApproval: true}, vals, values)
-  const valueFalse = getIndependentScotlandValue({ukInEu, scotlandApproval: false}, vals, values)
+const getScotlandApproval = ({ukInEu}, vals) => {
+  const valueTrue = getIndependentScotlandValue({ukInEu, scotlandApproval: true}, vals)
+  const valueFalse = getIndependentScotlandValue({ukInEu, scotlandApproval: false}, vals)
   return valueTrue > valueFalse
 }
 
-const getIndependentScotlandValue = ({ukInEu, scotlandApproval}, vals, values) => {
+const getIndependentScotlandValue = ({ukInEu, scotlandApproval}, vals) => {
   if (scotlandApproval) {
     const { indScotProb } = vals
     const value =
-      getAgentValue('independentScotland', true, 'Scotland', values) * indScotProb
-      + getScotlandEuMemberValue({ukInEu, independentScotland: true}, vals, values) * indScotProb
-      + getScotlandEuMemberValue({ukInEu, independentScotland: false}, vals, values) * (1 - indScotProb)
+      getAgentValue('independentScotland', true, 'Scotland') * indScotProb
+      + getScotlandEuMemberValue({ukInEu, independentScotland: true}, vals) * indScotProb
+      + getScotlandEuMemberValue({ukInEu, independentScotland: false}, vals) * (1 - indScotProb)
     return value
   } else {
     return 0
   }
 }
 
-const getScotlandEuMemberValue = ({ukInEu, independentScotland}, vals, values) => {
+const getScotlandEuMemberValue = ({ukInEu, independentScotland}, vals) => {
   const { scotEuMemberProb } = vals
-  const value = getScotlandInEuValue({ukInEu, independentScotland, scotlandEuMember: true}, vals, values) * scotEuMemberProb
-    + getScotlandInEuValue({ukInEu, independentScotland, scotlandEuMember: false}, vals, values) * (1 - scotEuMemberProb)
+  const value = getScotlandInEuValue({ukInEu, independentScotland, scotlandEuMember: true}, vals) * scotEuMemberProb
+    + getScotlandInEuValue({ukInEu, independentScotland, scotlandEuMember: false}, vals) * (1 - scotEuMemberProb)
   return value
 }
 
-const getScotlandInEuValue = ({ukInEu, independentScotland, scotlandEuMember}, vals, values) => {
+const getScotlandInEuValue = ({ukInEu, independentScotland, scotlandEuMember}, vals) => {
   const scotlandInEu = scotlandEuMember || (ukInEu && independentScotland)
-  const value = getAgentValue('scotlandInEu', scotlandInEu, 'Scotland', values)
+  const value = getAgentValue('scotlandInEu', scotlandInEu, 'Scotland')
   return value
 }
 
-const getIndependentScotlandValueUK = ({scotlandApproval}, vals, values) => {
+const getIndependentScotlandValueUK = ({scotlandApproval}, vals) => {
   if (scotlandApproval) {
     const { indScotProb } = vals
-    const value = getAgentValue('independentScotland', true, 'UK', values) * indScotProb
+    const value = getAgentValue('independentScotland', true, 'UK') * indScotProb
     return value
   } else {
     return 0

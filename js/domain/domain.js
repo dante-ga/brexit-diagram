@@ -37,4 +37,4 @@ for (const source in domain) {
   }
 }
 
-export const getMainDecision = (vals, values) => subdomains.brexit.getDecision(vals, values, subdomains)
+export const getMainDecision = (vals) => subdomains.brexit.getDecision(vals, subdomains)

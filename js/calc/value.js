@@ -1,29 +1,15 @@
 import { types } from '../types.js'
 import { domain } from '../domain/domain.js'
 
-export const getAgentValueTotals = (calcVals) => {
-  const totalValues = {}
-  const { valueData } = calcVals
-  for (const agent in valueData) {
-    let total = 0
-    for (const valueFactor in valueData[agent]) {
-      const valueObj = valueData[agent][valueFactor]
-      const factor = valueObj.factor || valueFactor
-      const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
-      const typeObj = types[domain[factor].type]
-      total += typeObj.getValue(calcVals[factor], value, valueObj)
-    }
-    totalValues[agent] = total
-  }
-  return totalValues
-}
+export let userValues
+export const setUserValues = uvs => userValues = uvs
 
-export const getContextValue = (context, subs, valueData) => {
+export const getContextValue = (context, subs) => {
   const totalValues = {}
-  for (const agent in valueData) {
+  for (const agent in userValues) {
     let total = 0
-    for (const valueFactor in valueData[agent]) {
-      const valueObj = valueData[agent][valueFactor]
+    for (const valueFactor in userValues[agent]) {
+      const valueObj = userValues[agent][valueFactor]
       const factor = valueObj.factor || valueFactor
       if (subs.includes(domain[factor].subKey)) {
         const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
@@ -36,13 +22,10 @@ export const getContextValue = (context, subs, valueData) => {
   return totalValues
 }
 
-//How to access to values variable?
-//Some keys are composite, such as border options
-export const getAgentValue = (key, val, agent, valueData) => {
-  // console.log({valueData, agent, key})
+export const getAgentValue = (key, val, agent) => {
   const { type } = domain[key]
   const valueKey = key + ((type === 'option') ? ':' + val : '')
-  const valueObj = valueData[agent][valueKey]
+  const valueObj = userValues[agent][valueKey]
   const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
   return types[type].getValue(val, value, valueObj)
 }

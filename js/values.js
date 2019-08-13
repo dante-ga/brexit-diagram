@@ -1,45 +1,45 @@
 import { ValuesTable } from './components/values.js'
 import { Button } from './components/global.js'
 import { Select } from './components/inputs.js'
-import { calcVals, calculate, setValueData } from './calc/calc.js'
+import { setUserValues } from './calc/value.js'
 import { domain } from './domain/domain.js'
 import { updateView } from './app.js'
 import { types } from './types.js'
 
-const getInitValueData = () => {
-  const valueData = {}
+const getInitUserValues = () => {
+  const userValues = {}
   for (const factor in domain) {
     const { valuedBy, type } = domain[factor]
     if (valuedBy) {
       for (const agent of valuedBy) {
-        if (!valueData[agent]) valueData[agent] = {}
+        if (!userValues[agent]) userValues[agent] = {}
         Object.assign(
-          valueData[agent],
+          userValues[agent],
           types[type].getValueObjs(domain[factor])
         )
       }
     }
   }
-  for (const agent in valueData) {
-    for (const key in valueData[agent]) {
-      Object.assign(valueData[agent][key], {
+  for (const agent in userValues) {
+    for (const key in userValues[agent]) {
+      Object.assign(userValues[agent][key], {
         positive: true,
         value: 0,
         key
       })
     }
   }
-  return valueData
+  return userValues
 }
 
-let valueData
-if (localStorage.getItem('valueData')) {
-  valueData = JSON.parse(localStorage.getItem('valueData'))
+let userValues
+if (localStorage.getItem('userValues')) {
+  userValues = JSON.parse(localStorage.getItem('userValues'))
 } else {
-  valueData = getInitValueData()
+  userValues = getInitUserValues()
 }
-setValueData(valueData)
-const agents = Object.keys(valueData)
+setUserValues(userValues)
+const agents = Object.keys(userValues)
 let activeAgent = agents[0]
 
 const setAgent = (agent) => {
@@ -48,9 +48,8 @@ const setAgent = (agent) => {
 }
 
 const update = () => {
-  calculate()
   updateView()
-  localStorage.setItem('valueData', JSON.stringify(valueData))
+  localStorage.setItem('userValues', JSON.stringify(userValues))
 }
 
 const toggleSign = (valObj) => () => {
@@ -80,7 +79,7 @@ const onGapChange = (thisIndex, order, oldGap, factors) => (newGap) => {
 }
 
 const rescaleValues = () => {
-  const factors = valueData[activeAgent]
+  const factors = userValues[activeAgent]
   const maxValue = Math.max(...Object.keys(factors).map(
     factor => factors[factor].value
   ))
@@ -95,7 +94,7 @@ const rescaleValues = () => {
 
 function getValueList() {
   let prevValue = 0
-  const factors = valueData[activeAgent]
+  const factors = userValues[activeAgent]
   const valueList = Object.keys(factors)
     .map(factor => ({
       factor,

@@ -1,7 +1,7 @@
 import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
-const Cell = ({ key, value, title, choice, decision, external, hasExternal }, onClick) => {
+const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal }, onClick) => {
   let box
   if (!key) {
     box = ''
@@ -18,7 +18,6 @@ const Cell = ({ key, value, title, choice, decision, external, hasExternal }, on
     if (decision) {
       badges.push(html`<i class="badge fas fa-balance-scale-right" />`)
     }
-    const notify = value || choice
     if (notify) {
       badges.push(html`
         <span class="status has-text-danger">
