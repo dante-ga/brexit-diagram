@@ -74,10 +74,10 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   -      ukInfluenceOnEu
   ukInEu euInfluenceOnGlobal ukInfluenceOnGlobal $ukInfluenceOnGlobal
   -      ukInfluenceNotViaEu
 `
 
-export const influence = { factors, grid }
+export const influence = { factors, diagram }

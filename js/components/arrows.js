@@ -79,7 +79,7 @@ export const ArrowDefs = () => svg`
 `
 
 export const Arrows = (arrows, extArrows) => svg`
-  <svg class="grid-bg">
+  <svg class="diagram-bg">
     ${arrows.map(Arrow)}
     ${extArrows.map(ExtArrow)}
   </svg>

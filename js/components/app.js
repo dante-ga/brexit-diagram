@@ -9,7 +9,7 @@ const NavBarItem = (title, active, onClick) => html`
   </a>
 `
 
-export const NavBar = ({activeScreen, screens, onNav, progress}) => {
+export const NavBar = ({activeScreen, screens, navigate, progress}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -17,7 +17,7 @@ export const NavBar = ({activeScreen, screens, onNav, progress}) => {
           <img src="/img/logo.png" width="28" height="28">
         </a>
         ${Object.entries(screens).map(([screen, {title}]) =>
-          NavBarItem(title, (screen === activeScreen), () => onNav(screen))
+          NavBarItem(title, (screen === activeScreen), () => navigate(screen))
         )}
       </div>
       ${progress}

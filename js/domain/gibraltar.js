@@ -18,7 +18,7 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   ukInEu gibraltarInUk $gibraltarInUk
 `
 
@@ -27,4 +27,4 @@ const getValue = (vals) => (
   * getAgentValue('gibraltarInUk', true, 'UK')
 )
 
-export const gibraltar = { factors, grid, getValue }
+export const gibraltar = { factors, diagram, getValue }

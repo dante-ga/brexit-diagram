@@ -32,8 +32,8 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   brexitApproval researchColab $researchColab
 `
 
-export const research = { factors, grid }
+export const research = { factors, diagram }

@@ -46,7 +46,7 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   -                -                   $independentScotland -
   scotlandApproval independentScotland scotlandEuMember     scotlandInEu $scotlandInEu
   -                -                   ukInEu               -
@@ -102,4 +102,4 @@ const getIndependentScotlandValueUK = ({scotlandApproval}, vals) => {
   }
 }
 
-export const scotland = { factors, grid, getValue }
+export const scotland = { factors, diagram, getValue }

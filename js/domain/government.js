@@ -50,10 +50,10 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   -      ukLawsForced       $ukLawsForced
   ukInEu -                  govtEffectiveness   $govtEffectiveness
   -      rejectedReferendum $rejectedReferendum
 `
 
-export const government = { factors, grid }
+export const government = { factors, diagram }

@@ -38,7 +38,7 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   -      -              singleMarket      -                  -
   ukInEu marketMovement -                 marketMovementTied $marketMovementTied
   -      -              freedomOfMovement -                  -
@@ -89,4 +89,4 @@ const getOptionValues = (option, vals, subdomains) => {
   return { UK: maxUK, EU: maxUKEU }
 }
 
-export const negotiation = { factors, grid, getValue }
+export const negotiation = { factors, diagram, getValue }

@@ -14,9 +14,9 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   gdpChange          gdppcChange $gdppcChange
   ukPopulationChange
 `
 
-export const gdppc = { factors, grid }
+export const gdppc = { factors, diagram }

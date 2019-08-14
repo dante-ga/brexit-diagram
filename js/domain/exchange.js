@@ -20,8 +20,8 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   ukInEu exchangeRateChange $exchangeRateChange
 `
 
-export const exchange = { factors, grid }
+export const exchange = { factors, diagram }

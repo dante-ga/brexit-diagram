@@ -47,7 +47,7 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   -      brexitApproval brokenDeal   $brokenDeal
   ukInEu irishBorder    violenceNi   $violenceNi
   -      -              $irishBorder -
@@ -91,4 +91,4 @@ const getBorderValues = (vals) => {
 const tpeExpected = ({pessimistic, mostLikely, optimistic}) =>
   (pessimistic + 4 * mostLikely + optimistic) / 6
 
-export const ireland = { factors, grid, getValue }
+export const ireland = { factors, diagram, getValue }

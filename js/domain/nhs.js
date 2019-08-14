@@ -60,7 +60,7 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   popChngDueImmgr    nhsLabourChange
   -                  nhsDemandChange
   ukInEu             euMedicineForNhs nhsPerformance $nhsPerformance
@@ -68,4 +68,4 @@ const grid = `
   govtSpendingChange nhsBudgetChange
 `
 
-export const nhs = { factors, grid }
+export const nhs = { factors, diagram }

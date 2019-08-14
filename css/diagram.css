@@ -1,10 +1,10 @@
-.grid {
+.diagram {
   position: relative;
 }
-.grid-row {
+.diagram-row {
   white-space: nowrap;
 }
-.grid-cell {
+.diagram-cell {
   vertical-align: top;
   display: inline-block;
   width: 250px;
@@ -14,7 +14,7 @@
   padding-right: 40px;
   padding-bottom: 30px;
 }
-.grid-cell .button {
+.diagram-cell .button {
   height: 62px;
   width: 100%;
   white-space: normal;
@@ -22,24 +22,24 @@
   border-color: black;
   position: relative;
 }
-.grid-cell .button .badge {
+.diagram-cell .button .badge {
   position: absolute;
   bottom: -10px;
   right: 5px;
   background: inherit;
 }
-.grid-cell .button .badge.fa-sliders-h {
+.diagram-cell .button .badge.fa-sliders-h {
   padding: 0 1px;
 }
-.grid-cell .button .status {
+.diagram-cell .button .status {
   position: absolute;
   top: -13px;
   right: -9px;
 }
-.grid-cell .button:hover {
+.diagram-cell .button:hover {
   border-color: gray;
 }
-.grid-bg {
+.diagram-bg {
   position: absolute;
   top: 0px;
   left: 0px;

@@ -22,7 +22,7 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   brexitApproval ukInEu
 `
 
@@ -50,4 +50,4 @@ const getDecision = (vals, subdomains) => {
   return { bestOption, maxTotalValue, alternatives }
 }
 
-export const brexit = { factors, grid, getDecision }
+export const brexit = { factors, diagram, getDecision }

@@ -1,7 +1,7 @@
 import { domain, subdomains } from './domain/domain.js'
-import { Grids } from './components/grid.js'
+import { Diagrams } from './components/diagram.js'
 import { userVals } from './calc/calc.js'
-import { updateView, activateFactor } from './app.js'
+import { updateView, navigate } from './app.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -22,7 +22,7 @@ const hasChoiceMissing = (key) => {
 }
 
 const hasExternal = {}
-const parseGrid = (str, subKey) => {
+const parseDiagram = (str, subKey) => {
   let locs = {}
   let arrows = []
   const rows = str
@@ -75,33 +75,35 @@ const parseGrid = (str, subKey) => {
   return { rows, arrows }
 }
 
-const grids = []
+const diagrams = []
 for (const subKey in subdomains) {
-  const { grid } = subdomains[subKey]
-  grids.push({ subKey, ...parseGrid(grid, subKey) })
+  const { diagram } = subdomains[subKey]
+  diagrams.push({ subKey, ...parseDiagram(diagram, subKey) })
 
-  for (const grid of grids) {
+  for (const diagram of diagrams) {
     //Add external arrows
-    grid.extArrows = []
-    for (const row of grid.rows) {
+    diagram.extArrows = []
+    for (const row of diagram.rows) {
       for (let j = 0; j < row.length; j++) {
         const { value, external, key, loc } = row[j]
         const extArrow = key && !value && !external && hasExternal[key]
         if (extArrow) {
           const blocked = row[j+1] && row[j+1].key
           const flip = domain[key].flipExtArrow
-          grid.extArrows.push({ loc, blocked, flip })
+          diagram.extArrows.push({ loc, blocked, flip })
         }
       }
     }
 
     //Add visibility controls
-    grid.collapsed = false
-    grid.toggle = () => {
-      grid.collapsed = !grid.collapsed
+    diagram.collapsed = false
+    diagram.toggle = () => {
+      diagram.collapsed = !diagram.collapsed
       updateView()
     }
   }
 }
 
-export const getGrid = () => Grids(grids, activateFactor)
+const onCellClick = (key) => navigate('/factor/'+key)
+
+export const getDiagram = () => Diagrams(diagrams, onCellClick)

@@ -8,8 +8,8 @@ export const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   ukInEu securityCoOp $securityCoOp
 `
 
-export const security = { factors, grid }
+export const security = { factors, diagram }

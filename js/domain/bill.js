@@ -62,11 +62,11 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   -              euIncome      -
   ukInEu         euCost        euNetCost
   brexitApproval billIntention divorceBill
   -              -             debtService
 `
 
-export const bill = { factors, grid }
+export const bill = { factors, diagram }

@@ -1,17 +1,18 @@
 import { getFactor } from './factor.js'
 import { getValues } from './values.js'
-import { getGrid } from './grid.js'
+import { getDiagram } from './diagram.js'
 import { getDecision, getProgress } from './decision.js'
 import { NavBar, App } from './components/app.js'
 import { debounce } from './util.js'
+import Navigo from '../third_party/navigo.js'
 const { render } = lighterhtml
 
-let gridScrollY = 0
-let activeScreen = 'grid'
+let diagramScrollY = 0
+let activeScreen = 'diagram'
 let activeFactor = null
 const screens = {
-  grid: {
-    get: getGrid,
+  diagram: {
+    get: getDiagram,
     title: 'Diagram',
   },
   values: {
@@ -25,15 +26,15 @@ const screens = {
 }
 
 function onNav(target) {
-  if (activeScreen === 'grid') gridScrollY = window.scrollY
+  if (activeScreen === 'diagram') diagramScrollY = window.scrollY
   activeScreen = target
   activeFactor = null
   updateView()
-  if (activeScreen === 'grid') window.scrollTo(0, gridScrollY);
+  if (activeScreen === 'diagram') window.scrollTo(0, diagramScrollY);
 }
 
-export const activateFactor = (key) => {
-  if (activeScreen === 'grid') gridScrollY = window.scrollY
+const activateFactor = (key) => {
+  if (activeScreen === 'diagram') diagramScrollY = window.scrollY
   activeFactor = key
   activeScreen = null
   updateView()
@@ -42,7 +43,7 @@ export const activateFactor = (key) => {
 export function updateView() {
   render(document.body, () => {
     const progress = getProgress()
-    const nav = NavBar({ activeScreen, screens, onNav, progress })
+    const nav = NavBar({ activeScreen, screens, navigate, progress })
     let content
     if (activeFactor) {
       content = getFactor(activeFactor)
@@ -55,4 +56,15 @@ export function updateView() {
 
 window.onresize = debounce(updateView, 100, true)
 
-updateView()
+const router = new Navigo('http://127.0.0.1:8887/')
+export const navigate = (path) => router.navigate(path)
+
+router
+  .on(() => onNav('diagram'))
+  .on({
+    '/diagram': function() { onNav('diagram') },
+    '/values': function() { onNav('values') },
+    '/decision': function() { onNav('decision') },
+    '/factor/:key': function({key}) { activateFactor(key) },
+  })
+  .resolve()

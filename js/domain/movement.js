@@ -112,7 +112,7 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   -                 -                  britishIdentity $britishIdentity
   -                 -                  socialCohesion  $socialCohesion
   freedomOfMovement nonBritish2030     medianIncome    $medianIncome
@@ -120,4 +120,4 @@ const grid = `
   -                 ukPopulationChange popChngDueImmgr -
 `
 
-export const movement = { factors, grid }
+export const movement = { factors, diagram }

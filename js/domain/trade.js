@@ -31,11 +31,11 @@ for (const {dir, loc, key, valuedBy} of tradeTypes) {
   if (valuedBy) factors[key].valuedBy = valuedBy
 }
 
-const grid = `
+const diagram = `
   -            exportsToEu      $exportsToEu
   singleMarket importsFromEu    $importsFromEu
   -            exportsToNonEu   -
   -            importsFromNonEu -
 `
 
-export const trade = { factors, grid }
+export const trade = { factors, diagram }

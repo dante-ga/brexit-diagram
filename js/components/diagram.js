@@ -32,16 +32,16 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
       </button>
     `
   }
-  return html`<div class='grid-cell'>${box}</div>`
+  return html`<div class='diagram-cell'>${box}</div>`
 }
 
 const Row = (row, onClick) => html`
-  <div class="grid-row">
+  <div class="diagram-row">
     ${row.map(c => Cell(c, onClick))}
   </div>
 `
 
-const GridHeader = (title, collapsed, onClick) => {
+const DiagramHeader = (title, collapsed, onClick) => {
   const faIcon = 'fa-chevron-' + ((collapsed) ? 'down' : 'right')
   const iconClass = 'icon is-small fas fa-sm ' + faIcon
   return html`
@@ -54,16 +54,16 @@ const GridHeader = (title, collapsed, onClick) => {
   `
 }
 
-const GridBody = (arrows, extArrows, rows, onClick) => html`
-  <div class="grid">
+const DiagramBody = (arrows, extArrows, rows, onClick) => html`
+  <div class="diagram">
     ${Arrows(arrows, extArrows)}
     ${rows.map(r => Row(r, onClick))}
   </div>
 `
 
-const Grid = ({subKey, rows, arrows, extArrows, collapsed, toggle }, onClick) => html`
-  ${GridHeader(subKey, collapsed, toggle)}
-  ${(collapsed) ? '' : GridBody(arrows, extArrows, rows, onClick) }
+const Diagram = ({subKey, rows, arrows, extArrows, collapsed, toggle }, onClick) => html`
+  ${DiagramHeader(subKey, collapsed, toggle)}
+  ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows, onClick) }
 `
 
-export const Grids = (grids, onClick) => [ArrowDefs(), ...grids.map(g => Grid(g, onClick))]
+export const Diagrams = (diagrams, onClick) => [ArrowDefs(), ...diagrams.map(g => Diagram(g, onClick))]

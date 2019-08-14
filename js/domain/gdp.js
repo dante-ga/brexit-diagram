@@ -110,7 +110,7 @@ const factors = {
   }
 }
 
-const grid = `
+const diagram = `
   euNetCost        -
   divorceBill      govtSpendingChange $govtSpendingChange
   debtService      -
@@ -122,4 +122,4 @@ const grid = `
   importsFromNonEu -
 `
 
-export const gdp = { factors, grid }
+export const gdp = { factors, diagram }

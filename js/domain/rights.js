@@ -32,8 +32,8 @@ const factors = {
   },
 }
 
-const grid = `
+const diagram = `
   brexitApproval legalRights $legalRights
 `
 
-export const rights = { factors, grid }
+export const rights = { factors, diagram }
