@@ -1,70 +1,82 @@
 import { getFactor } from './factor.js'
 import { getValues } from './values.js'
+import { getValue } from './value.js'
 import { getDiagram } from './diagram.js'
 import { getDecision, getProgress } from './decision.js'
-import { NavBar, App } from './components/app.js'
+import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import Navigo from '../third_party/navigo.js'
 const { render } = lighterhtml
 
-let diagramScrollY = 0
-let activeScreen = 'diagram'
-let activeFactor = null
-const screens = {
+let activeRoute
+let activeParams
+//TODO: Import whole routes instead of get()?
+const routes = {
   diagram: {
     get: getDiagram,
-    title: 'Diagram',
+    navTab: 'Diagram',
+    path: '/',
+  },
+  factor: {
+    get: getFactor,
+    path: '/factor/:key',
   },
   values: {
     get: getValues,
-    title: 'Values',
+    navTab: 'Values',
+    path: '/values',
+  },
+  value: {
+    get: getValue,
+    path: '/value/:key',
   },
   decision: {
     get: getDecision,
-    title: 'Decision:',
+    navTab: 'Decision:',
+    path: '/decision',
+  },
+}
+
+const getNav = () => {
+  const progress = getProgress()
+  const navTabs = []
+  for (const route in routes) {
+    const { navTab, path } = routes[route]
+    if (navTab) {
+      navTabs.push({
+        title: navTab,
+        active: route === activeRoute,
+        onClick: () => navigate(path)
+      })
+    }
   }
-}
-
-function onNav(target) {
-  if (activeScreen === 'diagram') diagramScrollY = window.scrollY
-  activeScreen = target
-  activeFactor = null
-  updateView()
-  if (activeScreen === 'diagram') window.scrollTo(0, diagramScrollY);
-}
-
-const activateFactor = (key) => {
-  if (activeScreen === 'diagram') diagramScrollY = window.scrollY
-  activeFactor = key
-  activeScreen = null
-  updateView()
+  const goHome = () => navigate('/')
+  return NavBar({ goHome, navTabs, progress })
 }
 
 export function updateView() {
   render(document.body, () => {
-    const progress = getProgress()
-    const nav = NavBar({ activeScreen, screens, navigate, progress })
-    let content
-    if (activeFactor) {
-      content = getFactor(activeFactor)
-    } else {
-      content = screens[activeScreen].get()
-    }
-    return App(nav, content)
+    const content = routes[activeRoute].get(activeParams)
+    return App(getNav(), content)
   })
 }
 
-window.onresize = debounce(updateView, 100, true)
-
 const router = new Navigo('http://127.0.0.1:8887/')
-export const navigate = (path) => router.navigate(path)
 
-router
-  .on(() => onNav('diagram'))
-  .on({
-    '/diagram': function() { onNav('diagram') },
-    '/values': function() { onNav('values') },
-    '/decision': function() { onNav('decision') },
-    '/factor/:key': function({key}) { activateFactor(key) },
-  })
-  .resolve()
+export const navigate = (path) => {
+  router.navigate(path)
+  window.scrollTo(0, 0)
+}
+
+const routeHandlers = {}
+for (const route in routes) {
+  const { path } = routes[route]
+  routeHandlers[path] = (params) => {
+    activeRoute = route
+    activeParams = params
+    updateView()
+  }
+}
+router.on(routeHandlers)
+router.notFound(() => render(document.body, NotFound))
+router.resolve()

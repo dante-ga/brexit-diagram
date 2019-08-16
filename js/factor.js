@@ -24,9 +24,9 @@ const getInput = (domainFactor) => {
   return input
 }
 
-export const getFactor = (factorKey) => {
+export const getFactor = ({ key }) => {
   const factor = []
-  const domainFactor = domain[factorKey]
+  const domainFactor = domain[key]
   const { title, desc, choice } = domainFactor
   factor.push(Title(title))
   if (desc) factor.push(Desc(desc))

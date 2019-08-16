@@ -104,6 +104,6 @@ for (const subKey in subdomains) {
   }
 }
 
-const onCellClick = (key) => navigate('/factor/'+key)
+const onCellClick = (key, value) => navigate(((value) ? '/value/' : '/factor/') + key)
 
 export const getDiagram = () => Diagrams(diagrams, onCellClick)

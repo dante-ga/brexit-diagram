@@ -26,7 +26,7 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
       `)
     }
     box = html`
-      <button class=${classStr} onclick=${() => onClick(key)} >
+      <button class=${classStr} onclick=${() => onClick(key, value)} >
         ${badges}
         <span>${title}</span>
       </button>
