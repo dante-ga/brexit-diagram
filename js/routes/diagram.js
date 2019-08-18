@@ -1,7 +1,7 @@
-import { domain, subdomains } from './domain/domain.js'
-import { Diagrams } from './components/diagram.js'
-import { userVals } from './calc/calc.js'
-import { updateView, navigate } from './app.js'
+import { domain, subdomains } from '../domain/domain.js'
+import { Diagrams } from '../components/diagram.js'
+import { userVals } from '../calc/calc.js'
+import { updateView, navigate } from '../app.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -75,35 +75,35 @@ const parseDiagram = (str, subKey) => {
   return { rows, arrows }
 }
 
-const diagrams = []
-for (const subKey in subdomains) {
-  const { diagram } = subdomains[subKey]
-  diagrams.push({ subKey, ...parseDiagram(diagram, subKey) })
+export const getDiagram = () => {
+  const diagrams = []
+  for (const subKey in subdomains) {
+    const { diagram } = subdomains[subKey]
+    diagrams.push({ subKey, ...parseDiagram(diagram, subKey) })
 
-  for (const diagram of diagrams) {
-    //Add external arrows
-    diagram.extArrows = []
-    for (const row of diagram.rows) {
-      for (let j = 0; j < row.length; j++) {
-        const { value, external, key, loc } = row[j]
-        const extArrow = key && !value && !external && hasExternal[key]
-        if (extArrow) {
-          const blocked = row[j+1] && row[j+1].key
-          const flip = domain[key].flipExtArrow
-          diagram.extArrows.push({ loc, blocked, flip })
+    for (const diagram of diagrams) {
+      //Add external arrows
+      diagram.extArrows = []
+      for (const row of diagram.rows) {
+        for (let j = 0; j < row.length; j++) {
+          const { value, external, key, loc } = row[j]
+          const extArrow = key && !value && !external && hasExternal[key]
+          if (extArrow) {
+            const blocked = row[j+1] && row[j+1].key
+            const flip = domain[key].flipExtArrow
+            diagram.extArrows.push({ loc, blocked, flip })
+          }
         }
       }
-    }
 
-    //Add visibility controls
-    diagram.collapsed = false
-    diagram.toggle = () => {
-      diagram.collapsed = !diagram.collapsed
-      updateView()
+      //Add visibility controls
+      diagram.collapsed = false
+      diagram.toggle = () => {
+        diagram.collapsed = !diagram.collapsed
+        updateView()
+      }
     }
   }
+  const onCellClick = (key, value) => navigate(((value) ? '/value/' : '/factor/') + key)
+  return Diagrams(diagrams, onCellClick)
 }
-
-const onCellClick = (key, value) => navigate(((value) ? '/value/' : '/factor/') + key)
-
-export const getDiagram = () => Diagrams(diagrams, onCellClick)

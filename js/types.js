@@ -66,6 +66,18 @@ export const types = {
     }}),
     getValue: (val, value, {percent}) => val * value / percent * 100,
   },
+  value: {
+    getText: val => val,
+    getInput: (val, cb, agent) => Slider(val, cb, {
+      type: 'value',
+      min: -100,
+      max: 100,
+      step: 0.1,
+      sliderLabel: `Value for the ${agent}`,
+      minLabel: '-100',
+      maxLabel: '100',
+    })
+  },
   ratio: {
     getDefault: () => 1,
     getText: val => val,

@@ -1,8 +1,9 @@
-import { Title, Desc } from './components/factor.js'
-import { userVals, setUserVals, setTpeUserVal } from './calc/calc.js'
-import { updateView } from './app.js'
-import { domain } from './domain/domain.js'
-import { types } from './types.js'
+import { Title } from '../components/global.js'
+import { Desc } from '../components/factor.js'
+import { userVals, setUserVals, setTpeUserVal } from '../calc/calc.js'
+import { updateView } from '../app.js'
+import { domain } from '../domain/domain.js'
+import { types } from '../types.js'
 
 const getInput = (domainFactor) => {
   const { type, key } = domainFactor
@@ -25,15 +26,15 @@ const getInput = (domainFactor) => {
 }
 
 export const getFactor = ({ key }) => {
-  const factor = []
+  const content = []
   const domainFactor = domain[key]
   const { title, desc, choice } = domainFactor
-  factor.push(Title(title))
-  if (desc) factor.push(Desc(desc))
-  if (choice) factor.push(getInput(domainFactor))
+  content.push(Title(title))
+  if (desc) content.push(Desc(desc))
+  if (choice) content.push(getInput(domainFactor))
   for (const source of domainFactor.mergeFrom) {
     const ds = domain[source]
-    if (ds.choice) factor.push(getInput(ds))
+    if (ds.choice) content.push(getInput(ds))
   }
-  return factor
+  return content
 }

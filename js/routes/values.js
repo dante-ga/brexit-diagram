@@ -1,10 +1,10 @@
-import { ValuesTable } from './components/values.js'
-import { Button } from './components/global.js'
-import { Select } from './components/inputs.js'
-import { setUserValues } from './calc/value.js'
-import { domain } from './domain/domain.js'
-import { updateView } from './app.js'
-import { types } from './types.js'
+import { ValuesTable } from '../components/values.js'
+import { Button } from '../components/global.js'
+import { Select } from '../components/inputs.js'
+import { setUserValues } from '../calc/value.js'
+import { domain } from '../domain/domain.js'
+import { updateView } from '../app.js'
+import { types } from '../types.js'
 
 const getInitUserValues = () => {
   const userValues = {}
@@ -57,10 +57,11 @@ const toggleSign = (valObj) => () => {
   update()
 }
 
-const onValueChange = (valObj) => (newValue) => {
+//TODO: Debug negative sign not disapearing in the number input
+export const onValueChange = (valObj, absolute=true) => (newValue) => {
   if (newValue < 0) {
     valObj.value = -newValue
-    valObj.positive = !valObj.positive
+    valObj.positive = absolute && !valObj.positive
   } else {
     valObj.value = newValue
   }
@@ -92,9 +93,9 @@ const rescaleValues = () => {
   }
 }
 
-function getValueList() {
+export const getValueList = (agent, editable=true) => {
   let prevValue = 0
-  const factors = userValues[activeAgent]
+  const factors = userValues[agent]
   const valueList = Object.keys(factors)
     .map(factor => ({
       factor,
@@ -102,15 +103,19 @@ function getValueList() {
     }))
     .sort((a, b) => a.value - b.value)
     .map(({factor, value}, index, order) => {
-      const gap = value - prevValue
-      prevValue = value
       const valObj = factors[factor]
-      const valueItem = { factor, gap, refObj: valObj, ...valObj}
-      //Tie callbacks to the context
-      valueItem.toggleSign = toggleSign(valObj)
-      valueItem.onValueChange = onValueChange(valObj)
-      valueItem.onGapChange = onGapChange(index, order, gap, factors)
-      return valueItem
+      if (editable) {
+        const gap = value - prevValue
+        prevValue = value
+        const valueItem = { factor, gap, refObj: valObj, ...valObj}
+        //Tie callbacks to the context
+        valueItem.toggleSign = toggleSign(valObj)
+        valueItem.onValueChange = onValueChange(valObj)
+        valueItem.onGapChange = onGapChange(index, order, gap, factors)
+        return valueItem
+      } else {
+        return { factor, ...valObj }
+      }
     })
   return valueList
 }
@@ -123,7 +128,7 @@ export const getValues = () => {
   }))
   return [
     Select('Agent', agentOptions, setAgent),
-    ValuesTable(getValueList()),
+    ValuesTable(getValueList(activeAgent)),
     Button({ label: 'Rescale to 100', onClick: rescaleValues }),
   ]
 }

@@ -53,6 +53,7 @@ export const Radio = (value, onChange, {key, options, disabled}) => {
   `
 }
 
+//TODO: remove dependency on "type"
 export const Slider = (val, cb, {
   type, min, max, step, sliderLabel, minLabel, maxLabel
 }) => html`

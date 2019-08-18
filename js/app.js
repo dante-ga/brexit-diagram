@@ -1,8 +1,8 @@
-import { getFactor } from './factor.js'
-import { getValues } from './values.js'
-import { getValue } from './value.js'
-import { getDiagram } from './diagram.js'
-import { getDecision, getProgress } from './decision.js'
+import { getFactor } from './routes/factor.js'
+import { getValues } from './routes/values.js'
+import { getValue } from './routes/value.js'
+import { getDiagram } from './routes/diagram.js'
+import { getDecision, getProgress } from './routes/decision.js'
 import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import Navigo from '../third_party/navigo.js'
@@ -10,6 +10,7 @@ const { render } = lighterhtml
 
 let activeRoute
 let activeParams
+//TODO: Update page title on route change
 //TODO: Import whole routes instead of get()?
 const routes = {
   diagram: {
