@@ -5,6 +5,7 @@ import { domain } from '../domain/domain.js'
 import { updateView, navigate } from '../app.js'
 import { types } from '../types.js'
 
+//TODO: Separate user values into a simple map from the complex list of value objects with "positive" parameter.
 const getInitUserValues = () => {
   const userValues = {}
   for (const factor in domain) {
@@ -59,6 +60,7 @@ export const onValueChange = (valObj, absolute=true) => (newValue) => {
   } else {
     valObj.value = newValue
   }
+  valObj.touched = true
   update()
 }
 
@@ -67,7 +69,9 @@ const onGapChange = (thisIndex, order, oldGap, factors) => (newGap) => {
   const diff = newGap - oldGap
   if (!isNaN(diff)) {
     for (let i = thisIndex; i < order.length; i++) {
-      factors[order[i].factor].value += diff
+      const valueObj = factors[order[i].factor]
+      valueObj.value += diff
+      valueObj.touched = true
     }
   }
   update()

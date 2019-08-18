@@ -29,3 +29,15 @@ export const getAgentValue = (key, val, agent) => {
   const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
   return types[type].getValue(val, value, valueObj)
 }
+
+export const hasMissingValues = (key) => {
+  for (const agent in userValues) {
+    for (const valueFactor in userValues[agent]) {
+      const {factor, touched} = userValues[agent][valueFactor]
+      if ((valueFactor === key || factor === key) && !touched) {
+        return true
+      }
+    }
+  }
+  return false
+}

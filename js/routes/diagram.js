@@ -1,6 +1,7 @@
 import { domain, subdomains } from '../domain/domain.js'
 import { Diagrams } from '../components/diagram.js'
 import { userVals } from '../calc/calc.js'
+import { hasMissingValues } from '../calc/value.js'
 import { updateView, navigate } from '../app.js'
 
 const parseDepends = (fn) => {
@@ -51,7 +52,7 @@ const parseDiagram = (str, subKey) => {
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
-        cell.notify = true
+        cell.notify = hasMissingValues(key)
       } else {
         const { title, calc } = domain[key]
         cell.title = title
