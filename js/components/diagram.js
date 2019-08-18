@@ -1,6 +1,7 @@
 import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
+//TODO: Make most of the navigation buttons on the site <a> tags to facilitate opening link in new tab and SEO.
 const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal }, onClick) => {
   let box
   if (!key) {
@@ -45,7 +46,7 @@ const DiagramHeader = (title, collapsed, onClick) => {
   const faIcon = 'fa-chevron-' + ((collapsed) ? 'down' : 'right')
   const iconClass = 'icon is-small fas fa-sm ' + faIcon
   return html`
-    <h1 class="subtitle" >
+    <h1 class="subtitle is-marginless" >
       <span class="is-cursor-pointer" onclick=${onClick}>
         <i class=${iconClass} />
         <span class="is-va-middle is-uppercase">${title}</span>
@@ -61,9 +62,11 @@ const DiagramBody = (arrows, extArrows, rows, onClick) => html`
   </div>
 `
 
-const Diagram = ({subKey, rows, arrows, extArrows, collapsed, toggle }, onClick) => html`
-  ${DiagramHeader(subKey, collapsed, toggle)}
-  ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows, onClick) }
+const Diagram = ({title, rows, arrows, extArrows, collapsed, toggle }, onClick) => html`
+    ${DiagramHeader(title, collapsed, toggle)}
+  <div class="diagram-cont">
+    ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows, onClick) }
+  </div>
 `
 
 export const Diagrams = (diagrams, onClick) => [ArrowDefs(), ...diagrams.map(g => Diagram(g, onClick))]

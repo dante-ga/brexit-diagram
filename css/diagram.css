@@ -1,3 +1,9 @@
+/* TODO: Use CSS Grid to fix missing arrows caused by overflow-x. */
+.diagram-cont {
+  overflow-x: auto;
+  padding-top: 20px;
+  margin-bottom: 30px;
+}
 .diagram {
   position: relative;
 }

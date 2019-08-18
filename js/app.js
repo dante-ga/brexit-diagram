@@ -1,5 +1,5 @@
 import { getFactor } from './routes/factor.js'
-import { getValues } from './routes/values.js'
+import { getValues, activeAgent } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
 import { getDecision, getProgress } from './routes/decision.js'
@@ -11,7 +11,6 @@ const { render } = lighterhtml
 let activeRoute
 let activeParams
 //TODO: Update page title on route change
-//TODO: Import whole routes instead of get()?
 const routes = {
   diagram: {
     get: getDiagram,
@@ -25,11 +24,12 @@ const routes = {
   values: {
     get: getValues,
     navTab: 'Values',
-    path: '/values',
+    path: '/values/:agent',
+    navPath: '/values/' + activeAgent,
   },
   value: {
     get: getValue,
-    path: '/value/:key',
+    path: '/value/:key/:agent',
   },
   decision: {
     get: getDecision,
@@ -42,12 +42,12 @@ const getNav = () => {
   const progress = getProgress()
   const navTabs = []
   for (const route in routes) {
-    const { navTab, path } = routes[route]
+    const { navTab, navPath, path } = routes[route]
     if (navTab) {
       navTabs.push({
         title: navTab,
         active: route === activeRoute,
-        onClick: () => navigate(path)
+        onClick: () => navigate(navPath || path)
       })
     }
   }
@@ -62,7 +62,7 @@ export function updateView() {
   })
 }
 
-const router = new Navigo('http://127.0.0.1:8887/')
+const router = new Navigo(window.location.origin)
 
 export const navigate = (path) => {
   router.navigate(path)

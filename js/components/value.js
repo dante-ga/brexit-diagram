@@ -1,11 +1,11 @@
 import { Sign } from './values.js'
 const { html } = lighterhtml
 
-const ValueRow = ({positive, value, title}) => html`
-  <tr>
+const ValueRow = ({positive, value, title, highlight}) => html`
+  <tr class=${(highlight) ? 'has-text-weight-bold' : ''}>
     <td>${Sign((value === 0) ? null : positive, ()=>{}, true)}</td>
     <td>${value}</td>
-    <td class="is-va-middle">${title}</td>
+    <td>${title}</td>
   </tr>
 `
 

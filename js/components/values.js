@@ -2,9 +2,8 @@ import { NumberInput } from './inputs.js'
 import { round2tenth } from '../util.js'
 const { html } = lighterhtml
 
-export const Sign = (positive, toggle, disabled=false) => {
+export const Sign = (positive) => {
   let iconClass, spanColor
-  let buttonClass = 'button'
   if (positive === true) {
     iconClass = 'fas fa-plus'
     spanColor = 'has-text-success'
@@ -14,21 +13,27 @@ export const Sign = (positive, toggle, disabled=false) => {
   } else if (positive === null) {
     iconClass = 'far fa-circle'
     spanColor = ''
-    buttonClass = 'button is-static'
   }
-  const spanClass = ['icon', spanColor].join(' ')
+  const spanClass = 'icon ' + spanColor
   return html`
-    <button class=${buttonClass} onclick=${toggle} disabled=${disabled}>
-      <span class=${spanClass}>
-        <i class=${iconClass} />
-      </span>
-    </button>
+    <span class=${spanClass}>
+      <i class=${iconClass} />
+    </span>
   `
 }
 
+const SignButton = (positive, toggle) => html`
+  <button
+    class=${'button ' + ((positive === null) ? 'is-static' : '')}
+    onclick=${toggle}
+  >
+    ${Sign(positive)}
+  </button>
+`
+
 const ValueRow = ({factor, positive, value, gap, title, toggleSign, onValueChange, onGapChange, refObj}) => html.for(refObj)`
   <tr>
-    <td>${Sign((value === 0) ? null : positive, toggleSign)}</td>
+    <td>${SignButton((value === 0) ? null : positive, toggleSign)}</td>
     <td>${NumberInput(round2tenth(value), onValueChange)}</td>
     <td class="is-gap">${NumberInput(round2tenth(gap), onGapChange)}</td>
     <td class="is-va-middle">${title}</td>

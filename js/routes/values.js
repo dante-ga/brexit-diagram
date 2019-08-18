@@ -1,9 +1,8 @@
 import { ValuesTable } from '../components/values.js'
-import { Button } from '../components/global.js'
-import { Select } from '../components/inputs.js'
+import { Button, Tabs } from '../components/global.js'
 import { setUserValues } from '../calc/value.js'
 import { domain } from '../domain/domain.js'
-import { updateView } from '../app.js'
+import { updateView, navigate } from '../app.js'
 import { types } from '../types.js'
 
 const getInitUserValues = () => {
@@ -40,12 +39,7 @@ if (localStorage.getItem('userValues')) {
 }
 setUserValues(userValues)
 const agents = Object.keys(userValues)
-let activeAgent = agents[0]
-
-const setAgent = (agent) => {
-  activeAgent = agent
-  updateView()
-}
+export let activeAgent = agents[0]
 
 const update = () => {
   updateView()
@@ -120,14 +114,15 @@ export const getValueList = (agent, editable=true) => {
   return valueList
 }
 
-export const getValues = () => {
-  const agentOptions = agents.map(agent => ({
-    label: agent,
-    value: agent,
-    selected: agent === activeAgent,
+export const getValues = ({ agent }) => {
+  activeAgent = agent || activeAgent
+  const agentTabs = agents.map(a => ({
+    label: a,
+    active: a === activeAgent,
+    onClick: () => navigate('/values/' + a),
   }))
   return [
-    Select('Agent', agentOptions, setAgent),
+    Tabs(agentTabs),
     ValuesTable(getValueList(activeAgent)),
     Button({ label: 'Rescale to 100', onClick: rescaleValues }),
   ]

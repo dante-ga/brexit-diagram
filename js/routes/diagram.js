@@ -75,35 +75,48 @@ const parseDiagram = (str, subKey) => {
   return { rows, arrows }
 }
 
+const collapsed = {}
+for (const subKey in subdomains) {
+  collapsed[subKey] = false
+}
+
+const onCellClick = (key, value) => {
+  if (value) {
+    const agent = domain[key].valuedBy[0]
+    navigate(`/value/${key}/${agent}`)
+  } else {
+    navigate('/factor/' + key)
+  }
+}
+
 export const getDiagram = () => {
   const diagrams = []
   for (const subKey in subdomains) {
-    const { diagram } = subdomains[subKey]
-    diagrams.push({ subKey, ...parseDiagram(diagram, subKey) })
+    const diagram = parseDiagram(subdomains[subKey].diagram, subKey)
+    diagram.title = subKey
 
-    for (const diagram of diagrams) {
-      //Add external arrows
-      diagram.extArrows = []
-      for (const row of diagram.rows) {
-        for (let j = 0; j < row.length; j++) {
-          const { value, external, key, loc } = row[j]
-          const extArrow = key && !value && !external && hasExternal[key]
-          if (extArrow) {
-            const blocked = row[j+1] && row[j+1].key
-            const flip = domain[key].flipExtArrow
-            diagram.extArrows.push({ loc, blocked, flip })
-          }
+    //Add visibility controls
+    //TODO: persist "collapsed" in localStorage or remove this feature
+    diagram.collapsed = collapsed[subKey]
+    diagram.toggle = () => {
+      collapsed[subKey] = !collapsed[subKey]
+      updateView()
+    }
+
+    //Add external arrows
+    diagram.extArrows = []
+    for (const row of diagram.rows) {
+      for (let j = 0; j < row.length; j++) {
+        const { value, external, key, loc } = row[j]
+        const extArrow = key && !value && !external && hasExternal[key]
+        if (extArrow) {
+          const blocked = row[j+1] && row[j+1].key
+          const flip = domain[key].flipExtArrow
+          diagram.extArrows.push({ loc, blocked, flip })
         }
       }
-
-      //Add visibility controls
-      diagram.collapsed = false
-      diagram.toggle = () => {
-        diagram.collapsed = !diagram.collapsed
-        updateView()
-      }
     }
+    diagrams.push(diagram)
   }
-  const onCellClick = (key, value) => navigate(((value) ? '/value/' : '/factor/') + key)
   return Diagrams(diagrams, onCellClick)
 }

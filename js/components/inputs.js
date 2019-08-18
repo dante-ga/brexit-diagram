@@ -91,20 +91,3 @@ export const NumberInput = (value, onChange, disabled) => html`
     disabled=${disabled}
   >
 `
-
-const Option = ({label, value, selected}) => html`
-  <option value=${value} selected="${selected}" >
-    ${label}
-  </option>
-`
-
-export const Select = (label, options, onChange) => html`
-  <div class="field">
-    <span class="has-text-weight-bold is-va-middle" >${label}: &nbsp;</span>
-    <span class="select is-va-middle">
-      <select onchange=${(e) => onChange(e.target.value)} class="select">
-        ${options.map(Option)}
-      </select>
-    </span>
-  </div>
-`

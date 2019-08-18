@@ -1,14 +1,14 @@
-import { Title } from '../components/global.js'
+import { Title, Tabs } from '../components/global.js'
 import { ValueRegionTable } from '../components/value.js'
 import { domain } from '../domain/domain.js'
 import { userValues } from '../calc/value.js'
 import { onValueChange, getValueList } from './values.js'
 import { types } from '../types.js'
+import { navigate } from '../app.js'
 
-const getValueRegion = (key, agent) => {
-  const fullList = getValueList(agent, false)
-  const index = fullList.findIndex(({factor}) => factor === key)
-  const listSize = 5
+const getValueRegionIndexes = (key, agent, fullList, listSize) => {
+  const index = fullList.findIndex(item => item.key === key)
+  fullList[index].highlight = true
   let fromIndex = index
   let toIndex = index + 1
   let forward = toIndex < fullList.length
@@ -22,28 +22,78 @@ const getValueRegion = (key, agent) => {
       if (toIndex < fullList.length) forward = true
     }
   }
+  return { fromIndex, toIndex }
+}
+
+//Get combined neihbourhoods of the value items with the keys
+const getMultiValueRegion = (keys, agent) => {
+  const fullList = getValueList(agent, false)
+  const ranges = []
+  for (const key of keys) {
+    ranges.push(getValueRegionIndexes(key, agent, fullList, 3))
+  }
+  const valueList = []
+  for (let i = 0; i < fullList.length; i++) {
+    for (const { fromIndex, toIndex } of ranges) {
+      if (i >= fromIndex && i < toIndex) {
+        valueList.push(fullList[i])
+        break
+      }
+    }
+  }
+  return ValueRegionTable(valueList)
+}
+
+const getValueRegion = (key, agent) => {
+  const fullList = getValueList(agent, false)
+  const {fromIndex, toIndex} = getValueRegionIndexes(key, agent, fullList, 5)
   const valueList = fullList.slice(fromIndex, toIndex)
   return ValueRegionTable(valueList)
+}
+
+const getValueInput = (valObj, label, stacked) => {
+  const { value, positive } = valObj
+  let val = value
+  if (!positive) val *= -1
+  const sliderOptons = { sliderLabel: label }
+  if (stacked) {
+    sliderOptons.minLabel = ''
+    sliderOptons.maxLabel = ''
+  }
+  return types.value.getInput(val, onValueChange(valObj, false), sliderOptons)
 }
 
 //CONTINUE HERE!!
 //CONTINUE HERE!!
 //CONTINUE HERE!!
 //TODO: remove notification and make progress (probably in values.js)
-export const getValue = ({ key }) => {
-  const { title, valuedBy } = domain[key]
-  //TODO: handle multiple agents
-  const agent = valuedBy[0]
-  //TODO: handle complex keys
-  const valObj = userValues[agent][key]
-  const { value, positive } = valObj
-  let val = value
-  if (!positive) val *= -1
-  const valueRegion = getValueRegion(key, agent)
-  const input = types.value.getInput(val, onValueChange(valObj, false), agent)
-  return [
-    Title(title),
-    valueRegion,
-    input,
-  ]
+export const getValue = ({ key, agent }) => {
+  const content = []
+  const { title, valuedBy, type, options } = domain[key]
+  if (valuedBy.length > 1) {
+    const agentTabs = valuedBy.map(a => ({
+      label: a,
+      active: a === agent,
+      onClick: () => navigate(`/value/${key}/${a}`),
+    }))
+    content.push(Tabs(agentTabs))
+  }
+  content.push(Title(`Value of "${title}" for ${agent}`))
+  if (type === 'option') {
+    const valueKeys = Object.keys(options).map(option => key + ':' + option)
+    content.push(getMultiValueRegion(valueKeys, agent))
+    const optionArray = Object.entries(options)
+    for (let i = 0; i < optionArray.length; i++ ) {
+      const [option, optionLabel] = optionArray[i]
+      const valObj = userValues[agent][key + ':' + option]
+      const label = 'Value of ' + optionLabel
+      const stacked = i < optionArray.length - 1
+      content.push(getValueInput(valObj, label, stacked))
+    }
+  } else {
+    content.push(getValueRegion(key, agent))
+    const valObj = userValues[agent][key]
+    content.push(getValueInput(valObj, 'Value'))
+  }
+  return content
 }
