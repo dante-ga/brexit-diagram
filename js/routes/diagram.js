@@ -97,7 +97,6 @@ export const getDiagram = () => {
     diagram.title = subKey
 
     //Add visibility controls
-    //TODO: persist "collapsed" in localStorage or remove this feature
     diagram.collapsed = collapsed[subKey]
     diagram.toggle = () => {
       collapsed[subKey] = !collapsed[subKey]

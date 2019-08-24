@@ -1,4 +1,4 @@
-import { Progress, Decision } from '../components/decision.js'
+import { Progress, Results } from '../components/decision.js'
 import { userVals } from '../calc/calc.js'
 import { userValues } from '../calc/value.js'
 import { domain, getMainDecision } from '../domain/domain.js'
@@ -35,4 +35,10 @@ const getCount = () => {
 }
 export const getProgress = () => Progress(getCount(), totalCount)
 
-export const getDecision = () => Decision(getMainDecision(userVals))
+export const getDecision = () => {
+  const count = getCount()
+  const complete = count === totalCount
+  const completion = { complete, count, totalCount }
+  const decision = (complete) ? getMainDecision(userVals) : null
+  return Results({completion, decision})
+}

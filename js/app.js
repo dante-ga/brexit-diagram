@@ -1,10 +1,12 @@
+import { getUserData } from './persist.js'
 import { getFactor } from './routes/factor.js'
-import { getValues, activeAgent } from './routes/values.js'
+import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
 import { getDecision, getProgress } from './routes/decision.js'
 import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
+import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 const { render } = lighterhtml
 
@@ -81,3 +83,9 @@ for (const route in routes) {
 router.on(routeHandlers)
 router.notFound(() => render(document.body, NotFound))
 router.resolve()
+
+getUserData().then((data) => {
+  importUserVals(data)
+  importUserValues(data)
+  updateView()
+})

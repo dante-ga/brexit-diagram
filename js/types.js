@@ -20,7 +20,7 @@ export const types = {
     getValueObjs: ({key, title, options}) => {
       const valueObjs = {}
       for (const option in options) {
-        valueObjs[key + ':' + option] = {
+        valueObjs[key + '_' + option] = {
           factor: key,
           option,
           title: title + ': ' + options[option],

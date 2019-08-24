@@ -1,25 +1,30 @@
 import { domain, subdomains, getMainDecision } from '../domain/domain.js'
 import { types } from '../types.js'
 import { getContextValue } from './value.js'
+import { persist } from '../persist.js'
 
 export const userVals = {}
-for (const key in domain) {
-  if (domain[key].choice && localStorage.getItem('userVal:'+key)) {
-    userVals[key] = JSON.parse(localStorage.getItem('userVal:'+key))
+
+const persistPrefix = 'val_'
+
+export const importUserVals = (data) => {
+  for (const dataKey in data) {
+    if (dataKey.startsWith(persistPrefix)) {
+      const key = dataKey.slice(persistPrefix.length)
+      userVals[key] = data[dataKey]
+    }
   }
 }
 
-export const setUserVals = (newVals, runCalc) => {
-  Object.assign(userVals, newVals)
-  for (const key in newVals) {
-    localStorage.setItem('userVal:'+key, JSON.stringify(newVals[key]))
-  }
+export const setUserVal = (key, val) => {
+  userVals[key] = val
+  persist(persistPrefix + key, val)
 }
 
 export const setTpeUserVal = (key, option, estimate, value) => {
   userVals[key] = userVals[key] || types.tpe.getDefault(domain[key])
   userVals[key][option][estimate] = value
-  localStorage.setItem('userVal:'+key, JSON.stringify(userVals[key]))
+  persist(persistPrefix + key, userVals[key])
 }
 
 export const calcSubs = (context, subs) => {

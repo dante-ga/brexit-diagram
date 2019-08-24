@@ -24,7 +24,7 @@ export const getContextValue = (context, subs) => {
 
 export const getAgentValue = (key, val, agent) => {
   const { type } = domain[key]
-  const valueKey = key + ((type === 'option') ? ':' + val : '')
+  const valueKey = key + ((type === 'option') ? '_' + val : '')
   const valueObj = userValues[agent][valueKey]
   const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
   return types[type].getValue(val, value, valueObj)

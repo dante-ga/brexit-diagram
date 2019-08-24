@@ -1,9 +1,12 @@
 import { Title } from '../components/global.js'
 import { Desc } from '../components/factor.js'
-import { userVals, setUserVals, setTpeUserVal } from '../calc/calc.js'
+import { userVals, setUserVal, setTpeUserVal } from '../calc/calc.js'
 import { updateView } from '../app.js'
 import { domain } from '../domain/domain.js'
 import { types } from '../types.js'
+import { debounce } from '../util.js'
+
+const debState = {}
 
 const getInput = (domainFactor) => {
   const { type, key } = domainFactor
@@ -15,13 +18,15 @@ const getInput = (domainFactor) => {
     }
   } else {
     onChange = (value) => {
-      setUserVals({[key]: value})
+      setUserVal(key, value)
       updateView()
     }
   }
+  debState[domainFactor] = debState[domainFactor] || {}
+  const onChangeDeb = debounce(onChange, 1000, true, debState[domainFactor])
   const { getDefault, getInput } = types[type]
   const inputVal = (key in userVals) ? userVals[key] : getDefault(domain[key])
-  const input = getInput(inputVal, onChange, domainFactor)
+  const input = getInput(inputVal, onChangeDeb, domainFactor)
   return input
 }
 

@@ -5,6 +5,7 @@ import { userValues } from '../calc/value.js'
 import { onValueChange, getValueList } from './values.js'
 import { types } from '../types.js'
 import { navigate } from '../app.js'
+import { debounce } from '../util.js'
 
 const getValueRegionIndexes = (key, agent, fullList, listSize) => {
   const index = fullList.findIndex(item => item.key === key)
@@ -51,6 +52,8 @@ const getValueRegion = (key, agent) => {
   return ValueRegionTable(valueList)
 }
 
+const debState = {}
+
 const getValueInput = (valObj, label, stacked) => {
   const { value, positive } = valObj
   let val = value
@@ -60,13 +63,11 @@ const getValueInput = (valObj, label, stacked) => {
     sliderOptons.minLabel = ''
     sliderOptons.maxLabel = ''
   }
-  return types.value.getInput(val, onValueChange(valObj, false), sliderOptons)
+  debState[valObj.key] = debState[valObj.key] || {}
+  const onChange = debounce(onValueChange(valObj, false), 1000, true, debState[valObj.key])
+  return types.value.getInput(val, onChange , sliderOptons)
 }
 
-//CONTINUE HERE!!
-//CONTINUE HERE!!
-//CONTINUE HERE!!
-//TODO: remove notification and make progress (probably in values.js)
 export const getValue = ({ key, agent }) => {
   const content = []
   const { title, valuedBy, type, options } = domain[key]
@@ -80,12 +81,12 @@ export const getValue = ({ key, agent }) => {
   }
   content.push(Title(`Value of "${title}" for ${agent}`))
   if (type === 'option') {
-    const valueKeys = Object.keys(options).map(option => key + ':' + option)
+    const valueKeys = Object.keys(options).map(option => key + '_' + option)
     content.push(getMultiValueRegion(valueKeys, agent))
     const optionArray = Object.entries(options)
     for (let i = 0; i < optionArray.length; i++ ) {
       const [option, optionLabel] = optionArray[i]
-      const valObj = userValues[agent][key + ':' + option]
+      const valObj = userValues[agent][key + '_' + option]
       const label = 'Value of ' + optionLabel
       const stacked = i < optionArray.length - 1
       content.push(getValueInput(valObj, label, stacked))

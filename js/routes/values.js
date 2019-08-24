@@ -4,6 +4,8 @@ import { setUserValues } from '../calc/value.js'
 import { domain } from '../domain/domain.js'
 import { updateView, navigate } from '../app.js'
 import { types } from '../types.js'
+import { persist, bulkPersist } from '../persist.js'
+import { round2tenth } from '../util.js'
 
 //TODO: Separate user values into a simple map from the complex list of value objects with "positive" parameter.
 const getInitUserValues = () => {
@@ -25,31 +27,53 @@ const getInitUserValues = () => {
       Object.assign(userValues[agent][key], {
         positive: true,
         value: 0,
-        key
+        key,
+        agent,
       })
     }
   }
   return userValues
 }
 
-let userValues
-if (localStorage.getItem('userValues')) {
-  userValues = JSON.parse(localStorage.getItem('userValues'))
-} else {
-  userValues = getInitUserValues()
-}
+const userValues = getInitUserValues()
 setUserValues(userValues)
 const agents = Object.keys(userValues)
 export let activeAgent = agents[0]
 
-const update = () => {
-  updateView()
-  localStorage.setItem('userValues', JSON.stringify(userValues))
+const persistPrefix = 'value_'
+
+export const importUserValues = (data) => {
+  for (const dataKey in data) {
+    if (dataKey.startsWith(persistPrefix)) {
+      const [_, agent, ...keyParts] = dataKey.split('_')
+      const key = keyParts.join('_')
+      try {
+        const valObj = userValues[agent][key]
+        const realValue = data[dataKey]
+        valObj.positive = realValue >= 0
+        valObj.value = Math.abs(realValue)
+        valObj.touched = true
+      } catch (e) {
+        console.warn(`Can't import user value "${dataKey}".`)
+      }
+    }
+  }
+}
+
+const getPersistKey = valObj => persistPrefix + valObj.agent + '_' + valObj.key
+const getRealValue = valObj => valObj.value * ((valObj.positive) ? 1 : -1)
+const persistValObj = valObj => persist(getPersistKey(valObj), getRealValue(valObj))
+
+const persistMultiple = (affected) => {
+  const data = {}
+  affected.forEach(valObj => data[getPersistKey(valObj)] = getRealValue(valObj))
+  bulkPersist(data)
 }
 
 const toggleSign = (valObj) => () => {
   valObj.positive = !valObj.positive
-  update()
+  updateView()
+  persistValObj(valObj)
 }
 
 //TODO: Debug negative sign not disapearing in the number input
@@ -59,22 +83,29 @@ export const onValueChange = (valObj, absolute=true) => (newValue) => {
     valObj.positive = absolute && !valObj.positive
   } else {
     valObj.value = newValue
+    if (!absolute) {
+      valObj.positive = true
+    }
   }
   valObj.touched = true
-  update()
+  updateView()
+  persistValObj(valObj)
 }
 
 const onGapChange = (thisIndex, order, oldGap, factors) => (newGap) => {
   if (newGap < 0) newGap = 0
   const diff = newGap - oldGap
   if (!isNaN(diff)) {
+    const affected = []
     for (let i = thisIndex; i < order.length; i++) {
       const valueObj = factors[order[i].factor]
       valueObj.value += diff
       valueObj.touched = true
+      affected.push(valueObj)
     }
+    persistMultiple(affected)
   }
-  update()
+  updateView()
 }
 
 const rescaleValues = () => {
@@ -82,12 +113,20 @@ const rescaleValues = () => {
   const maxValue = Math.max(...Object.keys(factors).map(
     factor => factors[factor].value
   ))
-  if (maxValue !== 0) {
+  if (maxValue !== 0 && maxValue !== 100) {
     const scale = 100 / maxValue
+    const affected = []
     Object.keys(factors).forEach(
-      factor => factors[factor].value *= scale
+      factor => {
+        const valueObj = factors[factor]
+        if (valueObj.value !== 0) {
+          valueObj.value = round2tenth(valueObj.value * scale)
+          affected.push(valueObj)
+        }
+      }
     )
-    update()
+    updateView()
+    persistMultiple(affected)
   }
 }
 
