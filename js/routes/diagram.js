@@ -1,6 +1,6 @@
 import { domain, subdomains } from '../domain/domain.js'
 import { Diagrams } from '../components/diagram.js'
-import { userVals } from '../calc/calc.js'
+import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { hasMissingValues } from '../calc/value.js'
 import { updateView, navigate } from '../app.js'
 
@@ -15,11 +15,6 @@ const parseDepends = (fn) => {
 const hasChoice = (key) => {
   const { choice, mergeFrom, decidedBy } = domain[key]
   return (choice && !decidedBy) || mergeFrom.some(hasChoice)
-}
-
-const hasChoiceMissing = (key) => {
-  const { choice, mergeFrom, decidedBy } = domain[key]
-  return (choice && !decidedBy && !(key in userVals)) || mergeFrom.some(hasChoiceMissing)
 }
 
 const hasExternal = {}
@@ -52,7 +47,7 @@ const parseDiagram = (str, subKey) => {
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
-        cell.notify = hasMissingValues(key)
+        cell.notify = hasMissingValues(key).missing
       } else {
         const { title, calc } = domain[key]
         cell.title = title

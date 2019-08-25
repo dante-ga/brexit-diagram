@@ -3,7 +3,7 @@ import { getFactor } from './routes/factor.js'
 import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
-import { getDecision, getProgress } from './routes/decision.js'
+import { getDecision, getDecisionToolbar } from './routes/decision.js'
 import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
@@ -41,7 +41,7 @@ const routes = {
 }
 
 const getNav = () => {
-  const progress = getProgress()
+  const toolbar = getDecisionToolbar()
   const navTabs = []
   for (const route in routes) {
     const { navTab, navPath, path } = routes[route]
@@ -54,7 +54,7 @@ const getNav = () => {
     }
   }
   const goHome = () => navigate('/')
-  return NavBar({ goHome, navTabs, progress })
+  return NavBar({ goHome, navTabs, toolbar })
 }
 
 export function updateView() {

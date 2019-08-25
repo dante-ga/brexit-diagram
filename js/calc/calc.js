@@ -27,6 +27,11 @@ export const setTpeUserVal = (key, option, estimate, value) => {
   persist(persistPrefix + key, userVals[key])
 }
 
+export const hasChoiceMissing = (key) => {
+  const { choice, mergeFrom, decidedBy } = domain[key]
+  return (choice && !decidedBy && !(key in userVals)) || mergeFrom.some(hasChoiceMissing)
+}
+
 export const calcSubs = (context, subs) => {
   for (const sub of subs) {
     const { factors } = subdomains[sub]

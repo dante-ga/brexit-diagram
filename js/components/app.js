@@ -9,7 +9,7 @@ const NavBarItem = ({ title, active, onClick }) => html`
   </a>
 `
 
-export const NavBar = ({goHome, navTabs, progress}) => {
+export const NavBar = ({goHome, navTabs, toolbar}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -23,7 +23,7 @@ export const NavBar = ({goHome, navTabs, progress}) => {
         </a>
         ${navTabs.map(NavBarItem)}
       </div>
-      ${progress}
+      ${toolbar}
     </nav>
   `
 }

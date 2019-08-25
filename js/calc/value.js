@@ -35,9 +35,9 @@ export const hasMissingValues = (key) => {
     for (const valueFactor in userValues[agent]) {
       const {factor, touched} = userValues[agent][valueFactor]
       if ((valueFactor === key || factor === key) && !touched) {
-        return true
+        return { missing: true, key, agent }
       }
     }
   }
-  return false
+  return { missing: false }
 }
