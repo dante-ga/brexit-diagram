@@ -11,6 +11,11 @@ export const importUserVals = (data) => {
   for (const dataKey in data) {
     if (dataKey.startsWith(persistPrefix)) {
       const key = dataKey.slice(persistPrefix.length)
+      if (key === 'irishBorder') {
+        //TODO: Prevent non-user-choice vals from being set
+        //TODO: clean out existing ones
+        continue
+      }
       userVals[key] = data[dataKey]
     }
   }

@@ -35,6 +35,7 @@ const removeWorstOption = (openOptions, values) => {
       minIndex = i
     }
   }
-  const newOpenOptions = openOptions.slice().splice(minIndex, 1)
+  const newOpenOptions = openOptions.slice()
+  newOpenOptions.splice(minIndex, 1)
   return newOpenOptions
 }

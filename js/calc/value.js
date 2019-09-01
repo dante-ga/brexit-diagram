@@ -6,20 +6,25 @@ export const setUserValues = uvs => userValues = uvs
 
 export const getContextValue = (context, subs) => {
   const totalValues = {}
+  const subNodeValues = {}
   for (const agent in userValues) {
     let total = 0
+    const nodes = {}
     for (const valueFactor in userValues[agent]) {
       const valueObj = userValues[agent][valueFactor]
       const factor = valueObj.factor || valueFactor
       if (subs.includes(domain[factor].subKey)) {
         const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
         const typeObj = types[domain[factor].type]
-        total += typeObj.getValue(context[factor], value, valueObj)
+        const finalValue = typeObj.getValue(context[factor], value, valueObj)
+        total += finalValue
+        nodes[factor] = finalValue
       }
     }
     totalValues[agent] = total
+    subNodeValues[agent] = nodes
   }
-  return totalValues
+  return { totalValues, subNodeValues }
 }
 
 export const getAgentValue = (key, val, agent) => {

@@ -57,7 +57,7 @@ export const Radio = (value, onChange, {key, options, disabled}) => {
 export const Slider = (val, cb, {
   type, min, max, step, sliderLabel, minLabel, maxLabel
 }) => html`
-  <div class="field">
+  <div class="field slider">
     <div>
       ${sliderLabel} = ${types[type].getText(val)}
     </div>

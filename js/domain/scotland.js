@@ -56,8 +56,8 @@ const diagram = `
 const getValue = (vals) => {
   const { ukInEu } = vals
   const scotlandApproval = getScotlandApproval({ukInEu}, vals)
-  const value = getIndependentScotlandValueUK({scotlandApproval}, vals)
-  return value
+  const { value: subValue, nodeValues: subNodeValues } = getIndependentScotlandValueUK({scotlandApproval}, vals)
+  return { subValue, subNodeValues }
 }
 
 const getScotlandApproval = ({ukInEu}, vals) => {
@@ -96,7 +96,8 @@ const getIndependentScotlandValueUK = ({scotlandApproval}, vals) => {
   if (scotlandApproval) {
     const { indScotProb } = vals
     const value = getAgentValue('independentScotland', true, 'UK') * indScotProb
-    return value
+    const nodeValues = { independentScotland: value }
+    return { value, nodeValues }
   } else {
     return 0
   }

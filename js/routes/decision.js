@@ -32,6 +32,7 @@ const getCount = () => {
       }
     }
   }
+  delete userVals.irishBorder
   return valCount + valueCount
 }
 

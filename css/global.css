@@ -2,6 +2,10 @@ nav.navbar.has-shadow {
   box-shadow: 0px 0px 4px grey;
 }
 
+.slider {
+  max-width: 640px;
+}
+
 input[type="range"].is-fullwidth {
   width: 100%;
 }

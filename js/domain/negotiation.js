@@ -49,21 +49,28 @@ const options = Object.keys(factors.marketMovement.options)
 const getValue = (vals, subdomains) => {
   if (vals.ukInEu) {
     const option = 'marketAndMovement'
-    const { UK } = getOptionValues(option, vals, subdomains)
-    return UK
+    const { UK, nodeValues } = getOptionValues(option, vals, subdomains)
+    return { subValue: UK, subNodeValues: nodeValues }
   } else {
     const agentValues = { UK: {}, EU: {} }
+    const optionValues = {}
     for (const option of options) {
-      const { UK, EU } = getOptionValues(option, vals, subdomains)
+      const { UK, EU, nodeValues } = getOptionValues(option, vals, subdomains)
       agentValues.UK[option] = UK
       agentValues.EU[option] = EU
+      optionValues[option] = nodeValues
     }
     const dist = getNegotiationDistribution(options, agentValues)
-    let value = 0
+    let subValue = 0
+    const subNodeValues = {}
     for (const option of options) {
-      value += agentValues['UK'][option] * dist[option]
+      subValue += agentValues['UK'][option] * dist[option]
+      for (const key in optionValues[option]) {
+        subNodeValues[key] = (subNodeValues[key] || 0)
+          + optionValues[option][key] * dist[option]
+      }
     }
-    return value
+    return { subValue, subNodeValues }
   }
 }
 
@@ -72,6 +79,7 @@ const getOptionValues = (option, vals, subdomains) => {
   let bestBI
   let maxUK = -Infinity
   let maxUKEU
+  let maxNodeValues
   for (const billIntention of [false, true]) {
     //Filter out disabled bill/brexit combinations
     if (vals.brexitApproval === 'remain' && billIntention) continue
@@ -79,14 +87,16 @@ const getOptionValues = (option, vals, subdomains) => {
     context.marketMovement = option
     context.billIntention = billIntention
     const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'gdppc', 'nhs']
-    const {UK, EU} = calcSubs(context, subs)
+    const {totalValues, subNodeValues} = calcSubs(context, subs)
+    const {UK, EU} = totalValues
     if (UK > maxUK) {
       maxUK = UK
       maxUKEU = EU
       bestBI = billIntention
+      maxNodeValues = subNodeValues.UK
     }
   }
-  return { UK: maxUK, EU: maxUKEU }
+  return { UK: maxUK, EU: maxUKEU, nodeValues: maxNodeValues }
 }
 
 export const negotiation = { factors, diagram, getValue }

@@ -1,5 +1,6 @@
 import { getNegotiationDistribution } from '../calc/negotiation.js'
 import { getAgentValue } from '../calc/value.js'
+import { clone } from '../util.js'
 
 const factors = {
   irishBorder: {
@@ -59,33 +60,48 @@ const options = Object.keys(factors.irishBorder.options).filter(opt => opt !== '
 
 const getValue = (vals) => {
   const { ukInEu, brexitApproval, violenceNiByOption } = vals
-  let value = 0
+  let subValue = 0
+  let subNodeValues = {}
   if (ukInEu) {
-    value = getAgentValue('violenceNi', tpeExpected(violenceNiByOption['openBorder']), 'UK')
+    const option = 'openBorder'
+    subNodeValues = {
+      violenceNi: getAgentValue('violenceNi', tpeExpected(violenceNiByOption[option]), 'UK'),
+      irishBorder: getAgentValue('irishBorder', option, 'UK'),
+    }
+    subValue = subNodeValues.violenceNi + subNodeValues.irishBorder
   } else {
-    const agentValues = getBorderValues(vals)
-    const borderDist = getNegotiationDistribution(options, agentValues)
+    const { agentValues, negotiationValues } = getBorderValues(vals)
+    const borderDist = getNegotiationDistribution(options, negotiationValues)
     for (const option of options) {
-      value += agentValues['UK'][option] * borderDist[option]
+      for (const key in agentValues['UK'][option]) {
+        const value = agentValues['UK'][option][key] * borderDist[option]
+        subNodeValues[key] = (subNodeValues[key] || 0) + value
+        subValue += value
+      }
     }
   }
-  return value
+  return { subValue, subNodeValues }
 }
 
 const getBorderValues = (vals) => {
   const { brexitApproval, violenceNiByOption } = vals
   let agentValues = {}
+  let negotiationValues = { }
   for (const agent of agents) {
     agentValues[agent] = {}
+    negotiationValues[agent] = {}
     for (const option of options) {
       const brokenDeal = (brexitApproval === 'deal') && (option === 'hardBorder')
-      const value = getAgentValue('brokenDeal', brokenDeal, agent)
-        + getAgentValue('violenceNi', tpeExpected(violenceNiByOption[option]), agent)
-        + getAgentValue('irishBorder', option, agent)
-      agentValues[agent][option] = value
+      agentValues[agent][option] = {
+        brokenDeal: getAgentValue('brokenDeal', brokenDeal, agent),
+        violenceNi: getAgentValue('violenceNi', tpeExpected(violenceNiByOption[option]), agent),
+        irishBorder: getAgentValue('irishBorder', option, agent),
+      }
+      negotiationValues[agent][option] = Object.values(agentValues[agent][option])
+        .reduce((a, b) => a + b, 0)
     }
   }
-  return agentValues
+  return { agentValues, negotiationValues }
 }
 
 const tpeExpected = ({pessimistic, mostLikely, optimistic}) =>

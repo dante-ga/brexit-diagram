@@ -64,7 +64,7 @@ const getValueInput = (valObj, label, stacked) => {
     sliderOptons.maxLabel = ''
   }
   debState[valObj.key] = debState[valObj.key] || {}
-  const onChange = debounce(onValueChange(valObj, false), 1000, true, debState[valObj.key])
+  const onChange = debounce(onValueChange(valObj, false), 500, true, debState[valObj.key])
   return types.value.getInput(val, onChange , sliderOptons)
 }
 

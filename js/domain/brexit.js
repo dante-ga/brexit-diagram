@@ -26,6 +26,8 @@ const diagram = `
   brexitApproval ukInEu
 `
 
+//TODO: display final values on value nodes
+
 const getDecision = (vals, subdomains) => {
   let bestOption
   let maxTotalValue = -Infinity
@@ -36,17 +38,23 @@ const getDecision = (vals, subdomains) => {
     context.brexitApproval = option
     context.ukInEu = (option === 'remain')
     let totalValue = 0
+    const nodeValues = {}
     for (const sub of ['scotland', 'ireland', 'gibraltar', 'negotiation']) {
-      totalValue += subdomains[sub].getValue(context, subdomains)
+      const { subValue, subNodeValues } = subdomains[sub].getValue(context, subdomains)
+      totalValue += subValue
+      Object.assign(nodeValues, subNodeValues)
     }
     const subs = ['security', 'influence', 'government', 'rights', 'research', 'exchange']
-    totalValue += calcSubs(context, subs).UK
+    const { totalValues, subNodeValues } = calcSubs(context, subs)
+    totalValue += totalValues.UK
+    Object.assign(nodeValues, subNodeValues.UK)
     if (totalValue > maxTotalValue) {
       maxTotalValue = totalValue
       bestOption = option
     }
-    alternatives[option] = totalValue
+    alternatives[option] = { totalValue, nodeValues }
   }
+  console.log({alternatives})
   return { bestOption, maxTotalValue, alternatives }
 }
 

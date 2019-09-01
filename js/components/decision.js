@@ -25,6 +25,10 @@ const Completion = ({ complete, count, totalCount }) => html`
   <h1>Complete: ${(complete) ? 'yes' : 'no'}</h1>
 `
 
+const Alternative = ([option, { totalValue }]) => html`
+  <span>${option}: ${Math.round(totalValue)};&nbsp;</span>
+`
+
 const Decision = (decision) => {
   if (decision === null) {
     return html`
@@ -33,8 +37,8 @@ const Decision = (decision) => {
   } else {
     const {bestOption, maxTotalValue, alternatives} = decision
     return html`
+      <h1>Option values: ${Object.entries(alternatives).map(Alternative)}</a>
       <h1>Best option: ${bestOption}</h1>
-      ${JSON.stringify({alternatives})}
     `
   }
 }

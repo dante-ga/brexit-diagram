@@ -2,7 +2,7 @@ import { uuidv4 } from './util.js'
 
 const apiHost = 'https://api.gitarg.org'
 const uid = Cookies.get('uid') || uuidv4()
-Cookies.set('uid', uid, { expires: 10/*days*/ })
+Cookies.set('uid', uid, { expires: 15/*days*/ })
 
 const post = (path, data) => fetch( apiHost + path, {
   method: 'POST',

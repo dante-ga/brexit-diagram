@@ -23,7 +23,7 @@ const getInput = (domainFactor) => {
     }
   }
   debState[domainFactor] = debState[domainFactor] || {}
-  const onChangeDeb = debounce(onChange, 1000, true, debState[domainFactor])
+  const onChangeDeb = debounce(onChange, 500, true, debState[domainFactor])
   const { getDefault, getInput } = types[type]
   const inputVal = (key in userVals) ? userVals[key] : getDefault(domain[key])
   const input = getInput(inputVal, onChangeDeb, domainFactor)

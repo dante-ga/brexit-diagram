@@ -22,9 +22,11 @@ const diagram = `
   ukInEu gibraltarInUk $gibraltarInUk
 `
 
-const getValue = (vals) => (
-  ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
-  * getAgentValue('gibraltarInUk', true, 'UK')
-)
+const getValue = (vals) => {
+  const subValue = ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
+    * getAgentValue('gibraltarInUk', true, 'UK')
+  const subNodeValues = { gibraltarInUk: subValue }
+  return { subValue, subNodeValues }
+}
 
 export const gibraltar = { factors, diagram, getValue }

@@ -1,10 +1,15 @@
 import { camel2space } from '../util.js'
 const { html } = lighterhtml
 
+//https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+let pageX
+document.addEventListener('dragover', (e) => pageX = e.pageX )
+
 const getRangeValue = (e) => {
-  if (e.clientX === 0) return null
+  const x = e.clientX || pageX
+  if (x === 0) return null
   const rect = e.target.parentElement.getBoundingClientRect()
-  let value = (e.clientX - rect.left) / rect.width
+  let value = (x - rect.left) / rect.width
   value = Math.min(Math.max(value, 0), 1)
   return value
 }
@@ -27,8 +32,10 @@ const onTpePointDragEnd = (e, onEnd) => {
   onEnd(value)
 }
 
-const clearDragImage = (e) => e.dataTransfer
-  .setDragImage(document.createElement('img'), 0, 0);
+const clearDragImage = (e) => {
+  e.dataTransfer.setDragImage(document.createElement('img'), 0, 0)
+  e.dataTransfer.setData('text/plain', 'point')
+}
 
 const TpePoint = ({value, option, est, onChange}) => {
   const left = value * 100

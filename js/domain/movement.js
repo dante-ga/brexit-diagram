@@ -70,8 +70,8 @@ const factors = {
   britishIdentity: {
     title: 'Preservation of British identity',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total affect preservation of British identity?',
-    calc: c => c.britishIdentityRatio * (c.nonBritish2030 - c.nonBritishNow),
+    desc: 'Please estimmate how much does the increase in non-british population % from the total decrease preservation of British identity?',
+    calc: c => - c.britishIdentityRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
   socialCohesionRatio: {
@@ -82,8 +82,8 @@ const factors = {
   socialCohesion: {
     title: 'Social cohesion of the UK',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total affect social cohesion of the UK?',
-    calc: c => c.socialCohesionRatio * (c.nonBritish2030 - c.nonBritishNow),
+    desc: 'Please estimmate how much does the increase in non-british population % from the total decrease social cohesion of the UK?',
+    calc: c => - c.socialCohesionRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
   unemploymentRatio: {
@@ -94,7 +94,7 @@ const factors = {
   unemployment: {
     title: 'Unemployment rate',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total affect the unemployment rate in the UK?',
+    desc: 'Please estimmate how much does the increase in non-british population % from the total increase the unemployment rate in the UK?',
     calc: c => c.unemploymentRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
