@@ -52,9 +52,9 @@ const getDecision = (vals, subdomains) => {
       maxTotalValue = totalValue
       bestOption = option
     }
+    //TODO: Display nodeValues on the diagram
     alternatives[option] = { totalValue, nodeValues }
   }
-  console.log({alternatives})
   return { bestOption, maxTotalValue, alternatives }
 }
 

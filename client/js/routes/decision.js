@@ -3,6 +3,7 @@ import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { userValues, hasMissingValues } from '../calc/value.js'
 import { domain, getMainDecision } from '../domain/domain.js'
 import { navigate } from '../app.js'
+import { persist } from '../persist.js'
 
 const getValsTotalCount = () => {
   let count = 0
@@ -69,9 +70,18 @@ export const getDecisionToolbar = () => {
   return [progress, next]
 }
 
+let complete = false
+
+export const importStatus = (data) => complete = !!data.complete
+
 export const getDecision = () => {
   const count = getCount()
-  const complete = count === totalCount
+  if (!complete) {
+    complete = count === totalCount
+    if (complete) {
+      persist('complete', complete)
+    }
+  }
   const completion = { complete, count, totalCount }
   const decision = (complete) ? getMainDecision(userVals) : null
   return Results({completion, decision})

@@ -2,10 +2,11 @@ import { ValuesTable } from '../components/values.js'
 import { Button, Tabs } from '../components/global.js'
 import { setUserValues } from '../calc/value.js'
 import { domain } from '../domain/domain.js'
-import { updateView, navigate } from '../app.js'
 import { types } from '../types.js'
 import { persist, bulkPersist } from '../persist.js'
 import { round2tenth } from '../util.js'
+
+let updateView
 
 //TODO: Separate user values into a simple map from the complex list of value objects with "positive" parameter.
 const getInitUserValues = () => {
@@ -157,7 +158,8 @@ export const getValueList = (agent, editable=true) => {
   return valueList
 }
 
-export const getValues = ({ agent }) => {
+export const getValues = ({updateView: _updateView, navigate}) => ({ agent }) => {
+  updateView = _updateView
   activeAgent = agent || activeAgent
   const agentTabs = agents.map(a => ({
     label: a,
