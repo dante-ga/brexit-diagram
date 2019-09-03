@@ -13,39 +13,27 @@ const factors = {
     calc: c => c.ukInEu,
     valuedBy: ['UK'],
   },
-  ukLawsForcedPositive: {
-    type: 'boolean',
-    choice: true,
-    mergeInto: 'govtEffectiveness',
-    checkboxLabel: "The obligation to legislate EU laws increases effectiveness of the UK goverment.",
-  },
-  ukLawsForcedDetermine: {
-    type: 'unitInterval',
+  ukLawsForcedImpact: {
+    type: 'mirrorUnitInterval',
     choice: true,
     mergeInto: 'govtEffectiveness',
     sliderLabel: 'UK laws forced by the EU',
-    minLabel: '',
-    maxLabel: '',
   },
-  publicTrustDetermine: {
-    type: 'unitInterval',
+  rejectedReferendumImpact: {
+    type: 'minusUnitInterval',
     choice: true,
     mergeInto: 'govtEffectiveness',
     sliderLabel: "Loss of public trust due to rejection of referendum results",
-    minLabel: 'No impact',
-    maxLabel: 'Determines completely',
+    minLabel: 'Complete shutdown',
+    maxLabel: 'No impact',
   },
   govtEffectiveness: {
     type: 'unitInterval',
     title: 'UK Government effectiveness',
-    desc: 'Please estimate to what extent can the following factors determine the effectiveness of the UK goverment.',
-    //TODO: add note: "Since we are only interested in change in effectiveness rather than its absolute value the remaining effectiveness was set to a half."
-    calc: c => (
-      (c.ukLawsForcedPositive && c.ukLawsForced
-      || (!c.ukLawsForcedPositive && !c.ukLawsForced)
-    ) ? c.ukLawsForcedDetermine : 0)
-    + ((c.rejectedReferendum) ? 0 : c.publicTrustDetermine)
-    + (1 - c.ukLawsForcedDetermine - c.publicTrustDetermine) / 2,
+    desc: 'How will the following impact the effectiveness of the UK government?',
+    //Relative change value. Not an absolute figure.
+    calc: c => ((c.ukLawsForced) ? c.ukLawsForcedImpact : 0)
+      + ((c.rejectedReferendum) ? c.rejectedReferendumImpact : 0),
     valuedBy: ['UK'],
   }
 }

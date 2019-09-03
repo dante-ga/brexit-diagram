@@ -1,6 +1,5 @@
 import { round2tenth, camel2space, bn } from './util.js'
 import { Radio, Checkbox, Slider } from './components/inputs.js'
-import { ThreePointEstimates } from './components/tpe.js'
 import { domain } from './domain/domain.js'
 
 const valuePercent = 10
@@ -40,6 +39,21 @@ export const types = {
     getInput: (val, cb, df) => Slider(val, cb, {
       min: 0,
       max: 1,
+      step: 0.005,
+      ...df
+    }),
+    getValueObjs: ({key, title}) => ({[key]: {
+      percent: valuePercent,
+      title: `${title} (+${valuePercent}%)`,
+    }}),
+    getValue: (val, value, {percent}) => val * value / percent * 100,
+  },
+  minusUnitInterval: {
+    getDefault: () => -0.5,
+    getText: val => round2tenth(val * 100) + '%',
+    getInput: (val, cb, df) => Slider(val, cb, {
+      min: -1,
+      max: 0,
       step: 0.005,
       ...df
     }),
@@ -104,21 +118,4 @@ export const types = {
       ...df
     })
   },
-  tpe: {
-    getDefault: ({optionsFrom}) => {
-      //Multiple option three point estimates
-      const estimates = {}
-      const options = domain[optionsFrom].options
-      for (const key in options) {
-        estimates[key] = ({
-          label: options[key],
-          optimistic: 0.25,
-          mostLikely: 0.5,
-          pessimistic: 0.75,
-        })
-      }
-      return estimates
-    },
-    getInput: (val, cb, df) => ThreePointEstimates(val, cb, df),
-  }
 }

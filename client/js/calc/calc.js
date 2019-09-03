@@ -11,12 +11,12 @@ export const importUserVals = (data) => {
   for (const dataKey in data) {
     if (dataKey.startsWith(persistPrefix)) {
       const key = dataKey.slice(persistPrefix.length)
-      if (key === 'irishBorder') {
-        //TODO: Prevent non-user-choice vals from being set
-        //TODO: clean out existing ones
-        continue
+      if (domain.hasOwnProperty(key)) {
+        const { choice, decidedBy } = domain[key]
+        if (choice && !decidedBy) {
+          userVals[key] = data[dataKey]
+        }
       }
-      userVals[key] = data[dataKey]
     }
   }
 }
@@ -24,12 +24,6 @@ export const importUserVals = (data) => {
 export const setUserVal = (key, val) => {
   userVals[key] = val
   persist(persistPrefix + key, val)
-}
-
-export const setTpeUserVal = (key, option, estimate, value) => {
-  userVals[key] = userVals[key] || types.tpe.getDefault(domain[key])
-  userVals[key][option][estimate] = value
-  persist(persistPrefix + key, userVals[key])
 }
 
 export const hasChoiceMissing = (key) => {
