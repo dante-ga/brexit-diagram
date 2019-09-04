@@ -78,7 +78,7 @@ const toggleSign = (valObj) => () => {
 }
 
 //TODO: Debug negative sign not disapearing in the number input
-export const onValueChange = (valObj, absolute=true) => (newValue) => {
+export const onValueChange = (updateView, valObj, absolute=true) => (newValue) => {
   if (newValue < 0) {
     valObj.value = -newValue
     valObj.positive = absolute && !valObj.positive
@@ -148,7 +148,7 @@ export const getValueList = (agent, editable=true) => {
         const valueItem = { factor, gap, refObj: valObj, ...valObj}
         //Tie callbacks to the context
         valueItem.toggleSign = toggleSign(valObj)
-        valueItem.onValueChange = onValueChange(valObj)
+        valueItem.onValueChange = onValueChange(updateView, valObj)
         valueItem.onGapChange = onGapChange(index, order, gap, factors)
         return valueItem
       } else {
@@ -158,7 +158,7 @@ export const getValueList = (agent, editable=true) => {
   return valueList
 }
 
-export const getValues = ({updateView: _updateView, navigate}) => ({ agent }) => {
+export const getValues = ({ agent }, {updateView: _updateView, navigate}) => {
   updateView = _updateView
   activeAgent = agent || activeAgent
   const agentTabs = agents.map(a => ({

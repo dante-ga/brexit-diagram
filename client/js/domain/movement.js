@@ -64,6 +64,7 @@ const factors = {
   },
   britishIdentityRatio: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'britishIdentity',
   },
@@ -76,6 +77,7 @@ const factors = {
   },
   socialCohesionRatio: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'socialCohesion',
   },
@@ -88,6 +90,7 @@ const factors = {
   },
   unemploymentRatio: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'unemployment',
   },
@@ -100,6 +103,7 @@ const factors = {
   },
   medianIncomeRatio: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'medianIncome',
   },

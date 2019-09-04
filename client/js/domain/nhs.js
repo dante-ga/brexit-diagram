@@ -1,6 +1,7 @@
 const factors = {
   movement2nhsLabour: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'nhsLabourChange',
   },
@@ -12,6 +13,7 @@ const factors = {
   },
   movement2nhsDemand: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'nhsDemandChange',
   },

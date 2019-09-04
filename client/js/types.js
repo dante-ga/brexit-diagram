@@ -36,9 +36,9 @@ export const types = {
   unitInterval: {
     getDefault: () => 0.5,
     getText: val => round2tenth(val * 100) + '%',
+    min: 0,
+    max: 1,
     getInput: (val, cb, df) => Slider(val, cb, {
-      min: 0,
-      max: 1,
       step: 0.005,
       ...df
     }),
@@ -51,9 +51,9 @@ export const types = {
   minusUnitInterval: {
     getDefault: () => -0.5,
     getText: val => round2tenth(val * 100) + '%',
+    min: -1,
+    max: 0,
     getInput: (val, cb, df) => Slider(val, cb, {
-      min: -1,
-      max: 0,
       step: 0.005,
       ...df
     }),
@@ -66,9 +66,9 @@ export const types = {
   mirrorUnitInterval: {
     getDefault: () => 0,
     getText: val => ((val > 0) ? '+' : '') + Math.round(val * 100) + '%',
+    min: -1,
+    max: 1,
     getInput: (val, cb, df) => Slider(val, cb, {
-      min: -1,
-      max: 1,
       step: 0.01,
       minLabel: 'Decrease',
       maxLabel: 'Increase',
@@ -82,10 +82,10 @@ export const types = {
   },
   value: {
     getText: val => val,
+    min: -100,
+    max: 100,
     getInput: (val, cb, sliderOptions) => Slider(val, cb, {
       type: 'value',
-      min: -100,
-      max: 100,
       step: 0.1,
       minLabel: '-100',
       maxLabel: '100',
@@ -95,27 +95,13 @@ export const types = {
   ratio: {
     getDefault: () => 1,
     getText: val => val,
+    min: 0,
+    max: 2,
     getInput: (val, cb, df) => Slider(val, cb, {
-      min: 0,
-      max: 3,
       step: 0.01,
-      sliderLabel: 'Impact ratio',
       minLabel: 'No impact',
       maxLabel: 'Drastic impact',
       ...df
     }),
-  },
-  mirrorRatio: {
-    getDefault: () => 0,
-    getText: val => val,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      min: -3,
-      max: 3,
-      step: 0.01,
-      sliderLabel: 'Impact ratio',
-      minLabel: 'Decrease',
-      maxLabel: 'Increase',
-      ...df
-    })
   },
 }

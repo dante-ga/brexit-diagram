@@ -33,8 +33,21 @@ const getCount = () => {
       }
     }
   }
-  delete userVals.irishBorder
   return valCount + valueCount
+}
+
+export const startedEvauation = () => {
+  if (Object.keys(userVals).length > 0) {
+    return true
+  }
+  for (const agent in userValues) {
+    for (const valueKey in userValues[agent]) {
+      if (userValues[agent][valueKey].touched) {
+        return true
+      }
+    }
+  }
+  return false
 }
 
 let lastKey

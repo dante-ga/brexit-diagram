@@ -1,0 +1,44 @@
+.legend .option-color {
+  margin-left: 10px;
+}
+
+.legend .option-color .color-indicator {
+  display: inline-block;
+  border: 1px solid;
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+}
+
+.legend .option-color .color-indicator.orange {
+  border-color: orange;
+  background-color: rgb(255, 165, 0, 0.2);
+}
+
+.legend .option-color .color-indicator.blue {
+  border-color: blue;
+  background-color: rgb(0, 0, 255, 0.2);
+}
+
+.ruler-scale {
+  position: relative;
+  height: 0.75em;
+  margin-bottom: 1.5em;
+  border-top: 1px solid;
+}
+.ruler-dash {
+  height: 0.75em;
+  border-left: 1px solid;
+  position: absolute;
+  top: -1px;
+}
+.ruler-number {
+  position: absolute;
+  top: 1em;
+  width: 3em;
+  text-align: center;
+}
+
+.histogram {
+  display: block;
+}

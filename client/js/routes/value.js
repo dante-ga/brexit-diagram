@@ -6,6 +6,7 @@ import { onValueChange, getValueList } from './values.js'
 import { types } from '../types.js'
 import { navigate } from '../app.js'
 import { debounce } from '../util.js'
+import { getValueHistogram } from '../stats.js'
 
 const getValueRegionIndexes = (key, agent, fullList, listSize) => {
   const index = fullList.findIndex(item => item.key === key)
@@ -54,7 +55,7 @@ const getValueRegion = (key, agent) => {
 
 const debState = {}
 
-const getValueInput = (valObj, label, stacked) => {
+const getValueInput = (updateView, valObj, label, stacked) => {
   const { value, positive } = valObj
   let val = value
   if (!positive) val *= -1
@@ -64,11 +65,11 @@ const getValueInput = (valObj, label, stacked) => {
     sliderOptons.maxLabel = ''
   }
   debState[valObj.key] = debState[valObj.key] || {}
-  const onChange = debounce(onValueChange(valObj, false), 500, true, debState[valObj.key])
+  const onChange = debounce(onValueChange(updateView, valObj, false), 500, true, debState[valObj.key])
   return types.value.getInput(val, onChange , sliderOptons)
 }
 
-export const getValue = ({ key, agent }) => {
+export const getValue = ({ key, agent }, {evaluating, updateView}) => {
   const content = []
   const { title, valuedBy, type, options } = domain[key]
   if (valuedBy.length > 1) {
@@ -81,20 +82,32 @@ export const getValue = ({ key, agent }) => {
   }
   content.push(Title(`Value of "${title}" for ${agent}`))
   if (type === 'option') {
+    if (evaluating) {
     const valueKeys = Object.keys(options).map(option => key + '_' + option)
     content.push(getMultiValueRegion(valueKeys, agent))
     const optionArray = Object.entries(options)
     for (let i = 0; i < optionArray.length; i++ ) {
       const [option, optionLabel] = optionArray[i]
-      const valObj = userValues[agent][key + '_' + option]
-      const label = 'Value of ' + optionLabel
-      const stacked = i < optionArray.length - 1
-      content.push(getValueInput(valObj, label, stacked))
+        const valObj = userValues[agent][key + '_' + option]
+        const label = 'Value of ' + optionLabel
+        const stacked = i < optionArray.length - 1
+        content.push(getValueInput(updateView, valObj, label, stacked))
+      }
+    } else {
+      let showLegend = true
+      for (const option in options) {
+        content.push(getValueHistogram(agent, key, option, showLegend))
+        showLegend = false
+      }
     }
   } else {
-    content.push(getValueRegion(key, agent))
-    const valObj = userValues[agent][key]
-    content.push(getValueInput(valObj, 'Value'))
+    if (evaluating) {
+      content.push(getValueRegion(key, agent))
+      const valObj = userValues[agent][key]
+      content.push(getValueInput(updateView, valObj, 'Value'))
+    } else {
+      content.push(getValueHistogram(agent, key, null, true))
+    }
   }
   return content
 }

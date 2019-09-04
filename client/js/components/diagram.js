@@ -2,7 +2,7 @@ import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
 //TODO: Make most of the navigation buttons on the site <a> tags to facilitate opening link in new tab and SEO.
-const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal }, onClick) => {
+const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal, importance }, onClick) => {
   let box
   if (!key) {
     box = ''
@@ -25,6 +25,12 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
           <i class="fas fa-circle" />
         </span>
       `)
+    }
+    if ((!isNaN(importance)) && (importance > 40)) {
+      badges.push(html`<i class='badge badge2 fas fa-exclamation has-text-danger' />`)
+      if (importance > 100) {
+        badges.push(html`<i class='badge badge3 fas fa-exclamation has-text-danger' />`)
+      }
     }
     box = html`
       <button class=${classStr} onclick=${() => onClick(key, value)} >

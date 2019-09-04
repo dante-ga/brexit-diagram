@@ -26,6 +26,7 @@ const M_GDP = -0.3193
 const factors = {
   movement2householdConsumption: {
     type: 'ratio',
+    sliderLabel: 'Impact ratio',
     choice: true,
     mergeInto: 'consumptionChange',
   },

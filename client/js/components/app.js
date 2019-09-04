@@ -1,9 +1,10 @@
 const { html } = lighterhtml
 
-const NavBarItem = ({ title, active, onClick }) => html`
+const NavBarItem = ({ title, active, href, onClick }) => html`
   <a
     class=${['navbar-item', 'is-tab', (active) ? 'is-active' : ''].join(' ')}
     onclick=${onClick}
+    href=${href}
   >
     ${title}
   </a>

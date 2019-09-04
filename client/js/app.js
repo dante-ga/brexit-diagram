@@ -1,20 +1,28 @@
-import { getUserData } from './persist.js'
+import { getUserData, persist } from './persist.js'
 import { getFactor } from './routes/factor.js'
 import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
-import { getDecision, getDecisionToolbar, importStatus } from './routes/decision.js'
+import { getDecision, getDecisionToolbar, importStatus, startedEvauation } from './routes/decision.js'
 import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
+import { getStats } from './stats.js'
 const { render } = lighterhtml
 
 let activeRoute
 let activeParams
+let evaluating = false
+
+const toggleEvaluation = () => {
+  evaluating = !evaluating
+  updateView()
+  persist('evaluating', evaluating)
+}
 
 const getNav = () => {
-  const toolbar = getDecisionToolbar()
+  const toolbar = (evaluating) ? getDecisionToolbar() : null
   const navTabs = []
   for (const route in routes) {
     const { navTab, navPath, path } = routes[route]
@@ -22,24 +30,36 @@ const getNav = () => {
       navTabs.push({
         title: navTab,
         active: route === activeRoute,
-        onClick: () => navigate(navPath || path)
+        href: navPath || path,
+        onClick: (event) => navigate(navPath || path, event)
       })
     }
   }
+  navTabs.push({
+    title: ((evaluating) ? ('Pause') : ((startedEvauation()) ? 'Continue' : 'Start'))
+      + ' Evaluation',
+    onClick: toggleEvaluation
+  })
   const goHome = () => navigate('/')
   return NavBar({ goHome, navTabs, toolbar })
 }
 
 export function updateView() {
   render(document.body, () => {
-    const content = routes[activeRoute].get(activeParams)
+    const content = routes[activeRoute].get(
+      activeParams,
+      { evaluating, updateView, navigate }
+    )
     return App(getNav(), content)
   })
 }
 
 const router = new Navigo(window.location.origin)
 
-export const navigate = (path) => {
+export const navigate = (path, event) => {
+  if (event) {
+    event.preventDefault()
+  }
   router.navigate(path)
   window.scrollTo(0, 0)
 }
@@ -56,7 +76,7 @@ const routes = {
     path: '/factor/:key',
   },
   values: {
-    get: getValues({updateView, navigate}),
+    get: getValues,
     navTab: 'Values',
     path: '/values/:agent',
     navPath: '/values/' + activeAgent,
@@ -67,7 +87,7 @@ const routes = {
   },
   decision: {
     get: getDecision,
-    navTab: 'Decision:',
+    navTab: 'Decision',
     path: '/decision',
   },
 }
@@ -83,11 +103,13 @@ for (const route in routes) {
 }
 router.on(routeHandlers)
 router.notFound(() => render(document.body, NotFound))
-router.resolve()
 
-getUserData().then((data) => {
-  importUserVals(data)
-  importUserValues(data)
-  importStatus(data)
-  updateView()
-})
+Promise.all([
+  getUserData().then((data) => {
+    importUserVals(data)
+    importUserValues(data)
+    importStatus(data)
+    evaluating = !!data.evaluating
+  }),
+  getStats()
+]).then(() => router.resolve() )

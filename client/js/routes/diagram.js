@@ -3,6 +3,7 @@ import { Diagrams } from '../components/diagram.js'
 import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { hasMissingValues } from '../calc/value.js'
 import { updateView, navigate } from '../app.js'
+import { getImportance } from '../stats.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -18,7 +19,7 @@ const hasChoice = (key) => {
 }
 
 const hasExternal = {}
-const parseDiagram = (str, subKey) => {
+const parseDiagram = (str, subKey, evaluating) => {
   let locs = {}
   let arrows = []
   const rows = str
@@ -47,7 +48,7 @@ const parseDiagram = (str, subKey) => {
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
-        cell.notify = hasMissingValues(key).missing
+        cell.notify = evaluating && hasMissingValues(key).missing
       } else {
         const { title, calc } = domain[key]
         cell.title = title
@@ -59,13 +60,14 @@ const parseDiagram = (str, subKey) => {
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
           cell.choice = hasChoice(key)
           cell.decision = !!domain[key].decidedBy
-          cell.notify = cell.choice && hasChoiceMissing(key)
+          cell.notify = evaluating && cell.choice && hasChoiceMissing(key)
         } else {
           cell.external = true
           hasExternal[key] = true
           cell.choice = false
         }
       }
+      cell.importance = !evaluating && getImportance(key, value)
     }
   }
   return { rows, arrows }
@@ -85,10 +87,10 @@ const onCellClick = (key, value) => {
   }
 }
 
-export const getDiagram = () => {
+export const getDiagram = (_, { evaluating }) => {
   const diagrams = []
   for (const subKey in subdomains) {
-    const diagram = parseDiagram(subdomains[subKey].diagram, subKey)
+    const diagram = parseDiagram(subdomains[subKey].diagram, subKey, evaluating)
     diagram.title = subKey
 
     //Add visibility controls
