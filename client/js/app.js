@@ -64,12 +64,16 @@ export const navigate = (path, event) => {
 const routes = {
   diagram: {
     get: getDiagram,
-    navTab: 'Diagram',
+    navTab: 'Influence Diagram',
     path: '/',
   },
   factor: {
     get: getFactor,
     path: '/factor/:key',
+  },
+  factorActiveKey: {
+    get: getFactor,
+    path: '/factor/:key/:activeKey',
   },
   values: {
     get: getValues,
@@ -80,6 +84,10 @@ const routes = {
   value: {
     get: getValue,
     path: '/value/:key/:agent',
+  },
+  valueActiveOption: {
+    get: getValue,
+    path: '/value/:key/:agent/:activeOption',
   },
   decision: {
     get: getDecision,

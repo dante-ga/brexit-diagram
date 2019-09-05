@@ -1,5 +1,6 @@
 import { Title, Tabs } from '../components/global.js'
 import { ValueRegionTable } from '../components/value.js'
+import { Arguments, RadioAddon } from '../components/arguments.js'
 import { domain } from '../domain/domain.js'
 import { userValues } from '../calc/value.js'
 import { onValueChange, getValueList } from './values.js'
@@ -69,9 +70,15 @@ const getValueInput = (updateView, valObj, label, stacked) => {
   return types.value.getInput(val, onChange , sliderOptons)
 }
 
-export const getValue = ({ key, agent }, {evaluating, updateView}) => {
+const getRadioAddon = (key, agent, field, option, activeOption) => {
+  const active = option === activeOption
+  const activate = () => navigate(`/value/${key}/${agent}/${option}`)
+  return RadioAddon(option, field, active, activate)
+}
+
+export const getValue = ({ key, agent, activeOption }, {evaluating, updateView}) => {
   const content = []
-  const { title, valuedBy, type, options } = domain[key]
+  const { title, valuedBy, type, options, valueArguments } = domain[key]
   if (valuedBy.length > 1) {
     const agentTabs = valuedBy.map(a => ({
       label: a,
@@ -83,22 +90,27 @@ export const getValue = ({ key, agent }, {evaluating, updateView}) => {
   content.push(Title(`Value of "${title}" for ${agent}`))
   if (type === 'option') {
     if (evaluating) {
-    const valueKeys = Object.keys(options).map(option => key + '_' + option)
-    content.push(getMultiValueRegion(valueKeys, agent))
-    const optionArray = Object.entries(options)
-    for (let i = 0; i < optionArray.length; i++ ) {
-      const [option, optionLabel] = optionArray[i]
+      const valueKeys = Object.keys(options).map(option => key + '_' + option)
+      content.push(getMultiValueRegion(valueKeys, agent))
+      const optionArray = Object.entries(options)
+      for (let i = 0; i < optionArray.length; i++ ) {
+        const [option, optionLabel] = optionArray[i]
         const valObj = userValues[agent][key + '_' + option]
         const label = 'Value of ' + optionLabel
         const stacked = i < optionArray.length - 1
-        content.push(getValueInput(updateView, valObj, label, stacked))
+        const field = getValueInput(updateView, valObj, label, stacked)
+        content.push(getRadioAddon(key, agent, field, option, activeOption))
       }
     } else {
       let showLegend = true
       for (const option in options) {
-        content.push(getValueHistogram(agent, key, option, showLegend))
+        const field = getValueHistogram(agent, key, option, showLegend)
         showLegend = false
+        content.push(getRadioAddon(key, agent, field, option, activeOption))
       }
+    }
+    if (valueArguments && valueArguments[agent] && valueArguments[agent][activeOption]) {
+      content.push(Arguments(valueArguments[agent][activeOption]))
     }
   } else {
     if (evaluating) {
@@ -107,6 +119,9 @@ export const getValue = ({ key, agent }, {evaluating, updateView}) => {
       content.push(getValueInput(updateView, valObj, 'Value'))
     } else {
       content.push(getValueHistogram(agent, key, null, true))
+    }
+    if (valueArguments && valueArguments[agent]) {
+      content.push(Arguments(valueArguments[agent]))
     }
   }
   return content

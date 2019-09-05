@@ -15,6 +15,74 @@ factors.irishBorder = {
     unitedIreland: 'United Irland in the EU',
     openBorder: 'Open Irish border in the EU',
   },
+  valueArguments: {
+    NI: {
+      hardBorder: {
+        lower: ["Problems with trade with Ireland."],
+        higher: [],
+      },
+      brokenBorder: {
+        lower: [],
+        higher: [],
+      },
+      seaBorder: {
+        lower: ["Problems with trade with the rest of the UK."],
+        higher: [],
+      },
+      unitedIreland: {
+        lower: ["NI people don't support joining Ireland."],
+        higher: ["No problems with trade with Ireland and the rest of the EU."],
+      },
+      openBorder: {
+        lower: [],
+        higher: ["No problems with trade."],
+      },
+    },
+    UK: {
+      hardBorder: {
+        lower: [],
+        higher: [],
+      },
+      brokenBorder: {
+        lower: [],
+        higher: [],
+      },
+      seaBorder: {
+        lower: ["Partial loss of severenty over the NI."],
+        higher: [],
+      },
+      unitedIreland: {
+        lower: ["Complete loss of sovereignty over the NI. Breakdown of the Union."],
+        higher: [],
+      },
+      openBorder: {
+        lower: [],
+        higher: [],
+      },
+    },
+    EU: {
+      hardBorder: {
+        lower: [],
+        higher: [],
+      },
+      brokenBorder: {
+        lower: [],
+        higher: [],
+      },
+      seaBorder: {
+        lower: [],
+        higher: [],
+      },
+      unitedIreland: {
+        lower: [],
+        higher: [],
+      },
+      openBorder: {
+        lower: [],
+        higher: [],
+      },
+    },
+  },
   choice: true,
   calc: c => {
     if (c.ukInEu) {
@@ -29,6 +97,29 @@ factors.irishBorder = {
   decidedBy: ['NI', 'UK', 'EU'],
 }
 
+const violenceNiArguments = {
+  hardBorder: {
+    lower: [],
+    higher: ['Irish unionist may violently oppose the split of the island re-starting "the Troubles".'],
+  },
+  brokenBorder: {
+    lower: ['Unionists will not oppose this.'],
+    higher: ['Broken border between EU and UK is an opportunity for criminal activity such as smuggling.'],
+  },
+  seaBorder: {
+    lower: ['Unionists will favour this.'],
+    higher: ['Irish unionists may decisde to take further action.'],
+  },
+  unitedIreland: {
+    lower: ['The border will be completely errased.'],
+    higher: ['People of NI may violently oppose this.'],
+  },
+  openBorder: {
+    lower: ['Status quo is failrly peaceful.'],
+    higher: [],
+  },
+}
+
 const optionEntries = Object.entries(factors.irishBorder.options)
 for (let i = 0; i < optionEntries.length; i++ ) {
   const [option, label] = optionEntries[i]
@@ -38,6 +129,7 @@ for (let i = 0; i < optionEntries.length; i++ ) {
     sliderLabel: label,
     mergeInto: 'violenceNi',
     choice: true,
+    arguments: violenceNiArguments[option]
   }
   if (i === optionEntries.length - 1) {
     factors[key].minLabel = 'No violence'
