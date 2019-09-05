@@ -35,16 +35,17 @@ const getNav = () => {
     }
   }
   const toggleMode = ToggleMode(evaluating, toggleEvaluation)
-  const goHome = () => navigate('/')
+  const goHome = (event) => navigate('/', event)
   return NavBar({ goHome, navTabs, toggleMode })
 }
 
 export function updateView() {
   render(document.body, () => {
-    const content = routes[activeRoute].get(
+    const { content, title } = routes[activeRoute].get(
       activeParams,
       { evaluating, updateView, navigate }
     )
+    document.title = title + ' | Gitarg'
     const toolbar = (evaluating) ? getDecisionToolbar() : null
     return App(getNav(), content, toolbar)
   })
@@ -54,7 +55,11 @@ const router = new Navigo(window.location.origin)
 
 export const navigate = (path, event) => {
   if (event) {
-    event.preventDefault()
+    if (event.ctrlKey) {
+      return true
+    } else {
+      event.preventDefault()
+    }
   }
   router.navigate(path)
   window.scrollTo(0, 0)

@@ -67,5 +67,5 @@ export const getFactor = ({ key, activeKey }, { evaluating }) => {
   if (_arguments) {
     content.push(Arguments(_arguments))
   }
-  return content
+  return { content, title }
 }

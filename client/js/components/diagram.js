@@ -2,7 +2,7 @@ import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
 //TODO: Make most of the navigation buttons on the site <a> tags to facilitate opening link in new tab and SEO.
-const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal, importance }, onClick) => {
+const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
   let box
   if (!key) {
     box = ''
@@ -33,18 +33,18 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
       }
     }
     box = html`
-      <button class=${classStr} onclick=${() => onClick(key, value)} >
+      <a class=${classStr} onclick=${onClick} href=${path} >
         ${badges}
         <span>${title}</span>
-      </button>
+      </a>
     `
   }
   return html`<div class='diagram-cell'>${box}</div>`
 }
 
-const Row = (row, onClick) => html`
+const Row = (row) => html`
   <div class="diagram-row">
-    ${row.map(c => Cell(c, onClick))}
+    ${row.map(Cell)}
   </div>
 `
 
@@ -61,17 +61,17 @@ const DiagramHeader = (title, collapsed, onClick) => {
   `
 }
 
-const DiagramBody = (arrows, extArrows, rows, onClick) => html`
+const DiagramBody = (arrows, extArrows, rows) => html`
   <div class="diagram">
     ${Arrows(arrows, extArrows)}
-    ${rows.map(r => Row(r, onClick))}
+    ${rows.map(Row)}
   </div>
 `
 
-const Diagram = ({title, rows, arrows, extArrows, collapsed, toggle }, onClick) => html`
+const Diagram = ({title, rows, arrows, extArrows, collapsed, toggle }) => html`
     ${DiagramHeader(title, collapsed, toggle)}
   <div class="diagram-cont">
-    ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows, onClick) }
+    ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows) }
   </div>
 `
 

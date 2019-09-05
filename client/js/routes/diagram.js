@@ -18,8 +18,8 @@ const hasChoice = (key) => {
   return (choice && !decidedBy) || mergeFrom.some(hasChoice)
 }
 
-const hasExternal = {}
 const parseDiagram = (str, subKey, evaluating) => {
+  const hasExternal = {}
   let locs = {}
   let arrows = []
   const rows = str
@@ -49,6 +49,8 @@ const parseDiagram = (str, subKey, evaluating) => {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         arrows.push([locs[key], loc])
         cell.notify = evaluating && hasMissingValues(key).missing
+        const agent = domain[key].valuedBy[0]
+        cell.path = `/value/${key}/${agent}`
       } else {
         const { title, calc } = domain[key]
         cell.title = title
@@ -66,11 +68,13 @@ const parseDiagram = (str, subKey, evaluating) => {
           hasExternal[key] = true
           cell.choice = false
         }
+        cell.path = '/factor/' + key
       }
       cell.importance = !evaluating && !cell.external && getImportance(key, value)
+      cell.onClick = (event) => navigate(cell.path, event)
     }
   }
-  return { rows, arrows }
+  return { rows, arrows, hasExternal }
 }
 
 const collapsed = {}
@@ -78,19 +82,12 @@ for (const subKey in subdomains) {
   collapsed[subKey] = false
 }
 
-const onCellClick = (key, value) => {
-  if (value) {
-    const agent = domain[key].valuedBy[0]
-    navigate(`/value/${key}/${agent}`)
-  } else {
-    navigate('/factor/' + key)
-  }
-}
-
 export const getDiagram = (_, { evaluating }) => {
   const diagrams = []
+  const hasExternal = {}
   for (const subKey in subdomains) {
     const diagram = parseDiagram(subdomains[subKey].diagram, subKey, evaluating)
+    Object.assign(hasExternal, diagram.hasExternal)
     diagram.title = subKey
 
     //Add visibility controls
@@ -99,8 +96,11 @@ export const getDiagram = (_, { evaluating }) => {
       collapsed[subKey] = !collapsed[subKey]
       updateView()
     }
+    diagrams.push(diagram)
+  }
 
-    //Add external arrows
+  //Add external arrows AFTER hasExternal is populated
+  for (const diagram of diagrams) {
     diagram.extArrows = []
     for (const row of diagram.rows) {
       for (let j = 0; j < row.length; j++) {
@@ -113,7 +113,6 @@ export const getDiagram = (_, { evaluating }) => {
         }
       }
     }
-    diagrams.push(diagram)
   }
-  return Diagrams(diagrams, onCellClick)
+  return { content: Diagrams(diagrams), title: 'Influence Diagram' }
 }

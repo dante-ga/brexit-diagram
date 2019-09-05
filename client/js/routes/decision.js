@@ -75,11 +75,12 @@ const getMissingPath = () => {
 export const getDecisionToolbar = () => {
   const progress = Progress(getCount(), totalCount)
   const nextPath = getMissingPath()
-  let goNext
+  let goNext, path
   if (nextPath && (nextPath !== window.location.pathname)) {
-    goNext = () => navigate(nextPath)
+    goNext = (event) => navigate(nextPath, event)
+    path = nextPath
   }
-  const next = Next(goNext)
+  const next = Next(goNext, path)
   return [progress, next]
 }
 
@@ -97,5 +98,5 @@ export const getDecision = () => {
   }
   const completion = { complete, count, totalCount }
   const decision = (complete) ? getMainDecision(userVals) : null
-  return Results({completion, decision})
+  return { content: Results({completion, decision}), title: 'Decision' }
 }

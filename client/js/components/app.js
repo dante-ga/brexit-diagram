@@ -31,13 +31,8 @@ export const NavBar = ({goHome, navTabs, toggleMode}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item">
-          <img
-            src="/img/logo.png"
-            width="28"
-            height="28"
-            onClick=${goHome}
-          >
+        <a class="navbar-item" href="/" onClick=${goHome}>
+          <img src="/img/logo.png" width="28" height="28" >
         </a>
         ${navTabs.map(NavBarItem)}
         ${toggleMode}

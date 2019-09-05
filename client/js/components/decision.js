@@ -6,18 +6,19 @@ export const Progress = (val, max) => html`
   </div>
 `
 
-export const Next = (onClick) => html`
+export const Next = (onClick, path) => html`
   <div class="navbar-item is-va-center">
-    <button
+    <a
       class="${'button ' + ((onClick) ? 'is-primary' : 'is-static' )}"
       onclick=${onClick}
+      href=${path}
       title="Go to the next unanswered question"
     >
       <span>Next Question</span>
       <span class="icon is-small">
         <i class="fas fa-arrow-right"></i>
       </span>
-    </button>
+    </a>
   </div>
 `
 

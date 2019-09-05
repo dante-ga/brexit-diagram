@@ -83,11 +83,13 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
     const agentTabs = valuedBy.map(a => ({
       label: a,
       active: a === agent,
-      onClick: () => navigate(`/value/${key}/${a}`),
+      onClick: (event) => navigate(`/value/${key}/${a}`, event),
+      path: `/value/${key}/${a}`,
     }))
     content.push(Tabs(agentTabs))
   }
-  content.push(Title(`Value of "${title}" for ${agent}`))
+  const pageTitle = `Value of "${title}" for ${agent}`
+  content.push(Title(pageTitle))
   if (type === 'option') {
     if (evaluating) {
       const valueKeys = Object.keys(options).map(option => key + '_' + option)
@@ -124,5 +126,5 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
       content.push(Arguments(valueArguments[agent]))
     }
   }
-  return content
+  return { content, title: pageTitle }
 }

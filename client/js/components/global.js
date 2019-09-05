@@ -15,9 +15,9 @@ export const Button = ({label, onClick}) => html`
   </button>
 `
 
-const Tab = ({label, active, onClick}) => html`
+const Tab = ({label, active, onClick, path}) => html`
   <li class=${(active) ? 'is-active' : ''} >
-    <a onclick=${onClick} >
+    <a onclick=${onClick} href=${path} >
       ${label}
     </a>
   </li>

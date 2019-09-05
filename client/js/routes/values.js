@@ -164,11 +164,13 @@ export const getValues = ({ agent }, {updateView: _updateView, navigate}) => {
   const agentTabs = agents.map(a => ({
     label: a,
     active: a === activeAgent,
-    onClick: () => navigate('/values/' + a),
+    onClick: (event) => navigate('/values/' + a, event),
+    path: '/values/' + a,
   }))
-  return [
+  const content =  [
     Tabs(agentTabs),
     ValuesTable(getValueList(activeAgent)),
     Button({ label: 'Rescale to 100', onClick: rescaleValues }),
   ]
+  return { content, title: agent + ' Values' }
 }
