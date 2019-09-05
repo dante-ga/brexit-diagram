@@ -67,7 +67,7 @@ const parseDiagram = (str, subKey, evaluating) => {
           cell.choice = false
         }
       }
-      cell.importance = !evaluating && getImportance(key, value)
+      cell.importance = !evaluating && !cell.external && getImportance(key, value)
     }
   }
   return { rows, arrows }

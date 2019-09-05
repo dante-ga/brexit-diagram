@@ -10,7 +10,24 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
   </a>
 `
 
-export const NavBar = ({goHome, navTabs, toolbar}) => {
+export const ToggleMode = (evaluating, onClick) => {
+  const text = (evaluating) ? 'View Stats' : 'Edit Answers'
+  const color = (evaluating) ? 'info' : 'success'
+  const icon = (evaluating) ? 'fas fa-eye' : 'far fa-edit'
+  const buttonClass = 'button is-' + color
+  return html`
+    <div class="navbar-item is-va-center">
+      <button class=${buttonClass} onclick=${onClick}>
+        <span class="icon is-medium">
+          <i class=${icon} />
+        </span>
+        <span>${text}</span>
+      </button>
+    </div>
+  `
+}
+
+export const NavBar = ({goHome, navTabs, toggleMode}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -23,17 +40,24 @@ export const NavBar = ({goHome, navTabs, toolbar}) => {
           >
         </a>
         ${navTabs.map(NavBarItem)}
+        ${toggleMode}
       </div>
-      ${toolbar}
     </nav>
   `
 }
 
-export const App = (nav, content) => html`
+const BottomBar = (toolbar) => html`
+  <nav class="navbar is-fixed-bottom has-shadow is-flex" role="navigation" >
+    ${toolbar}
+  </nav>
+`
+
+export const App = (nav, content, toolbar) => html`
   ${nav}
   <section class="section">
     ${content}
   </section>
+  ${(toolbar) ? BottomBar(toolbar) : ''}
 `
 
 export const NotFound = () => html`

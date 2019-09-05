@@ -28,7 +28,7 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
     }
     if ((!isNaN(importance)) && (importance > 40)) {
       badges.push(html`<i class='badge badge2 fas fa-exclamation has-text-danger' />`)
-      if (importance > 100) {
+      if (importance > 160) {
         badges.push(html`<i class='badge badge3 fas fa-exclamation has-text-danger' />`)
       }
     }

@@ -4,7 +4,7 @@ import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
 import { getDecision, getDecisionToolbar, importStatus, startedEvauation } from './routes/decision.js'
-import { NavBar, App, NotFound } from './components/app.js'
+import { NavBar, App, NotFound, ToggleMode } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
@@ -22,7 +22,6 @@ const toggleEvaluation = () => {
 }
 
 const getNav = () => {
-  const toolbar = (evaluating) ? getDecisionToolbar() : null
   const navTabs = []
   for (const route in routes) {
     const { navTab, navPath, path } = routes[route]
@@ -35,13 +34,9 @@ const getNav = () => {
       })
     }
   }
-  navTabs.push({
-    title: ((evaluating) ? ('Pause') : ((startedEvauation()) ? 'Continue' : 'Start'))
-      + ' Evaluation',
-    onClick: toggleEvaluation
-  })
+  const toggleMode = ToggleMode(evaluating, toggleEvaluation)
   const goHome = () => navigate('/')
-  return NavBar({ goHome, navTabs, toolbar })
+  return NavBar({ goHome, navTabs, toggleMode })
 }
 
 export function updateView() {
@@ -50,7 +45,8 @@ export function updateView() {
       activeParams,
       { evaluating, updateView, navigate }
     )
-    return App(getNav(), content)
+    const toolbar = (evaluating) ? getDecisionToolbar() : null
+    return App(getNav(), content, toolbar)
   })
 }
 

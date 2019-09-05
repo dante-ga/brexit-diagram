@@ -2,7 +2,7 @@ const { html } = lighterhtml
 
 export const Progress = (val, max) => html`
   <div class="navbar-item is-expanded is-flex is-va-center">
-    <progress class="progress is-primary" value=${val+''} max=${max} />
+    <progress class="progress is-primary is-medium" value=${val+''} max=${max} />
   </div>
 `
 
@@ -11,8 +11,9 @@ export const Next = (onClick) => html`
     <button
       class="${'button ' + ((onClick) ? 'is-primary' : 'is-static' )}"
       onclick=${onClick}
-      title="Next unanswered question"
+      title="Go to the next unanswered question"
     >
+      <span>Next Question</span>
       <span class="icon is-small">
         <i class="fas fa-arrow-right"></i>
       </span>
