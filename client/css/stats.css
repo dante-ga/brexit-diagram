@@ -14,10 +14,13 @@
   border-color: orange;
   background-color: rgb(255, 165, 0, 0.2);
 }
-
-.legend .option-color .color-indicator.blue {
-  border-color: blue;
-  background-color: rgb(0, 0, 255, 0.2);
+.legend .option-color .color-indicator.red {
+  border-color: red;
+  background-color: rgb(255, 0, 0, 0.2);
+}
+.legend .option-color .color-indicator.dodgerblue {
+  border-color: dodgerblue;
+  background-color: rgb(30, 144, 255, 0.2);
 }
 
 .ruler-scale {

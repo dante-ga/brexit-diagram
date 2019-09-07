@@ -48,6 +48,21 @@ export const types = {
     }}),
     getValue: (val, value, {percent}) => val * value / percent * 100,
   },
+  until2030interval: {
+    getDefault: () => 0.5,
+    getText: val => round2tenth(val * 10) + ' years',
+    min: 0,
+    max: 1,
+    getInput: (val, cb, df) => Slider(val, cb, {
+      step: 0.01,
+      ...df
+    }),
+    getValueObjs: ({key, title}) => ({[key]: {
+      percent: valuePercent,
+      title: `${title} (+${valuePercent/10} year)`,
+    }}),
+    getValue: (val, value, {percent}) => val * value / percent * 100,
+  },
   minusUnitInterval: {
     getDefault: () => -0.5,
     getText: val => round2tenth(val * 100) + '%',

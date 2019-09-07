@@ -115,7 +115,9 @@ const main = async () => {
           const origAlternatives = optionAvgDecisions[option].alternatives
           const originalGap = origAlternatives[option].totalValue - origAlternatives[alt].totalValue
           const gapChange = deviantGap - originalGap
-          gapChanges[sectionKey] += Math.abs(gapChange)
+          if (Math.abs(gapChange) > gapChanges[sectionKey]) {
+            gapChanges[sectionKey] = Math.abs(gapChange)
+          }
         }
       }
       gapChanges[sectionKey] = Math.round(gapChanges[sectionKey])

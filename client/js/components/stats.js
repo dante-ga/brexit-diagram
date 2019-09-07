@@ -6,8 +6,9 @@ const width = 641
 const countHeight = 30
 
 const optionColors = {
-  remain: 'orange',
-  deal: 'blue',
+  remain: 'red',
+  deal: 'orange',
+  noDeal: 'dodgerblue',
 }
 
 const Layer = ({option, bins, height}) => {
