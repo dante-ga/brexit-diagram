@@ -10,7 +10,7 @@ const arrowSpace = 18
 const padWidth = cellWidth - nodeWidth
 const padHeight = cellHeight - nodeHeight
 
-const Arrow = ([[Ai, Aj],[Bi, Bj]]) => {
+const Arrow = ([[Ai, Aj],[Bi, Bj]], valuePath) => {
   let d
   const Ax = Aj * cellWidth + nodeWidth
   let Ay = Ai * cellHeight + nodeHeight/2
@@ -35,7 +35,8 @@ const Arrow = ([[Ai, Aj],[Bi, Bj]]) => {
     const E2y = By
     d = `M${Ax},${Ay} L${E1x},${E1y} L${E2x},${E2y} L${Bx},${By}`
   }
-  return svg`<path d=${d} class="arrow-path" />`
+  const pathClass = (valuePath) ? 'value-path' : 'arrow-path'
+  return svg`<path d=${d} class=${pathClass} />`
 }
 
 const blockedHeight = padHeight/2 + nodeHeight/2
@@ -78,9 +79,10 @@ export const ArrowDefs = () => svg`
   </svg>
 `
 
-export const Arrows = (arrows, extArrows) => svg`
+export const Arrows = (arrows, valuePaths, extArrows) => svg`
   <svg class="diagram-bg">
-    ${arrows.map(Arrow)}
+    ${arrows.map(a => Arrow(a, false))}
+    ${valuePaths.map(vp => Arrow(vp, true))}
     ${extArrows.map(ExtArrow)}
   </svg>
 `

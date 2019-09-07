@@ -20,8 +20,9 @@ const hasChoice = (key) => {
 
 const parseDiagram = (str, subKey, evaluating) => {
   const hasExternal = {}
-  let locs = {}
-  let arrows = []
+  const locs = {}
+  const arrows = []
+  const valuePaths = []
   const rows = str
     .split('\n')
     .map(line => line.match(/\S+/g))
@@ -47,10 +48,13 @@ const parseDiagram = (str, subKey, evaluating) => {
       if (!key) continue
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
-        arrows.push([locs[key], loc])
+        valuePaths.push([locs[key], loc])
         cell.notify = evaluating && hasMissingValues(key).missing
         const agent = domain[key].valuedBy[0]
         cell.path = `/value/${key}/${agent}`
+        if (loc[0] !== locs[key][0]) {
+          cell.shiftBack = true
+        }
       } else {
         const { title, calc } = domain[key]
         cell.title = title
@@ -74,7 +78,7 @@ const parseDiagram = (str, subKey, evaluating) => {
       cell.onClick = (event) => navigate(cell.path, event)
     }
   }
-  return { rows, arrows, hasExternal }
+  return { rows, arrows, valuePaths, hasExternal }
 }
 
 const collapsed = {}

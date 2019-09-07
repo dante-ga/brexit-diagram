@@ -86,7 +86,7 @@ const getOptionValues = (option, vals, subdomains) => {
     const context = clone(vals)
     context.marketMovement = option
     context.billIntention = billIntention
-    const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'gdppc', 'nhs']
+    const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'nhs']
     const {totalValues, subNodeValues} = calcSubs(context, subs)
     const {UK, EU} = totalValues
     if (UK > maxUK) {

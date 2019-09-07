@@ -108,7 +108,20 @@ const factors = {
       + G_GDP * c.govtSpendingChange
       + X_GDP * c.exportsChange
       + M_GDP * c.importsChange
-  }
+  },
+  gdppcChange: {
+    title: 'Change in UK GDP per person',
+    type: 'mirrorUnitInterval',
+    desc: 'This combines changes in gdp and population.',
+    valuedBy: ['UK'],
+    /* X =
+      = gdppcNew/gdppcOld - 1
+      = (gdpNew/popNew)/(gdpOld/popOld) - 1
+      = (gdpNew/gdpOld)/(popNew/popOld) - 1
+      = (1 + c.gdpChange)/(1 + c.ukPopulationChange) - 1
+    */
+    calc: c => (1 + c.gdpChange)/(1 + c.ukPopulationChange) - 1,
+  },
 }
 
 const diagram = `
@@ -117,8 +130,8 @@ const diagram = `
   debtService      -
   popChngDueImmgr  consumptionChange
   brexitApproval   investmentChange   gdpChange           $gdpChange
-  exportsToEu      exportsChange
-  exportsToNonEu   -
+  exportsToEu      exportsChange      -                   gdppcChange $gdppcChange
+  exportsToNonEu   -                  ukPopulationChange
   importsFromEu    importsChange
   importsFromNonEu -
 `

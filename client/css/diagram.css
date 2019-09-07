@@ -28,6 +28,16 @@
   border-color: black;
   position: relative;
 }
+.diagram-cell .button.value-cell {
+  width: 62px;
+  line-height: 62px;
+  border-radius: 62px;
+  padding-top: 15px;
+  margin-left: -12px;
+}
+.diagram-cell .button.value-cell.shift-back {
+  margin-left: -51px;
+}
 .diagram-cell .button .badge {
   position: absolute;
   bottom: -10px;
@@ -77,6 +87,11 @@ svg .arrow-path {
   stroke-width: 2px;
   fill: none;
   marker-end: url(#arrow);
+}
+svg .value-path {
+  stroke:black;
+  stroke-width: 2px;
+  fill: none;
 }
 svg .ext-arrow-path {
   stroke:black;

@@ -2,7 +2,7 @@ import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
 //TODO: Make most of the navigation buttons on the site <a> tags to facilitate opening link in new tab and SEO.
-const Cell = ({ key, value, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
+const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
   let box
   if (!key) {
     box = ''
@@ -11,7 +11,15 @@ const Cell = ({ key, value, title, choice, decision, notify, external, hasExtern
     if (external) classStr += ' is-dashed has-text-grey'
     const badges = []
     if (value) {
-      badges.push(html`<i class="badge far fa-heart" />`)
+      title = html`
+      <span class="icon is-medium">
+        <i class="far fa-lg fa-heart" />
+      </span>
+      `
+      classStr += ' value-cell'
+      if (shiftBack) {
+        classStr += ' shift-back'
+      }
     }
     if (choice) {
       badges.push(html`<i class="badge fas fa-sliders-h" />`)
@@ -61,17 +69,17 @@ const DiagramHeader = (title, collapsed, onClick) => {
   `
 }
 
-const DiagramBody = (arrows, extArrows, rows) => html`
+const DiagramBody = (arrows, valuePaths, extArrows, rows) => html`
   <div class="diagram">
-    ${Arrows(arrows, extArrows)}
+    ${Arrows(arrows, valuePaths, extArrows)}
     ${rows.map(Row)}
   </div>
 `
 
-const Diagram = ({title, rows, arrows, extArrows, collapsed, toggle }) => html`
+const Diagram = ({title, rows, arrows, valuePaths, extArrows, collapsed, toggle }) => html`
     ${DiagramHeader(title, collapsed, toggle)}
   <div class="diagram-cont">
-    ${(collapsed) ? '' : DiagramBody(arrows, extArrows, rows) }
+    ${(collapsed) ? '' : DiagramBody(arrows, valuePaths, extArrows, rows) }
   </div>
 `
 
