@@ -4,7 +4,7 @@ import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
 import { getDecision, getDecisionToolbar, importStatus, startedEvauation } from './routes/decision.js'
-import { NavBar, App, NotFound, ToggleMode } from './components/app.js'
+import { NavBar, App, NotFound, Home, ToggleMode } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
@@ -65,12 +65,20 @@ export const navigate = (path, event) => {
   window.scrollTo(0, 0)
 }
 
-//TODO: Update page title on route change
+//TODO: Fix activeAgent and add activeDiagram variables
 const routes = {
+  home: {
+    get: () => ({
+      content: Home(),
+      title: 'Welcome!',
+    }),
+    path: '/',
+  },
   diagram: {
     get: getDiagram,
     navTab: 'Influence Diagram',
-    path: '/',
+    path: '/diagram/:subKey',
+    navPath: '/diagram/brexit',
   },
   factor: {
     get: getFactor,

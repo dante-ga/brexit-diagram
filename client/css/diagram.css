@@ -20,6 +20,14 @@
   padding-right: 40px;
   padding-bottom: 30px;
 }
+.diagram-cell.value-cell {
+  width: 62px;
+  padding: 0px;
+  margin-left: -12px;
+}
+.diagram-cell.value-cell.shift-back {
+  margin-left: -51px;
+}
 .diagram-cell .button {
   height: 62px;
   width: 100%;
@@ -28,15 +36,9 @@
   border-color: black;
   position: relative;
 }
-.diagram-cell .button.value-cell {
-  width: 62px;
-  line-height: 62px;
+.diagram-cell.value-cell .button {
   border-radius: 62px;
-  padding-top: 15px;
-  margin-left: -12px;
-}
-.diagram-cell .button.value-cell.shift-back {
-  margin-left: -51px;
+  padding-top: 13px;
 }
 .diagram-cell .button .badge {
   position: absolute;

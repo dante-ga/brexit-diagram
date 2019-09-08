@@ -2,6 +2,15 @@ nav.navbar.has-shadow {
   box-shadow: 0px 0px 4px grey;
 }
 
+.tabs ul {
+	flex-shrink: 1;
+	flex-wrap: wrap;
+	border-bottom-color: transparent;
+}
+.tabs.is-boxed a {
+  border-bottom-color: #dbdbdb;
+}
+
 .slider {
   max-width: 640px;
 }

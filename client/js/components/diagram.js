@@ -1,8 +1,8 @@
 import { ArrowDefs, Arrows } from './arrows.js'
 const { html } = lighterhtml
 
-//TODO: Make most of the navigation buttons on the site <a> tags to facilitate opening link in new tab and SEO.
 const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
+  let cellClass = 'diagram-cell'
   let box
   if (!key) {
     box = ''
@@ -16,9 +16,9 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external
         <i class="far fa-lg fa-heart" />
       </span>
       `
-      classStr += ' value-cell'
+      cellClass += ' value-cell'
       if (shiftBack) {
-        classStr += ' shift-back'
+        cellClass += ' shift-back'
       }
     }
     if (choice) {
@@ -47,7 +47,7 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external
       </a>
     `
   }
-  return html`<div class='diagram-cell'>${box}</div>`
+  return html`<div class=${cellClass} >${box}</div>`
 }
 
 const Row = (row) => html`
@@ -56,31 +56,12 @@ const Row = (row) => html`
   </div>
 `
 
-const DiagramHeader = (title, collapsed, onClick) => {
-  const faIcon = 'fa-chevron-' + ((collapsed) ? 'down' : 'right')
-  const iconClass = 'icon is-small fas fa-sm ' + faIcon
-  return html`
-    <h1 class="subtitle is-marginless" >
-      <span class="is-cursor-pointer" onclick=${onClick}>
-        <i class=${iconClass} />
-        <span class="is-va-middle is-uppercase">${title}</span>
-      </span>
-    </h1>
-  `
-}
-
-const DiagramBody = (arrows, valuePaths, extArrows, rows) => html`
-  <div class="diagram">
-    ${Arrows(arrows, valuePaths, extArrows)}
-    ${rows.map(Row)}
-  </div>
-`
-
-const Diagram = ({title, rows, arrows, valuePaths, extArrows, collapsed, toggle }) => html`
-    ${DiagramHeader(title, collapsed, toggle)}
+export const Diagram = ({ rows, arrows, valuePaths, extArrows }) => html`
+  ${ArrowDefs()}
   <div class="diagram-cont">
-    ${(collapsed) ? '' : DiagramBody(arrows, valuePaths, extArrows, rows) }
+    <div class="diagram">
+      ${Arrows(arrows, valuePaths, extArrows)}
+      ${rows.map(Row)}
+    </div>
   </div>
 `
-
-export const Diagrams = (diagrams, onClick) => [ArrowDefs(), ...diagrams.map(g => Diagram(g, onClick))]

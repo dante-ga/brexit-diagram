@@ -69,3 +69,18 @@ export const NotFound = () => html`
     </div>
   </section>
 `
+
+export const Home = () => html`
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Welcome to Gitarg!
+        </h1>
+        <h2 class="subtitle">
+          Gitarg will help you evaluate Brexit options and see why different people come to different conclusions about it.
+        </h2>
+      </div>
+    </div>
+  </section>
+`

@@ -35,8 +35,8 @@ export const calcSubs = (context, subs) => {
   for (const sub of subs) {
     const { factors } = subdomains[sub]
     for (const key in factors) {
-      const { calc } = factors[key]
-      if (calc) {
+      const { calc, customCalc } = factors[key]
+      if (calc && !customCalc) {
         context[key] = calc(context)
       }
     }
