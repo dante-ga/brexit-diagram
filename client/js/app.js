@@ -9,11 +9,13 @@ import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 import { getStats } from './stats.js'
+import { updateComments } from './comments.js'
 const { render } = lighterhtml
 
 let activeRoute
 let activeParams
 let evaluating = false
+const appEl = document.getElementById('App')
 
 const toggleEvaluation = () => {
   evaluating = !evaluating
@@ -40,7 +42,7 @@ const getNav = () => {
 }
 
 export function updateView() {
-  render(document.body, () => {
+  render(appEl, () => {
     const { content, title } = routes[activeRoute].get(
       activeParams,
       { evaluating, updateView, navigate }
@@ -62,7 +64,8 @@ export const navigate = (path, event) => {
     }
   }
   router.navigate(path)
-  window.scrollTo(0, 0)
+  updateComments(routes[activeRoute])
+  // window.scrollTo(0, 0)
 }
 
 //TODO: Fix activeAgent and add activeDiagram variables
@@ -83,10 +86,12 @@ const routes = {
   factor: {
     get: getFactor,
     path: '/factor/:key',
+    comments: true,
   },
   factorActiveKey: {
     get: getFactor,
     path: '/factor/:key/:activeKey',
+    comments: true,
   },
   values: {
     get: getValues,
@@ -97,10 +102,12 @@ const routes = {
   value: {
     get: getValue,
     path: '/value/:key/:agent',
+    comments: true,
   },
   valueActiveOption: {
     get: getValue,
     path: '/value/:key/:agent/:activeOption',
+    comments: true,
   },
   decision: {
     get: getDecision,
@@ -119,7 +126,7 @@ for (const route in routes) {
   }
 }
 router.on(routeHandlers)
-router.notFound(() => render(document.body, NotFound))
+router.notFound(() => render(appEl, NotFound))
 
 Promise.all([
   getUserData().then((data) => {
@@ -129,4 +136,7 @@ Promise.all([
     evaluating = !!data.evaluating
   }),
   getStats()
-]).then(() => router.resolve() )
+]).then(() => {
+  router.resolve()
+  updateComments(routes[activeRoute])
+})

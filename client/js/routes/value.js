@@ -56,11 +56,11 @@ const getValueRegion = (key, agent) => {
 
 const debState = {}
 
-const getValueInput = (updateView, valObj, label, stacked) => {
+const getValueInput = (key, updateView, valObj, label, stacked) => {
   const { value, positive } = valObj
   let val = value
   if (!positive) val *= -1
-  const sliderOptons = { sliderLabel: label }
+  const sliderOptons = { sliderLabel: label, key }
   if (stacked) {
     sliderOptons.minLabel = ''
     sliderOptons.maxLabel = ''
@@ -100,7 +100,7 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
         const valObj = userValues[agent][key + '_' + option]
         const label = 'Value of ' + optionLabel
         const stacked = i < optionArray.length - 1
-        const field = getValueInput(updateView, valObj, label, stacked)
+        const field = getValueInput(key + '_' + option, updateView, valObj, label, stacked)
         content.push(getRadioAddon(key, agent, field, option, activeOption))
       }
     } else {
@@ -118,7 +118,7 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
     if (evaluating) {
       content.push(getValueRegion(key, agent))
       const valObj = userValues[agent][key]
-      content.push(getValueInput(updateView, valObj, 'Value'))
+      content.push(getValueInput(key, updateView, valObj, 'Value'))
     } else {
       content.push(getValueHistogram(agent, key, null, true))
     }

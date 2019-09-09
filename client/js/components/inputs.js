@@ -54,7 +54,7 @@ export const Radio = (value, onChange, {key, options, disabled}) => {
 }
 
 //TODO: remove dependency on "type"
-export const Slider = (val, cb, { type, step, sliderLabel, minLabel, maxLabel }) => html`
+export const Slider = (val, cb, { type, step, sliderLabel, minLabel, maxLabel, key }) => html`
   <div class="field slider">
     <div>
       ${sliderLabel} = ${types[type].getText(val)}
@@ -67,6 +67,7 @@ export const Slider = (val, cb, { type, step, sliderLabel, minLabel, maxLabel })
         max=${types[type].max}
         value=${val}
         type="range"
+        id=${key}
         onchange=${(e) => cb(parseFloat(e.target.value))}
       >
       <div>
