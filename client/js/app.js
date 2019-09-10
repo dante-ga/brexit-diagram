@@ -71,6 +71,7 @@ export const navigate = (path, event) => {
   }
   router.navigate(path)
   updateComments(routes[activeRoute], evaluating)
+  gtag('config', 'UA-147529439-1', { 'page_path': path })
   // window.scrollTo(0, 0)
 }
 
