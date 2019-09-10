@@ -31,7 +31,7 @@ export const NavBar = ({goHome, navTabs, toggleMode}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="/" onClick=${goHome}>
+        <a class="navbar-item" href="/">
           <img src="/img/logo.png" width="28" height="28" >
         </a>
         ${navTabs.map(NavBarItem)}
@@ -64,21 +64,6 @@ export const NotFound = () => html`
         </h1>
         <h2 class="subtitle">
           Sorry, this page was not found.
-        </h2>
-      </div>
-    </div>
-  </section>
-`
-
-export const Home = () => html`
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Welcome to Gitarg!
-        </h1>
-        <h2 class="subtitle">
-          Gitarg will help you evaluate Brexit options and see why different people come to different conclusions about it.
         </h2>
       </div>
     </div>

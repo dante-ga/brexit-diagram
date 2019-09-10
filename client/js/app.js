@@ -4,7 +4,7 @@ import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
 import { getDecision, getDecisionToolbar, importStatus, startedEvauation } from './routes/decision.js'
-import { NavBar, App, NotFound, Home, ToggleMode } from './components/app.js'
+import { NavBar, App, NotFound, ToggleMode } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
@@ -20,6 +20,7 @@ const appEl = document.getElementById('App')
 const toggleEvaluation = () => {
   evaluating = !evaluating
   updateView()
+  updateComments(routes[activeRoute], evaluating)
   persist('evaluating', evaluating)
 }
 
@@ -37,8 +38,7 @@ const getNav = () => {
     }
   }
   const toggleMode = ToggleMode(evaluating, toggleEvaluation)
-  const goHome = (event) => navigate('/', event)
-  return NavBar({ goHome, navTabs, toggleMode })
+  return NavBar({ navTabs, toggleMode })
 }
 
 export function updateView() {
@@ -48,7 +48,13 @@ export function updateView() {
       { evaluating, updateView, navigate }
     )
     document.title = title + ' | Gitarg'
-    const toolbar = (evaluating) ? getDecisionToolbar() : null
+    let toolbar
+    if (evaluating) {
+      toolbar = getDecisionToolbar()
+      document.body.classList.add('has-navbar-fixed-bottom')
+    } else {
+      document.body.classList.remove('has-navbar-fixed-bottom')
+    }
     return App(getNav(), content, toolbar)
   })
 }
@@ -64,19 +70,12 @@ export const navigate = (path, event) => {
     }
   }
   router.navigate(path)
-  updateComments(routes[activeRoute])
+  updateComments(routes[activeRoute], evaluating)
   // window.scrollTo(0, 0)
 }
 
 //TODO: Fix activeAgent and add activeDiagram variables
 const routes = {
-  home: {
-    get: () => ({
-      content: Home(),
-      title: 'Welcome!',
-    }),
-    path: '/',
-  },
   diagram: {
     get: getDiagram,
     navTab: 'Influence Diagram',
@@ -138,5 +137,5 @@ Promise.all([
   getStats()
 ]).then(() => {
   router.resolve()
-  updateComments(routes[activeRoute])
+  updateComments(routes[activeRoute], evaluating)
 })

@@ -150,6 +150,13 @@ const factors = {
     customCalc: true,
     calc: c => c.ukInEu || (Math.random() < c.gibraltarInUkProb),
   },
+  noDealDisruptions: {
+    type: 'boolean',
+    title: 'Short term disruptions caused by no-deal',
+    desc: 'Potential short term disruptions caused by no-deal Brexit.',
+    valuedBy: ['UK'],
+    calc: c => c.brexitApproval === 'noDeal'
+  },
 }
 
 const diagram = `
@@ -158,14 +165,8 @@ const diagram = `
   -                ukInEu        exchangeRateChange $exchangeRateChange
   brexitApproval   -             legalRights   $legalRights
   -                -             researchColab $researchColab
+  -                -             noDealDisruptions $noDealDisruptions
 `
-//CONTINE HERE!!!
-//CONTINE HERE!!!
-//CONTINE HERE!!!
-//CONTINE HERE!!!
-//CONTINE HERE!!!
-//CONTINE HERE!!!
-//TODO: Fix calculations from former miscaleneous moduels
 
 const getGibraltarValue = (vals) => {
   const subValue = ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)

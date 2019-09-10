@@ -13,8 +13,8 @@ const initComments = (config) => {
   inited = true
 }
 
-export const updateComments = ({ comments }) => {
-  if (comments) {
+export const updateComments = ({ comments }, evaluating) => {
+  if (comments && !evaluating) {
     const config = (page) => {
       page.identifier = window.location.pathname
       page.url = window.location.href
