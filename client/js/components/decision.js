@@ -22,32 +22,42 @@ export const Next = (onClick, path) => html`
   </div>
 `
 
-const Completion = ({ complete, count, totalCount }) => html`
-  <h1>Answers filled in: ${count} / ${totalCount} </h1>
-  <h1>Complete: ${(complete) ? 'yes' : 'no'}</h1>
-`
-
-const Alternative = ([option, { totalValue }]) => html`
-  <span>${option}: ${Math.round(totalValue)};&nbsp;</span>
-`
-
-const Decision = (decision) => {
-  if (decision === null) {
-    return html`
-      <h1>Best option: ?</h1>
-    `
-  } else {
-    const {bestOption, maxTotalValue, alternatives} = decision
-    return html`
-      <h1>Option values: ${Object.entries(alternatives).map(Alternative)}</a>
-      <h1>Best option: ${bestOption}</h1>
-    `
-  }
-}
-
-export const Results = ({completion, decision}) => html`
-  <div>
-    ${Completion(completion)}
-    ${Decision(decision)}
+export const Finish = (onClick, path) => html`
+  <div class="navbar-item is-va-center">
+    <a class="button is-success has-text-weight-bold" onclick=${onClick} href=${path} >
+      Get Decision!
+    </a>
   </div>
 `
+
+export const ProgressPage = ( count, totalCount ) => html`
+  <div class="notification">
+    Your decision recommendation will appear here once you answer all of the questions.
+    <br>Questions answered: <strong>${count} / ${totalCount}</strong>
+  </div>
+`
+
+const Alternative = ({ totalValue, label }) => html`
+  <tr>
+    <td>${label}</td>
+    <td><strong>${Math.round(totalValue)}</strong></td>
+  </tr>
+`
+
+export const Decision = (decision) => {
+  const { bestOption, alternatives } = decision
+  return html`
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Your expected total value</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${Object.values(alternatives).map(Alternative)}
+      </tbody>
+    </table>
+    Recommended option: <strong>${alternatives[bestOption].label}</strong>
+  `
+}

@@ -3,7 +3,13 @@ import { getFactor } from './routes/factor.js'
 import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
 import { getDiagram } from './routes/diagram.js'
-import { getDecision, getDecisionToolbar, importStatus, startedEvauation } from './routes/decision.js'
+import {
+  getDecision,
+  getDecisionToolbar,
+  startedEvauation,
+  checkStatus,
+  complete
+} from './routes/decision.js'
 import { NavBar, App, NotFound, ToggleMode } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
@@ -49,7 +55,7 @@ export function updateView() {
     )
     document.title = title + ' | Gitarg'
     let toolbar
-    if (evaluating) {
+    if (evaluating && !complete) {
       toolbar = getDecisionToolbar()
       document.body.classList.add('has-navbar-fixed-bottom')
     } else {
@@ -72,7 +78,6 @@ export const navigate = (path, event) => {
   router.navigate(path)
   updateComments(routes[activeRoute], evaluating)
   gtag('config', 'UA-147529439-1', { 'page_path': path })
-  // window.scrollTo(0, 0)
 }
 
 //TODO: Fix activeAgent and add activeDiagram variables
@@ -132,7 +137,7 @@ Promise.all([
   getUserData().then((data) => {
     importUserVals(data)
     importUserValues(data)
-    importStatus(data)
+    checkStatus()
     evaluating = !!data.evaluating
   }),
   getStats()

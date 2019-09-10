@@ -1,4 +1,4 @@
-import { Progress, Results, Next } from '../components/decision.js'
+import { Progress, ProgressPage, Decision, Next, Finish } from '../components/decision.js'
 import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { userValues, hasMissingValues } from '../calc/value.js'
 import { domain, getMainDecision } from '../domain/domain.js'
@@ -70,33 +70,49 @@ const getMissingPath = () => {
       }
     }
   }
+  return null
+}
+
+export let complete = false
+
+export const checkStatus = (data) => {
+  const newComplete = getCount() === totalCount
+  if (newComplete !== complete && (!data || (data.complete !== complete))) {
+    persist('complete', newComplete)
+  }
+  complete = newComplete
 }
 
 export const getDecisionToolbar = () => {
   const progress = Progress(getCount(), totalCount)
   const nextPath = getMissingPath()
-  let goNext, path
-  if (nextPath && (nextPath !== window.location.pathname)) {
-    goNext = (event) => navigate(nextPath, event)
-    path = nextPath
+  let next
+  if (nextPath) {
+    let goNext, path
+    if (nextPath !== window.location.pathname) {
+      goNext = (event) => navigate(nextPath, event)
+      path = nextPath
+    }
+    next = Next(goNext, path)
+  } else {
+    const decide = (event) => {
+      complete = true
+      navigate('/decision', event)
+      persist('complete', true)
+    }
+    next = Finish(decide, '/decision')
   }
-  const next = Next(goNext, path)
   return [progress, next]
 }
 
-let complete = false
-
-export const importStatus = (data) => complete = !!data.complete
-
 export const getDecision = () => {
-  const count = getCount()
-  if (!complete) {
-    complete = count === totalCount
-    if (complete) {
-      persist('complete', complete)
-    }
+  checkStatus()
+  const content = []
+  if (complete) {
+    const decision = getMainDecision(userVals)
+    content.push(Decision(decision))
+  } else {
+    content.push(ProgressPage(getCount(), totalCount))
   }
-  const completion = { complete, count, totalCount }
-  const decision = (complete) ? getMainDecision(userVals) : null
-  return { content: Results({completion, decision}), title: 'Decision' }
+  return { content, title: 'Decision' }
 }

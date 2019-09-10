@@ -197,7 +197,8 @@ const getDecision = (vals, subdomains) => {
     totalValue += totalValues.UK
     Object.assign(nodeValues, subNodeValues.UK)
     //TODO: Display nodeValues on the diagram
-    alternatives[option] = { totalValue, nodeValues }
+    const label = factors.brexitApproval.options[option]
+    alternatives[option] = { totalValue, nodeValues, label  }
   }
 
 
@@ -218,7 +219,11 @@ const getDecision = (vals, subdomains) => {
       bestOption = option
     }
   }
-  return { bestOption, maxTotalValue, alternatives }
+  return ({
+    bestOption,
+    maxTotalValue,
+    alternatives,
+  })
 }
 
 export const brexit = { factors, diagram, getDecision }
