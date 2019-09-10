@@ -2,28 +2,66 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Welcome! | Gitarg</title>
+    <title>Build a shared understanding of Brexit | Gitarg</title>
     <link rel="stylesheet" href="/third_party/bulma.css">
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <style>
+      h2.title.main-title {
+        margin-bottom: 45px;
+      }
+      .button-section {
+        background-image: url('/img/button_bg.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        padding: 95px 0;
+      }
+      .button-section .button {
+        margin-top: -5px;
+        box-shadow: 0 0 10px 10px white;
+      }
+    </style>
   </head>
   <body>
-    <section class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">
-            Welcome to Gitarg!
-          </h1>
-          <h2 class="subtitle">
-            Gitarg will help you evaluate Brexit options and see why different people come to different conclusions about it.
-          </h2>
-          <div class="has-text-centered">
-            <a
-              class="button is-primary is-large"
-              href="/diagram/brexit"
-            >
-              Get started!
-            </a>
+    <section class="section has-text-centered">
+      <h2 class="title main-title is-2">
+        Build a shared understanding of Brexit
+      </h2>
+      <div calss="container" style="max-width: 960px; margin: 0 auto;">
+        <div class="tile is-ancestor is-vertical">
+          <div class="tile is-12">
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Discover common ground and core differences with others</h5>
+                <img src="/img/core_differences.png">
+              </div>
+            </div>
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Contribute missing arguments</h5>
+                <img src="/img/contribute_arguments.png">
+              </div>
+            </div>
           </div>
+          <div class="tile is-12">
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Contribute your justification of your position</h5>
+                <img src="/img/your_justification.png">
+              </div>
+            </div>
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Get a personalised recommendation</h5>
+                <img src="/img/recommendation.png">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-section">
+          <a class="button is-success is-large" href="/diagram/brexit" >
+            Get started!
+          </a>
         </div>
       </div>
     </section>
