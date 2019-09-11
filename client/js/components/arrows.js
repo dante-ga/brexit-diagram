@@ -17,7 +17,7 @@ const Arrow = ([[Ai, Aj],[Bi, Bj]], valuePath) => {
   const Bx = Bj * cellWidth
   let By = Bi * cellHeight + nodeHeight/2
   if (Ai === Bi) {
-    d = `M${Ax},${Ay} L${Bx},${By}`
+    d = `M${Ax},${Ay} L${Bx - 1},${By}`
   } else {
     //Shift endpoint to avoid overlap
     if (Ai > Bi) {
@@ -33,7 +33,7 @@ const Arrow = ([[Ai, Aj],[Bi, Bj]], valuePath) => {
     const E1y = Ay
     const E2x = E1x
     const E2y = By
-    d = `M${Ax},${Ay} L${E1x},${E1y} L${E2x},${E2y} L${Bx},${By}`
+    d = `M${Ax},${Ay} L${E1x},${E1y} L${E2x},${E2y} L${Bx - 1},${By}`
   }
   const pathClass = (valuePath) ? 'value-path' : 'arrow-path'
   return svg`<path d=${d} class=${pathClass} />`
@@ -52,35 +52,32 @@ const ExtArrow = ({loc, blocked, flip}) => {
     const y2 = y + blockedHeight * dir
     const x2 = x + padWidth/2
     const x3 = x + padWidth
-    d = `M${x},${y1} L${x2},${y1} L${x2},${y2} L${x3},${y2}`
+    d = `M${x},${y1} L${x2},${y1} L${x2},${y2} L${x3 - 1},${y2}`
   } else {
     const x2 = x + padWidth
-    d = `M${x},${y} L${x2},${y}`
+    d = `M${x},${y} L${x2 - 1},${y}`
   }
   return svg`<path d=${d} class="ext-arrow-path" />`
 }
 
-const ArrowMarker = (id) => svg`
-  <marker
-    id=${id} orient="auto"
-    markerWidth="13" markerHeight="13"
-    refx="7" refy="5"
-  >
-    <path d="M2,2 L2,9 L8,5 L2,2" />
-  </marker>
-`
-
-export const ArrowDefs = () => svg`
-  <svg width="0" height="0" class="is-pulled-left">
-    <defs>
-      ${ArrowMarker('arrow')}
-      ${ArrowMarker('hollowArrow')}
-    </defs>
-  </svg>
-`
-
 export const Arrows = (arrows, valuePaths, extArrows) => svg`
   <svg class="diagram-bg">
+    <defs>
+      <marker
+        id="arrow" orient="auto"
+        markerWidth="13" markerHeight="13"
+        refx="7" refy="5"
+      >
+        <path d="M2,2 L2,9 L8,5 L2,2" />
+      </marker>
+      <marker
+        id="hollowArrow" orient="auto"
+        markerWidth="13" markerHeight="13"
+        refx="7" refy="5"
+      >
+        <path d="M2,2 L2,8 L7,5 L2,2 Z" />
+      </marker>
+    </defs>
     ${arrows.map(a => Arrow(a, false))}
     ${valuePaths.map(vp => Arrow(vp, true))}
     ${extArrows.map(ExtArrow)}

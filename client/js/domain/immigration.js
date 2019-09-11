@@ -121,7 +121,7 @@ const diagram = `
   -                 -                  socialCohesion  $socialCohesion
   freedomOfMovement nonBritish2030     medianIncome    $medianIncome
   -                 -                  unemployment    $unemployment
-  -                 ukPopulationChange popChngDueImmgr 
+  -                 ukPopulationChange popChngDueImmgr
 `
 
-export const movement = { factors, diagram }
+export const immigration = { factors, diagram }

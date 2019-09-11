@@ -22,11 +22,21 @@ const factors = {
   transitionPeriod: {
     type: 'until2030interval',
     title: 'Transition period & backstop',
-    desc: 'If the deal is approved how many years do you expect the transition period and the backstop to last?',
+    desc: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is approved?',
     choice: true,
     sliderLabel: 'Transition period & backstop duration',
     minLabel: '2020',
     maxLabel: '2030 (time horizon)',
+    arguments: {
+      lower: [
+        'Both the EU and UK say the Irish backstop is intended to be temporary, and it would be if an alternative agreement was reached to take its place.',
+        'Stephen Barclay, the Secretary of State for Exiting the EU, and Geoffrey Cox, the Attorney General, made a number of trips to Brussels to negotiate on the backstop, particularly around the UK’s ability to leave the arrangement if no alternatives are found. These negotiations culminated in a meeting between Prime Minister and President of the European Commission Jean-Claude Juncker in March 2019, when the two sides published further documents clarifying the provisions of the backstop. These turned the joint letters of January 2019 into a ‘joint legal instrument’ which reconfirmed both sides’ plan to work quickly for ‘alternative arrangements’ after the UK leaves the EU, to avoid the need for the backstop to ever come into force. The instrument also clarified that if the backstop comes into force, but the EU does not, "in good faith", use its "best endeavours" to negotiate an agreement to replace the backstop, then the UK can make use of the dispute settlement mechanism outlined in the Withdrawal Agreement.'
+      ],
+      higher: [
+        'That advice, from Attorney General Geoffrey Cox, said “despite statements in the [backstop] protocol that it is not intended to be permanent, and the clear intention of the parties that it should be replaced by alternative permanent arrangements, in international law the protocol would endure indefinitely until a superseding agreement took its place”. In other words, while not intended to be permanent, it will only be temporary if the UK and EU find a mutually acceptable alternative.',
+        'The Attorney General then published his legal assessment of what these new documents mean for the UK’s ability to leave the backstop. His conclusion was that while the new documents provide ‘useful clarifications’, nonetheless ‘the legal risk remains unchanged’ that the UK would have a legally-enforceable way to leave the backstop.'
+      ],
+    },
   },
   ukInEu: {
     type: 'boolean',
@@ -128,7 +138,7 @@ const factors = {
     type: 'unitInterval',
     mergeInto: 'gibraltarInUk',
     choice: true,
-    sliderLabel: 'Probability P',
+    sliderLabel: 'Probability',
     minLabel: 'Impossible',
     maxLabel: 'Absolutely certain',
     arguments: {
@@ -139,7 +149,7 @@ const factors = {
   gibraltarInUk: {
     type: 'boolean',
     title: 'British sovereignty over Gibraltar',
-    desc: 'If the UK will leave the EU, Gibraltar will remain under British sovereignty with probability P (in the next 25 years).',
+    desc: 'What is the probability that Gibraltar will remain under British sovereignty until at least 2030 if the UK will leave the EU?',
     valuedBy: ['UK'],
     valueArguments: {
       UK: {

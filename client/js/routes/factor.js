@@ -10,7 +10,7 @@ import { getValHistogram } from '../stats.js'
 
 const debState = {}
 
-const getInput = (domainFactor) => {
+const getInput = (domainFactor, stack) => {
   const { type, key } = domainFactor
   let onChange = (value) => {
     setUserVal(key, value)
@@ -20,7 +20,7 @@ const getInput = (domainFactor) => {
   const onChangeDeb = debounce(onChange, 500, true, debState[domainFactor])
   const { getDefault, getInput } = types[type]
   const inputVal = (key in userVals) ? userVals[key] : getDefault(domain[key])
-  const input = getInput(inputVal, onChangeDeb, domainFactor)
+  const input = getInput(inputVal, onChangeDeb, {stack, ...domainFactor})
   return input
 }
 
@@ -42,14 +42,15 @@ export const getFactor = ({ key, activeKey }, { evaluating }) => {
     }
   }
   const multipleFields = fieldKeys.length > 1
-  let _arguments
+  let _arguments = null
   for (let i = 0; i < fieldKeys.length; i++) {
     const fieldKey = fieldKeys[i]
     const active = (fieldKey === activeKey) || !multipleFields
     const factor = domain[fieldKey]
     let field
     if (evaluating) {
-      field = getInput(factor)
+      const stack = fieldKeys[i+1] && (domain[fieldKeys[i+1]].type === factor.type)
+      field = getInput(factor, stack)
     } else {
       const first = i === 0
       field = getValHistogram(fieldKey, first)
@@ -64,8 +65,6 @@ export const getFactor = ({ key, activeKey }, { evaluating }) => {
       _arguments = factor.arguments
     }
   }
-  if (_arguments) {
-    content.push(Arguments(_arguments))
-  }
+  content.push(Arguments(_arguments))
   return { content, title }
 }

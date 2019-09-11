@@ -2,59 +2,44 @@ import { camel2space } from '../util.js'
 import { types } from '../types.js'
 const { html } = lighterhtml
 
-export const Checkbox = (checked, onChange, { key, checkboxLabel, disabled }) => html`
-  <div class="field">
-    <input
-      class="is-checkradio"
-      type="checkbox"
-      checked=${checked}
-      onchange=${(e) => onChange(e.target.checked)}
-      id=${key}
-      disabled=${disabled}
-    >
-    <label for=${key} >
-      ${checkboxLabel}
-    </label>
+const RulerDash = (position) => html`
+  <div
+    class="ruler-dash"
+    style=${`left:${position * 100}%`}
+  />
+`
+
+const RulerNumber = ([position, text]) => html`
+  <div
+    class="ruler-number"
+    style=${`left:calc(${position * 100}% - 1.5em)`}
+  >
+    ${text}
   </div>
 `
 
-const RadioOption = ({name, label, value, checked, onChange, disabled}) => html`
-  <label class="radio">
-    <input
-      class="is-checkradio"
-      type="radio"
-      name=${name}
-      id=${name + '_eq_' + value}
-      value=${value}
-      checked=${checked}
-      onchange=${(e) => onChange(e.target.value)}
-      disabled=${disabled}
-    >
-    <label for=${name + '_eq_' + value} >${label}</label>
-  </label>
-  <br>
-`
-
-export const Radio = (value, onChange, {key, options, disabled}) => {
-  const radioOptions = Object.keys(options).map(
-    (optionValue) => ({
-      value: optionValue,
-      label: options[optionValue],
-      checked: optionValue === value,
-      name: key,
-      onChange,
-      disabled: disabled && disabled.includes(optionValue)
-    })
+export const Ruler = (type) => {
+  let positions
+  if (window.innerWidth < 960) {
+    positions = [0, 0.25, 0.5, 0.75, 1]
+  } else {
+    positions = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+  }
+  const {min, max, getText} = types[type]
+  const vals = positions.map(
+    position => [position, getText(min + (max - min) * position)]
   )
   return html`
-    <div class="field">
-      ${radioOptions.map(RadioOption)}
+    <div class="is-flex">
+      <div class="ruler-scale is-flex-one">
+        ${positions.map(RulerDash)}
+        ${vals.map(RulerNumber)}
+      </div>
     </div>
   `
 }
 
-//TODO: remove dependency on "type"
-export const Slider = (val, cb, { type, step, sliderLabel, minLabel, maxLabel, key }) => html`
+export const Slider = (val, cb, {stack, type, step, sliderLabel, minLabel, maxLabel, key }) => html`
   <div class="field slider">
     <div>
       ${sliderLabel} = ${types[type].getText(val)}
@@ -70,13 +55,14 @@ export const Slider = (val, cb, { type, step, sliderLabel, minLabel, maxLabel, k
         id=${key}
         onchange=${(e) => cb(parseFloat(e.target.value))}
       >
-      <div>
-        <span>${minLabel}</span>
-        <span class="is-pulled-right">${maxLabel}</span>
-      </div>
+      ${(stack) ? '' : Ruler(type)}
     </div>
   </div>
 `
+/* <div>
+  <span>${minLabel}</span>
+  <span class="is-pulled-right">${maxLabel}</span>
+</div> */
 
 export const NumberInput = (value, onChange, disabled) => html`
   <input

@@ -34,8 +34,8 @@ for (const {dir, loc, key, valuedBy} of tradeTypes) {
 const diagram = `
   -            exportsToEu      $exportsToEu
   singleMarket importsFromEu    $importsFromEu
-  -            exportsToNonEu   -
-  -            importsFromNonEu -
+  -            exportsToNonEu 
+  -            importsFromNonEu
 `
 
 export const trade = { factors, diagram }

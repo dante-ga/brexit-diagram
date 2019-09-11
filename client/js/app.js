@@ -76,8 +76,6 @@ export const navigate = (path, event) => {
     }
   }
   router.navigate(path)
-  updateComments(routes[activeRoute], evaluating)
-  gtag('config', 'UA-147529439-1', { 'page_path': path })
 }
 
 //TODO: Fix activeAgent and add activeDiagram variables
@@ -131,6 +129,10 @@ for (const route in routes) {
   }
 }
 router.on(routeHandlers)
+router.hooks({ after: () => {
+  updateComments(routes[activeRoute], evaluating)
+  gtag('config', 'UA-147529439-1', { 'page_path': window.location.pathname })
+}})
 router.notFound(() => render(appEl, NotFound))
 
 Promise.all([
@@ -141,7 +143,4 @@ Promise.all([
     evaluating = !!data.evaluating
   }),
   getStats()
-]).then(() => {
-  router.resolve()
-  updateComments(routes[activeRoute], evaluating)
-})
+]).then(() => router.resolve())

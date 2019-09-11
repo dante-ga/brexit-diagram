@@ -10,7 +10,7 @@ const ValueRow = ({positive, value, title, highlight}) => html`
 `
 
 export const ValueRegionTable = (valueList) => html`
-  <table class="table">
+  <table class="table is-fullwidth">
     <thead>
       <tr>
         <th>Sign</th>

@@ -39,9 +39,9 @@ const factors = {
 }
 
 const diagram = `
-  -      -              singleMarket      -                  -
+  -      -              singleMarket
   ukInEu marketMovement -                 marketMovementTied $marketMovementTied
-  -      -              freedomOfMovement -                  -
+  -      -              freedomOfMovement
 `
 
 const options = Object.keys(factors.marketMovement.options)
@@ -86,7 +86,7 @@ const getOptionValues = (option, vals, subdomains) => {
     const context = clone(vals)
     context.marketMovement = option
     context.billIntention = billIntention
-    const subs = ['negotiation', 'trade', 'movement', 'bill', 'gdp', 'nhs']
+    const subs = ['negotiation', 'trade', 'immigration', 'bill', 'gdp', 'nhs']
     const {totalValues, subNodeValues} = calcSubs(context, subs)
     const {UK, EU} = totalValues
     if (UK > maxUK) {

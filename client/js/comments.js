@@ -14,7 +14,9 @@ const initComments = (config) => {
 }
 
 export const updateComments = ({ comments }, evaluating) => {
+  const commentsEl = document.getElementById('disqus_thread')
   if (comments && !evaluating) {
+    commentsEl.style.display = 'block'
     const config = (page) => {
       page.identifier = window.location.pathname
       page.url = window.location.href
@@ -29,6 +31,6 @@ export const updateComments = ({ comments }, evaluating) => {
       initComments(config)
     }
   } else {
-    document.getElementById('disqus_thread').innerHTML = ''
+    commentsEl.style.display = 'none'
   }
 }

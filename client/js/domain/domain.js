@@ -7,11 +7,17 @@ import { scotland } from './scotland.js'; sub({scotland})
 import { ireland } from './ireland.js'; sub({ireland})
 import { negotiation } from './negotiation.js'; sub({negotiation})
 import { trade } from './trade.js'; sub({trade})
-import { movement } from './movement.js'; sub({movement})
+import { immigration } from './immigration.js'; sub({immigration})
 import { bill } from './bill.js'; sub({bill})
 import { gdp } from './gdp.js'; sub({gdp})
 import { nhs } from './nhs.js'; sub({nhs})
 
+export const agentLabels = {
+  UK: 'United Kingdom',
+  Scotland: 'Scotland',
+  NI: 'Northern Ireland',
+  EU: 'European Union',
+}
 export const subKeys = Object.keys(subdomains)
 export const domain = {}
 

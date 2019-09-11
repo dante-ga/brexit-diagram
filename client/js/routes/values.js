@@ -1,7 +1,7 @@
 import { ValuesTable } from '../components/values.js'
 import { Button, Tabs } from '../components/global.js'
 import { setUserValues } from '../calc/value.js'
-import { domain } from '../domain/domain.js'
+import { domain, agentLabels } from '../domain/domain.js'
 import { types } from '../types.js'
 import { persist, bulkPersist } from '../persist.js'
 import { round2tenth } from '../util.js'
@@ -162,7 +162,7 @@ export const getValues = ({ agent }, {updateView: _updateView, navigate}) => {
   updateView = _updateView
   activeAgent = agent || activeAgent
   const agentTabs = agents.map(a => ({
-    label: a,
+    label: agentLabels[a],
     active: a === activeAgent,
     onClick: (event) => navigate('/values/' + a, event),
     path: '/values/' + a,

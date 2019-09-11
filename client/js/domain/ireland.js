@@ -93,8 +93,8 @@ factors.irishBorder = {
       return c.irishBorder
     }
   },
-  valuedBy: ['NI', 'UK', 'EU'],
-  decidedBy: ['NI', 'UK', 'EU'],
+  valuedBy: ['UK', 'NI', 'EU'],
+  decidedBy: ['UK', 'NI', 'EU'],
 }
 
 const violenceNiArguments = {
@@ -142,20 +142,20 @@ factors.violenceNi = {
   title: 'Violence in Northern Ireland',
   desc: "What are expected levels of violence in Northern Ireland under each of the following border arrangements?",
   calc: c => c['violenceNi_' + c.irishBorder],
-  valuedBy: ['NI', 'UK', 'EU'],
+  valuedBy: ['UK', 'NI', 'EU'],
 }
 
 factors.brokenDeal = {
   type: 'boolean',
   title: 'Irish border Brexit deal is broken',
   calc: c => (c.brexitApproval === 'deal') && (c.irishBorder === 'hardBorder'),
-  valuedBy: ['NI', 'UK', 'EU'],
+  valuedBy: ['UK', 'NI', 'EU'],
 }
 
 const diagram = `
+  ukInEu irishBorder    $irishBorder
+  -      -              violenceNi   $violenceNi
   -      brexitApproval brokenDeal   $brokenDeal
-  ukInEu irishBorder    violenceNi   $violenceNi
-  -      -              $irishBorder -
 `
 
 //Note: due to complexity of generalization are calculated explicitly without reuse of 'calc' functions.

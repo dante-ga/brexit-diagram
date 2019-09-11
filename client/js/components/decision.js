@@ -47,6 +47,9 @@ const Alternative = ({ totalValue, label }) => html`
 export const Decision = (decision) => {
   const { bestOption, alternatives } = decision
   return html`
+  <div class="notification">
+    <strong>Note:</strong> these results update automatically when you change your answers.
+  </div>
     <table class="table">
       <thead>
         <tr>

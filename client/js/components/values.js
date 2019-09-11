@@ -41,7 +41,7 @@ const ValueRow = ({factor, positive, value, gap, title, toggleSign, onValueChang
 `
 
 export const ValuesTable = (valueList) => html`
-  <table class="table">
+  <table class="table is-fullwidth">
     <thead>
       <tr>
         <th>Sign</th>

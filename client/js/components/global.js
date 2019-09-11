@@ -1,7 +1,7 @@
 const { html } = lighterhtml
 
 export const Title = (text) => html`
-  <h1 class="subtitle">
+  <h1 class="title has-text-centered">
     ${text}
   </h1>
 `

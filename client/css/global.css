@@ -1,6 +1,10 @@
-#disqus_thread {
-  max-width: 800px;
-  margin: 0 20px;
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+#disqus_thread.section {
+  padding-bottom: 0;
+  padding-top: 0;
 }
 
 nav.navbar.has-shadow {
@@ -11,17 +15,17 @@ nav.navbar.has-shadow {
 	flex-shrink: 1;
 	flex-wrap: wrap;
 	border-bottom-color: transparent;
+  justify-content: center;
 }
 .tabs.is-boxed a {
   border-bottom-color: #dbdbdb;
 }
 
-.slider {
-  max-width: 640px;
-}
-
 input[type="range"].is-fullwidth {
   width: 100%;
+  transform: scaleY(1.4);
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 input[type="number"] {
   width: 67px;

@@ -1,5 +1,5 @@
 import { round2tenth, camel2space, bn } from './util.js'
-import { Radio, Checkbox, Slider } from './components/inputs.js'
+import { Slider } from './components/inputs.js'
 import { domain } from './domain/domain.js'
 
 const valuePercent = 10
@@ -8,14 +8,12 @@ export const types = {
   boolean: {
     getDefault: () => false,
     getText: val => (val) ? 'YES' : 'NO',
-    getInput: (val, cb, df) => Checkbox(val, cb, df),
     getValueObjs: ({key, title}) => ({[key]: {title}}),
     getValue: (val, value) => (val) ? value : 0,
   },
   option: {
     getDefault: () => null,
     getText: val => camel2space(val),
-    getInput: (val, cb, df) => Radio(val, cb, df),
     getValueObjs: ({key, title, options}) => {
       const valueObjs = {}
       for (const option in options) {
@@ -50,7 +48,7 @@ export const types = {
   },
   until2030interval: {
     getDefault: () => 0.5,
-    getText: val => round2tenth(val * 10) + ' years',
+    getText: val => round2tenth(val * 10) + ' yr',
     min: 0,
     max: 1,
     getInput: (val, cb, df) => Slider(val, cb, {

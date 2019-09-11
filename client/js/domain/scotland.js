@@ -47,9 +47,9 @@ const factors = {
 }
 
 const diagram = `
-  -                -                   $independentScotland -
-  scotlandApproval independentScotland scotlandEuMember     scotlandInEu $scotlandInEu
-  -                -                   ukInEu               -
+  -                -                    ukInEu               -
+  scotlandApproval independentScotland  $independentScotland scotlandInEu $scotlandInEu
+  -                -                    scotlandEuMember
 `
 
 //Note: due to complexity of generalization are calculated explicitly without reuse of 'calc' functions.

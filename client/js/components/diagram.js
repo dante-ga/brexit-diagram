@@ -1,4 +1,4 @@
-import { ArrowDefs, Arrows } from './arrows.js'
+import { Arrows } from './arrows.js'
 const { html } = lighterhtml
 
 const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
@@ -54,10 +54,10 @@ const Row = (row) => html`
   <div class="diagram-row">
     ${row.map(Cell)}
   </div>
+  <br>
 `
 
 export const Diagram = ({ rows, arrows, valuePaths, extArrows }) => html`
-  ${ArrowDefs()}
   <div class="diagram-cont">
     <div class="diagram">
       ${Arrows(arrows, valuePaths, extArrows)}
