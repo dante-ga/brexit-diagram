@@ -8,6 +8,7 @@ import { types } from '../types.js'
 import { navigate } from '../app.js'
 import { debounce } from '../util.js'
 import { getValueHistogram } from '../stats.js'
+import { getCommentsButton } from '../comments.js'
 
 const getValueRegionIndexes = (key, agent, fullList, listSize) => {
   const index = fullList.findIndex(item => item.key === key)
@@ -72,7 +73,7 @@ const getRadioAddon = (key, agent, field, option, activeOption) => {
   return RadioAddon(option, field, active, activate)
 }
 
-export const getValue = ({ key, agent, activeOption }, {evaluating, updateView}) => {
+export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, setEvaluation}) => {
   const content = []
   const { title, valuedBy, type, options, valueArguments } = domain[key]
   let pageTitle
@@ -89,6 +90,18 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
     pageTitle = `Value of "${title}"`
   }
   content.push(Title(pageTitle))
+  content.push(Tabs([
+    {
+      label: 'Your answer',
+      active: evaluating,
+      onClick: () => setEvaluation(true)
+    },
+    {
+      label: 'Statistics',
+      active: !evaluating,
+      onClick: () => setEvaluation(false)
+    },
+  ]))
   if (type === 'option') {
     if (evaluating) {
       const valueKeys = Object.keys(options).map(option => key + '_' + option)
@@ -116,6 +129,7 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
       } else {
         content.push(Arguments())
       }
+      content.push(getCommentsButton(updateView))
     } else {
       content.push(Arguments(null))
     }
@@ -132,6 +146,7 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView})
     } else {
       content.push(Arguments())
     }
+    content.push(getCommentsButton(updateView))
   }
   return { content, title: pageTitle }
 }

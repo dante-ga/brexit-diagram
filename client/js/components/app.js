@@ -10,24 +10,7 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
   </a>
 `
 
-export const ToggleMode = (evaluating, onClick) => {
-  const text = (evaluating) ? 'View Stats' : 'Edit Answers'
-  const color = (evaluating) ? 'info' : 'success'
-  const icon = (evaluating) ? 'fas fa-eye' : 'far fa-edit'
-  const buttonClass = 'button is-' + color
-  return html`
-    <div class="navbar-item is-va-center">
-      <button class=${buttonClass} onclick=${onClick}>
-        <span class="icon is-medium">
-          <i class=${icon} />
-        </span>
-        <span>${text}</span>
-      </button>
-    </div>
-  `
-}
-
-export const NavBar = ({goHome, navTabs, toggleMode}) => {
+export const NavBar = ({goHome, navTabs}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -35,7 +18,6 @@ export const NavBar = ({goHome, navTabs, toggleMode}) => {
           <img src="/img/logo.png" width="28" height="28" >
         </a>
         ${navTabs.map(NavBarItem)}
-        ${toggleMode}
       </div>
     </nav>
   `

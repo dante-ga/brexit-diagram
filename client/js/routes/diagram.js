@@ -44,7 +44,7 @@ const parseDagram = (str) => {
 }
 
 
-const getDiagramObj = (str, subKey, evaluating) => {
+const getDiagramObj = (str, subKey) => {
   const arrows = []
   const valuePaths = []
   const { rows, locs } = parseDagram(str)
@@ -55,7 +55,7 @@ const getDiagramObj = (str, subKey, evaluating) => {
       if (value) {
         cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
         valuePaths.push([locs[key], loc])
-        cell.notify = evaluating && hasMissingValues(key).missing
+        cell.notify = hasMissingValues(key).missing
         const agent = domain[key].valuedBy[0]
         cell.path = `/value/${key}/${agent}`
         if (loc[0] !== locs[key][0]) {
@@ -72,14 +72,14 @@ const getDiagramObj = (str, subKey, evaluating) => {
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
           cell.choice = hasChoice(key)
           cell.decision = !!domain[key].decidedBy
-          cell.notify = evaluating && cell.choice && hasChoiceMissing(key)
+          cell.notify = cell.choice && hasChoiceMissing(key)
         } else {
           cell.external = true
           cell.choice = false
         }
         cell.path = '/factor/' + key
       }
-      cell.importance = !evaluating && !cell.external && getImportance(key, value)
+      cell.importance = !cell.external && getImportance(key, value)
       cell.onClick = (event) => navigate(cell.path, event)
     }
   }
@@ -99,9 +99,9 @@ for (const subKey in subdomains) {
   }
 }
 
-export const getDiagram = ({subKey}, { evaluating }) => {
+export const getDiagram = ({subKey}) => {
   //TODO: do no re-compute most of the diagramObj properties
-  const diagram = getDiagramObj(subdomains[subKey].diagram, subKey, evaluating)
+  const diagram = getDiagramObj(subdomains[subKey].diagram, subKey)
   diagram.extArrows = []
   for (const row of diagram.rows) {
     for (let j = 0; j < row.length; j++) {

@@ -1,4 +1,3 @@
-import { updateComments } from '../comments.js'
 const { html } = lighterhtml
 
 const SelectArguments = () => html`
@@ -9,9 +8,7 @@ const SelectArguments = () => html`
 
 const NoArguments = () => html`
   <div class="notification">
-    <span>No arguments yet. If you have one, please leave it in the comments bellow (</span>
-    <a onclick=${() => updateComments({comments: true})}>show comments</a>
-    <span>). It will be added up here after a review.</span>
+    <span>No arguments yet. If you have one, please leave it in the comments bellow. It will be added up here after a review.</span>
   </div>
 `
 

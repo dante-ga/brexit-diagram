@@ -3,6 +3,7 @@
   margin: 0 auto;
 }
 #disqus_thread.section {
+  margin-top: -35px;
   padding-bottom: 0;
   padding-top: 0;
 }

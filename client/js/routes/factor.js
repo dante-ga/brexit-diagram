@@ -1,4 +1,4 @@
-import { Title } from '../components/global.js'
+import { Title, Tabs } from '../components/global.js'
 import { Desc } from '../components/factor.js'
 import { Arguments, RadioAddon } from '../components/arguments.js'
 import { userVals, setUserVal } from '../calc/calc.js'
@@ -7,6 +7,7 @@ import { domain } from '../domain/domain.js'
 import { types } from '../types.js'
 import { debounce } from '../util.js'
 import { getValHistogram } from '../stats.js'
+import { getCommentsButton } from '../comments.js'
 
 const debState = {}
 
@@ -24,7 +25,7 @@ const getInput = (domainFactor, stack) => {
   return input
 }
 
-export const getFactor = ({ key, activeKey }, { evaluating }) => {
+export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updateView }) => {
   const content = []
   const domainFactor = domain[key]
   const { title, desc, choice, decidedBy } = domainFactor
@@ -42,6 +43,20 @@ export const getFactor = ({ key, activeKey }, { evaluating }) => {
     }
   }
   const multipleFields = fieldKeys.length > 1
+  if (fieldKeys.length > 0) {
+    content.push(Tabs([
+      {
+        label: 'Your answer',
+        active: evaluating,
+        onClick: () => setEvaluation(true)
+      },
+      {
+        label: 'Statistics',
+        active: !evaluating,
+        onClick: () => setEvaluation(false)
+      },
+    ]))
+  }
   let _arguments = null
   for (let i = 0; i < fieldKeys.length; i++) {
     const fieldKey = fieldKeys[i]
@@ -66,5 +81,8 @@ export const getFactor = ({ key, activeKey }, { evaluating }) => {
     }
   }
   content.push(Arguments(_arguments))
+  if (_arguments !== null) {
+    content.push(getCommentsButton(updateView))
+  }
   return { content, title }
 }

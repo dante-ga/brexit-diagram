@@ -17,16 +17,8 @@
       h2.title.main-title {
         margin-bottom: 45px;
       }
-      .button-section {
-        background-image: url('/img/button_bg.png');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: contain;
-        padding: 95px 0;
-      }
-      .button-section .button {
-        margin-top: -5px;
-        box-shadow: 0 0 10px 10px white;
+      #get-started {
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -37,18 +29,10 @@
       </h2>
       <div calss="container" style="max-width: 960px; margin: 0 auto;">
         <div class="tile is-ancestor is-vertical">
-          <div class="tile is-12">
-            <div class="tile is-6 is-parent">
-              <div class="tile is-child box">
-                <h5 class="title is-5">Discover common ground and core differences with others</h5>
-                <img src="/img/core_differences.png">
-              </div>
-            </div>
-            <div class="tile is-6 is-parent">
-              <div class="tile is-child box">
-                <h5 class="title is-5">Contribute missing arguments</h5>
-                <img src="/img/contribute_arguments.png">
-              </div>
+          <div class="tile is-12 is-parent">
+            <div class="tile is-child box">
+              <h5 class="title is-5">Explore an influence diagram connecting numerous factors affected by Brexit</h5>
+              <img src="/img/explore_influence_diagram.png">
             </div>
           </div>
           <div class="tile is-12">
@@ -65,12 +49,24 @@
               </div>
             </div>
           </div>
+          <div class="tile is-12">
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Discover common ground and core differences with others</h5>
+                <img src="/img/core_differences.png">
+              </div>
+            </div>
+            <div class="tile is-6 is-parent">
+              <div class="tile is-child box">
+                <h5 class="title is-5">Contribute missing arguments</h5>
+                <img src="/img/contribute_arguments.png">
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="button-section">
-          <a class="button is-success is-large" href="/diagram/brexit" >
-            Get started!
-          </a>
-        </div>
+        <a id="get-started" class="button is-success is-large" href="/diagram/brexit" >
+          Get started!
+        </a>
       </div>
     </section>
   </body>

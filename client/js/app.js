@@ -10,24 +10,22 @@ import {
   checkStatus,
   complete
 } from './routes/decision.js'
-import { NavBar, App, NotFound, ToggleMode } from './components/app.js'
+import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 import { getStats } from './stats.js'
-import { updateComments } from './comments.js'
+import { hideComments, showComments } from './comments.js'
 const { render } = lighterhtml
 
 let activeRoute
 let activeParams
-let evaluating = false
+let evaluating = true
 const appEl = document.getElementById('App')
 
-const toggleEvaluation = () => {
-  evaluating = !evaluating
+const setEvaluation = (newEval) => {
+  evaluating = newEval
   updateView()
-  updateComments(routes[activeRoute], evaluating)
-  persist('evaluating', evaluating)
 }
 
 const getNav = () => {
@@ -43,23 +41,22 @@ const getNav = () => {
       })
     }
   }
-  const toggleMode = ToggleMode(evaluating, toggleEvaluation)
-  return NavBar({ navTabs, toggleMode })
+  return NavBar({ navTabs })
 }
 
 export function updateView() {
   render(appEl, () => {
     const { content, title } = routes[activeRoute].get(
       activeParams,
-      { evaluating, updateView, navigate }
+      { evaluating, setEvaluation, updateView, navigate }
     )
     document.title = title + ' | Gitarg'
     let toolbar
-    if (evaluating && !complete) {
+    if (complete) {
+      document.body.classList.remove('has-navbar-fixed-bottom')
+    } else {
       toolbar = getDecisionToolbar()
       document.body.classList.add('has-navbar-fixed-bottom')
-    } else {
-      document.body.classList.remove('has-navbar-fixed-bottom')
     }
     return App(getNav(), content, toolbar)
   })
@@ -117,6 +114,14 @@ const routes = {
     navTab: 'Decision',
     path: '/decision',
   },
+  discussion: {
+    get: () => {
+      showComments()
+      return {content: '', title: 'Discussion' }
+    },
+    navTab: 'Discussion',
+    path: '/discussion',
+  },
 }
 
 const routeHandlers = {}
@@ -129,10 +134,16 @@ for (const route in routes) {
   }
 }
 router.on(routeHandlers)
-router.hooks({ after: () => {
-  updateComments(routes[activeRoute], evaluating)
-  gtag('config', 'UA-147529439-1', { 'page_path': window.location.pathname })
-}})
+router.hooks({
+  before: (done) => {
+    evaluating = true
+    hideComments()
+    done()
+  },
+  after: () => {
+    gtag('config', 'UA-147529439-1', { 'page_path': window.location.pathname })
+  }
+})
 router.notFound(() => render(appEl, NotFound))
 
 Promise.all([
@@ -140,7 +151,6 @@ Promise.all([
     importUserVals(data)
     importUserValues(data)
     checkStatus()
-    evaluating = !!data.evaluating
   }),
   getStats()
 ]).then(() => router.resolve())
