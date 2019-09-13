@@ -30,18 +30,20 @@ const setEvaluation = (newEval) => {
 
 const getNav = () => {
   const navTabs = []
+  const navTabsEnd = []
   for (const route in routes) {
-    const { navTab, navPath, path } = routes[route]
+    const { navTab, navEnd, navPath, path } = routes[route]
     if (navTab) {
-      navTabs.push({
+      const tab = {
         title: navTab,
         active: route === activeRoute,
         href: navPath || path,
         onClick: (event) => navigate(navPath || path, event)
-      })
+      }
+      ;(navEnd) ? navTabsEnd.push(tab) : navTabs.push(tab)
     }
   }
-  return NavBar({ navTabs })
+  return NavBar({ navTabs, navTabsEnd })
 }
 
 export function updateView() {
@@ -79,7 +81,7 @@ export const navigate = (path, event) => {
 const routes = {
   diagram: {
     get: getDiagram,
-    navTab: 'Influence Diagram',
+    navTab: 'Diagram',
     path: '/diagram/:subKey',
     navPath: '/diagram/brexit',
   },
@@ -119,7 +121,8 @@ const routes = {
       showComments()
       return {content: '', title: 'Discussion' }
     },
-    navTab: 'Discussion',
+    navTab: 'Discussion 💬',
+    navEnd: true,
     path: '/discussion',
   },
 }

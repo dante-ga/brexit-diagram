@@ -1,4 +1,12 @@
-import { Progress, ProgressPage, Decision, Next, Finish } from '../components/decision.js'
+import { Info } from '../components/global.js'
+import {
+  Progress,
+  ProgressPage,
+  Decision,
+  Next,
+  Finish,
+  DecisionInfo
+} from '../components/decision.js'
 import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { userValues, hasMissingValues } from '../calc/value.js'
 import { domain, getMainDecision } from '../domain/domain.js'
@@ -105,9 +113,21 @@ export const getDecisionToolbar = () => {
   return [progress, next]
 }
 
-export const getDecision = () => {
+export const getDecision = (_, {updateView}) => {
   checkStatus()
   const content = []
+
+  if (!localStorage.getItem('dismissed_decision_info')) {
+    content.push(Info({
+      title: 'Decision recommendation',
+      content: DecisionInfo(),
+      onClose: () => {
+        localStorage.setItem('dismissed_decision_info', 'true')
+        updateView()
+      },
+    }))
+  }
+
   if (complete) {
     const decision = getMainDecision(userVals)
     content.push(Decision(decision))

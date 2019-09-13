@@ -8,11 +8,18 @@ export const Progress = (val, max) => html`
 
 export const Next = (onClick, path) => html`
   <div class="navbar-item is-va-center">
+    <span
+      class="icon is-medium tooltip is-tooltip-primary is-tooltip-multiline"
+      data-tooltip='Please answer all of the questions to submit your response and get a decision recommendation. You can answer the questions in any order by using the influence diagram or by using the "Next&nbsp;Question" button.'
+    >
+      <i class="fas fa-lg fa-info-circle"></i>
+    </span>
+  </div>
+  <div class="navbar-item is-va-center">
     <a
       class="${'button ' + ((onClick) ? 'is-primary' : 'is-static' )}"
       onclick=${onClick}
       href=${path}
-      title="Go to the next unanswered question"
     >
       <span>Next Question</span>
       <span class="icon is-small">
@@ -47,9 +54,6 @@ const Alternative = ({ totalValue, label }) => html`
 export const Decision = (decision) => {
   const { bestOption, alternatives } = decision
   return html`
-  <div class="notification">
-    <strong>Note:</strong> these results update automatically when you change your answers.
-  </div>
     <table class="table">
       <thead>
         <tr>
@@ -61,6 +65,21 @@ export const Decision = (decision) => {
         ${Object.values(alternatives).map(Alternative)}
       </tbody>
     </table>
-    Recommended option: <strong>${alternatives[bestOption].label}</strong>
+    <div class="field">
+      Recommended option: <strong>${alternatives[bestOption].label}</strong>
+    </div>
+    <div class="notification">
+      <strong>Note:</strong> these results update automatically when you change your answers.
+    </div>
   `
 }
+
+export const DecisionInfo = () => html`
+  The decision recommendation is made in the following way:
+  <ol>
+    <li>Each of the Brexit options is considered separately.</li>
+    <li>Consequences of the decision are calculated based on the various relations between the factors and answers that you gave.</li>
+    <li>Outcomes are evaluated based on the values that you provided.</li>
+    <li>Total expected values of the options are compared to find the best one.</li>
+  </ol>
+`

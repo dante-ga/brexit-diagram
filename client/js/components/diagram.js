@@ -22,24 +22,52 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external
       }
     }
     if (choice) {
-      badges.push(html`<i class="badge fas fa-sliders-h" />`)
+      badges.push(html`
+        <span class="badge tooltip is-tooltip-bottom" data-tooltip="settable numeric values">
+          <i class="fas fa-sliders-h" />
+        </span>
+      `)
     }
     if (decision) {
-      badges.push(html`<i class="badge fas fa-balance-scale-right" />`)
+      badges.push(html`
+        <span class="badge tooltip is-tooltip-bottom" data-tooltip="decision/negotiation">
+          <i class="fas fa-balance-scale-right" />
+        </span>
+      `)
     }
     if (notify) {
       badges.push(html`
-        <span class="status has-text-danger">
+        <span
+          class="status has-text-danger tooltip is-tooltip-danger"
+          data-tooltip="unanswered questions"
+        >
           <i class="fas fa-circle" />
         </span>
       `)
     }
+
     if ((!isNaN(importance)) && (importance > 40)) {
-      badges.push(html`<i class='badge badge2 fas fa-exclamation has-text-danger' />`)
-      if (importance > 160) {
-        badges.push(html`<i class='badge badge3 fas fa-exclamation has-text-danger' />`)
+      if (importance < 160) {
+        badges.push(html`
+          <span
+            class="badge badge2 has-text-danger tooltip is-tooltip-danger is-tooltip-bottom"
+            data-tooltip="significant disagreement"
+          >
+            <i class="fas fa-exclamation" />
+          </span>
+        `)
+      } else {
+        badges.push(html`
+          <span
+            class="badge badge2 has-text-danger tooltip is-tooltip-danger is-tooltip-bottom"
+            data-tooltip="critical disagreement"
+          >
+            <i class="fas fa-exclamation" /><i class="fas fa-exclamation" />
+          </span>
+        `)
       }
     }
+
     box = html`
       <a class=${classStr} onclick=${onClick} href=${path} >
         ${badges}
@@ -64,4 +92,13 @@ export const Diagram = ({ rows, arrows, valuePaths, extArrows }) => html`
       ${rows.map(Row)}
     </div>
   </div>
+`
+
+export const DiagramInfo = () => html`
+  The influence diagram shows how decisions influence objective factors which in turn affect subjective values. It's made out of the following elemets:
+  <br><strong>Box</strong> - a factor of a certain type which usually contains settable numeric values, stistics and arguments.
+  <br><strong>Heart</strong> - a settable subjective value of a factor which also contains statistics and arguments.
+  <br><strong>Arrow</strong> - causal connection between numeric values of the two factors.
+  <br><strong>Dashed arrow</strong> - there is one or more target factor in the following parts of the diagram.
+  <br><strong>Dashed box</strong> - the factor belongs to one of the previous parts of the diagram.
 `

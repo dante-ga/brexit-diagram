@@ -61,3 +61,7 @@ export const ValuesTable = (valueList) => html`
     </tbody>
   </table>
 `
+
+export const ValuesInfo = () => html`
+  As a UK voter please indicate how much you value the following factors relative to each other. You can also set individual values from the influence diagram and come back here to fine-tune them before getting the decision recommendation. For agents other than the United Kingdom, please provide the values you think that their decision makers have.
+`

@@ -2,7 +2,6 @@
 .diagram-cont {
   overflow-x: auto;
   padding-top: 20px;
-  margin-bottom: 30px;
   text-align: center;
 }
 .diagram {
@@ -51,15 +50,21 @@
 }
 .diagram-cell .button .badge {
   position: absolute;
-  bottom: -10px;
-  right: 5px;
+  bottom: -15px;
+  right: 7px;
   background: inherit;
 }
 .diagram-cell .button .badge2 {
   right: 27px;
+  bottom: -15px;
+  width: 13px;
+  text-align: center;
+  white-space: nowrap;
+  padding-left: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
 }
-.diagram-cell .button .badge3 {
-  right: 33px;
+.diagram-cell.value-cell .button .badge2 {
+  right: 23px;
 }
 .diagram-cell .button .badge.fa-sliders-h {
   padding: 0 1px;
@@ -68,6 +73,9 @@
   position: absolute;
   top: -13px;
   right: -9px;
+}
+.diagram-cell.value-cell .button .status {
+  right: 20px;
 }
 .diagram-cell .button:hover {
   background-color: whitesmoke;
@@ -91,7 +99,7 @@ svg #arrow {
 svg #hollowArrow {
   stroke:black;
   stroke-width: 1px;
-  fill: white;
+  fill: none;
 }
 svg .arrow-path {
   stroke:black;
@@ -109,5 +117,5 @@ svg .ext-arrow-path {
   stroke-width: 2px;
   fill: none;
   marker-end: url(#hollowArrow);
-  stroke-dasharray: 6px;
+  stroke-dasharray: 4px 3px;
 }

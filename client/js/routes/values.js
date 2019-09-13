@@ -1,5 +1,5 @@
-import { ValuesTable } from '../components/values.js'
-import { Button, Tabs } from '../components/global.js'
+import { ValuesTable, ValuesInfo } from '../components/values.js'
+import { Button, Tabs, Info } from '../components/global.js'
 import { setUserValues } from '../calc/value.js'
 import { domain, agentLabels } from '../domain/domain.js'
 import { types } from '../types.js'
@@ -161,16 +161,27 @@ export const getValueList = (agent, editable=true) => {
 export const getValues = ({ agent }, {updateView: _updateView, navigate}) => {
   updateView = _updateView
   activeAgent = agent || activeAgent
+
+  const content = []
+  let info
+  if (!localStorage.getItem('dismissed_values_info')) {
+    content.push(Info({
+      title: 'Agent values',
+      content: ValuesInfo(),
+      onClose: () => {
+        localStorage.setItem('dismissed_values_info', 'true')
+        updateView()
+      },
+    }))
+  }
   const agentTabs = agents.map(a => ({
     label: agentLabels[a],
     active: a === activeAgent,
     onClick: (event) => navigate('/values/' + a, event),
     path: '/values/' + a,
   }))
-  const content =  [
-    Tabs(agentTabs),
-    ValuesTable(getValueList(activeAgent)),
-    Button({ label: 'Rescale to 100', onClick: rescaleValues }),
-  ]
+  content.push(Tabs(agentTabs))
+  content.push(ValuesTable(getValueList(activeAgent)))
+  content.push(Button({ label: 'Rescale to 100', onClick: rescaleValues }))
   return { content, title: agent + ' Values' }
 }

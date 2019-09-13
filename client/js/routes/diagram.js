@@ -1,6 +1,6 @@
 import { domain, subdomains } from '../domain/domain.js'
-import { Diagram } from '../components/diagram.js'
-import { Tabs } from '../components/global.js'
+import { Diagram, DiagramInfo } from '../components/diagram.js'
+import { Tabs, Info } from '../components/global.js'
 import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { hasMissingValues } from '../calc/value.js'
 import { updateView, navigate } from '../app.js'
@@ -100,6 +100,27 @@ for (const subKey in subdomains) {
 }
 
 export const getDiagram = ({subKey}) => {
+  const content = []
+
+  if (!localStorage.getItem('dismissed_diagram_info')) {
+    content.push(Info({
+      title: 'Influence diagram',
+      content: DiagramInfo(),
+      onClose: () => {
+        localStorage.setItem('dismissed_diagram_info', 'true')
+        updateView()
+      },
+    }))
+  }
+
+  const subTabs = Object.keys(subdomains).map((sub) => ({
+    label: sub.toUpperCase(),
+    active: sub === subKey,
+    onClick: (event) => navigate('/diagram/'+sub, event),
+    path: '/diagram/'+sub,
+  }))
+  content.push(Tabs(subTabs))
+
   //TODO: do no re-compute most of the diagramObj properties
   const diagram = getDiagramObj(subdomains[subKey].diagram, subKey)
   diagram.extArrows = []
@@ -115,15 +136,7 @@ export const getDiagram = ({subKey}) => {
       }
     }
   }
-  const subTabs = Object.keys(subdomains).map((sub) => ({
-    label: sub.toUpperCase(),
-    active: sub === subKey,
-    onClick: (event) => navigate('/diagram/'+sub, event),
-    path: '/diagram/'+sub,
-  }))
-  const content = [
-    Tabs(subTabs),
-    Diagram(diagram),
-  ]
+  content.push(Diagram(diagram))
+
   return { content, title: subKey.toUpperCase() }
 }

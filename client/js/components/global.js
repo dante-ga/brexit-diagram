@@ -30,3 +30,20 @@ export const Tabs = (tabs) => html`
     </ul>
   </div>
 `
+
+export const Info = ({title, content, onClose}) => html`
+  <article class="message is-info">
+    <div class="message-header">
+      <p>
+        <span class="icon">
+          <i class="fas fa-info-circle"></i>
+        </span>
+        <span>${title}</span>
+      </p>
+      <button class="delete" aria-label="delete" onclick=${onClose} />
+    </div>
+    <div class="message-body">
+      ${content}
+    </div>
+  </article>
+`

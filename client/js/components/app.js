@@ -2,7 +2,7 @@ const { html } = lighterhtml
 
 const NavBarItem = ({ title, active, href, onClick }) => html`
   <a
-    class=${['navbar-item', 'is-tab', (active) ? 'is-active' : ''].join(' ')}
+    class=${['navbar-item', 'is-flex', 'is-va-center',  'is-tab', (active) ? 'is-active' : ''].join(' ')}
     onclick=${onClick}
     href=${href}
   >
@@ -10,7 +10,7 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
   </a>
 `
 
-export const NavBar = ({goHome, navTabs}) => {
+export const NavBar = ({navTabs, navTabsEnd}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -19,6 +19,8 @@ export const NavBar = ({goHome, navTabs}) => {
         </a>
         ${navTabs.map(NavBarItem)}
       </div>
+      <div class="expand" />
+      ${navTabsEnd.map(NavBarItem)}
     </nav>
   `
 }

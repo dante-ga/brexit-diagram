@@ -75,7 +75,7 @@ export const Arrows = (arrows, valuePaths, extArrows) => svg`
         markerWidth="13" markerHeight="13"
         refx="7" refy="5"
       >
-        <path d="M2,2 L2,8 L7,5 L2,2 Z" />
+        <path d="M2,8 L7,5 L2,2" />
       </marker>
     </defs>
     ${arrows.map(a => Arrow(a, false))}
