@@ -59,7 +59,38 @@ const factors = {
       * (1 + c.nhsBudgetChange)
     ) / (1 + c.nhsDemandChange) - 1,
     valuedBy: ['UK'],
-  }
+  },
+  researchColab_remain: {
+    type: 'unitInterval',
+    choice: true,
+    sliderLabel: "After remaining in the EU",
+    minLabel: '',
+    maxLabel: '',
+    mergeInto: 'researchColab',
+  },
+  researchColab_deal: {
+    type: 'unitInterval',
+    choice: true,
+    sliderLabel: "After leaving the EU with a deal",
+    minLabel: '',
+    maxLabel: '',
+    mergeInto: 'researchColab',
+  },
+  researchColab_noDeal: {
+    type: 'unitInterval',
+    choice: true,
+    sliderLabel: "After no-deal Brexit",
+    minLabel: 'No collaboration',
+    maxLabel: 'Full collaboration',
+    mergeInto: 'researchColab',
+  },
+  researchColab: {
+    title: 'Scientific research collaboration with the EU',
+    desc: 'Please estimate how much scientific research collaboration with the EU will there  be in the following cases.',
+    type: 'unitInterval',
+    calc: c => c['researchColab_' + c.brexitApproval],
+    valuedBy: ['UK'],
+  },
 }
 
 const diagram = `
@@ -68,6 +99,7 @@ const diagram = `
   ukInEu             euMedicineForNhs nhsPerformance $nhsPerformance
   -                  euResearchForNhs
   govtSpendingChange nhsBudgetChange
+  brexitApproval     -                researchColab $researchColab
 `
 
 export const nhs = { factors, diagram }

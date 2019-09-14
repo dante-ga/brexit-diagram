@@ -1,5 +1,5 @@
 .section {
-  max-width: 1200px;
+  max-width: calc(1050px + 3rem);
   margin: 0 auto;
   padding-top: 1.5rem;
 }

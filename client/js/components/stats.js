@@ -2,7 +2,7 @@ import { Ruler } from '../components/inputs.js'
 
 const { html, svg } = lighterhtml
 
-const width = 1152
+const width = 1050
 const countHeight = 30
 
 const optionColors = {

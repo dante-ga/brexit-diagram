@@ -69,4 +69,4 @@ const diagram = `
   -              -             debtService
 `
 
-export const bill = { factors, diagram }
+export const budget = { factors, diagram }

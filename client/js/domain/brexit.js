@@ -1,6 +1,7 @@
 import { clone } from '../util.js'
 import { calcSubs } from '../calc/calc.js'
 import { getAgentValue } from '../calc/value.js'
+import { getNegotiationDistribution } from '../calc/negotiation.js'
 
 
 //Starting Brexit event + miscaleneous factors
@@ -17,7 +18,7 @@ const factors = {
     choice: true,
     decidedBy: ['UK'],
     blockedExtArrow: true,
-    flipExtArrow: true,
+    // flipExtArrow: true,
   },
   transitionPeriod: {
     type: 'until2030interval',
@@ -46,144 +47,50 @@ const factors = {
     calc: c => (c.brexitApproval === 'remain')
       || ((c.brexitApproval === 'deal') && (Math.random() < c.transitionPeriod)),
   },
-  legalRights_remain: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After remaining in the EU",
-    minLabel: '',
-    maxLabel: '',
-    mergeInto: 'legalRights',
-  },
-  legalRights_deal: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After leaving the EU with a deal",
-    minLabel: '',
-    maxLabel: '',
-    mergeInto: 'legalRights',
-  },
-  legalRights_noDeal: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After no-deal Brexit",
-    minLabel: 'No rights',
-    maxLabel: 'Full rights',
-    mergeInto: 'legalRights',
-  },
-  legalRights: {
-    title: 'Legal rights of UK citizens in the EU',
-    desc: 'Please estimate the fullness of legal rights which UK sitiezens will have in the EU in the following cases.',
-    type: 'unitInterval',
-    calc: c => c['legalRights_' + c.brexitApproval],
-    valuedBy: ['UK'],
-  },
-  researchColab_remain: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After remaining in the EU",
-    minLabel: '',
-    maxLabel: '',
-    mergeInto: 'researchColab',
-  },
-  researchColab_deal: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After leaving the EU with a deal",
-    minLabel: '',
-    maxLabel: '',
-    mergeInto: 'researchColab',
-  },
-  researchColab_noDeal: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After no-deal Brexit",
-    minLabel: 'No collaboration',
-    maxLabel: 'Full collaboration',
-    mergeInto: 'researchColab',
-  },
-  researchColab: {
-    title: 'Scientific research collaboration with the EU',
-    desc: 'Please estimate how much scientific research collaboration with the EU will there  be in the following cases.',
-    type: 'unitInterval',
-    calc: c => c['researchColab_' + c.brexitApproval],
-    valuedBy: ['UK'],
-  },
-  exchangeRateChangeIn: {
-    type: 'mirrorUnitInterval',
-    choice: true,
-    mergeInto: 'exchangeRateChange',
-    sliderLabel: "'Remain' change",
-  },
-  exchangeRateChangeOut: {
-    type: 'mirrorUnitInterval',
-    choice: true,
-    mergeInto: 'exchangeRateChange',
-    sliderLabel: "'Leave' change",
-  },
-  exchangeRateChange: {
-    type: 'mirrorUnitInterval',
-    title: 'GBP exchange rate change',
-    desc: 'Please estimate the long term change of GBP exchange rate (eg. agians the USD) in the cases where the UK remains or leaves the EU.',
-    calc: c => (c.ukInEu) ? c.exchangeRateChangeIn : c.exchangeRateChangeOut,
-    valuedBy: ['UK']
-  },
-  securityCoOp: {
-    type: 'boolean',
-    title: 'Full EU-UK cooperation to fight transnational crime',
-    desc: 'Leaving the EU will prevent full cooperation between UK and EU security agencies.',
-    valuedBy: ['UK'],
-    calc: c => c.ukInEu,
-  },
-  gibraltarInUkProb: {
-    type: 'unitInterval',
-    mergeInto: 'gibraltarInUk',
-    choice: true,
-    sliderLabel: 'Probability',
-    minLabel: 'Impossible',
-    maxLabel: 'Absolutely certain',
-    arguments: {
-      lower: ['Spain may force Gibraltar to leave the UK. Spain will have veto on all trade deals with Gibraltar in EU negotiatons.'],
-      higher: ['2002 Gibraltar sovereignty referendum showed 99% oposition even towards a shared sovereignty with Spain.'],
-    },
-  },
-  gibraltarInUk: {
-    type: 'boolean',
-    title: 'British sovereignty over Gibraltar',
-    desc: 'What is the probability that Gibraltar will remain under British sovereignty until at least 2030 if the UK will leave the EU?',
-    valuedBy: ['UK'],
-    valueArguments: {
-      UK: {
-        lower: [],
-        higher: ['"Gibraltar holds a strategically important position on the northern side of the strait separating Europe from Africa at the entrance to the Mediterranean Sea from the Atlantic."'],
-      }
-    },
-    customCalc: true,
-    calc: c => c.ukInEu || (Math.random() < c.gibraltarInUkProb),
-  },
   noDealDisruptions: {
     type: 'boolean',
-    title: 'Short term disruptions caused by no-deal',
+    title: 'Short term disruptions',
     desc: 'Potential short term disruptions caused by no-deal Brexit.',
     valuedBy: ['UK'],
     calc: c => c.brexitApproval === 'noDeal'
   },
+  marketMovement: {
+    type: 'option',
+    title: 'UK-EU negotiations',
+    desc: 'UK-EU single market and freedom of movement combination',
+    options: {
+      marketAndMovement: 'Single market and freedom of movement',
+      onlyMarket: 'Only single market',
+      onlyMovement: 'Only freedom of movement',
+      noMarketNoMovement: 'No single market and no freedom of movement',
+    },
+    choice: true,
+    customCalc: true,
+    calc: c => (c.brexitApproval === 'remain') ? 'marketAndMovement' : c.marketMovement,
+    decidedBy: ['UK', 'EU'],
+  },
+  singleMarket: {
+    type: 'boolean',
+    title: 'Single market',
+    desc: "The UK is effectively in EU's single market.",
+    customCalc: true,
+    calc: c => ['marketAndMovement', 'onlyMarket'].includes(c.marketMovement),
+  },
+  freedomOfMovement: {
+    type: 'boolean',
+    title: 'Freedom of movement',
+    desc: "There is effectively freedom of movement between the UK and the EU.",
+    customCalc: true,
+    calc: c => ['marketAndMovement', 'onlyMovement'].includes(c.marketMovement),
+  },
 }
 
 const diagram = `
-  -                -             securityCoOp $securityCoOp
-  transitionPeriod -             gibraltarInUk $gibraltarInUk
-  -                ukInEu        exchangeRateChange $exchangeRateChange
-  brexitApproval   -             legalRights   $legalRights
-  -                -             researchColab $researchColab
-  -                -             noDealDisruptions $noDealDisruptions
+  brexitApproval   -               noDealDisruptions $noDealDisruptions
+  -                marketMovement  singleMarket
+  -                -               freedomOfMovement
+  transitionPeriod -               ukInEu
 `
-
-const getGibraltarValue = (vals) => {
-  const subValue = ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
-    * getAgentValue('gibraltarInUk', true, 'UK')
-  const subNodeValues = { gibraltarInUk: subValue }
-  return { subValue, subNodeValues }
-}
 
 const getDecision = (vals, subdomains) => {
   const alternatives = {}
@@ -194,9 +101,12 @@ const getDecision = (vals, subdomains) => {
     context.ukInEu = (option === 'remain')
     let totalValue = 0
     const nodeValues = {}
-    const valueGetters = ['scotland', 'ireland', 'negotiation']
-      .map((sub) => subdomains[sub].getValue)
-    valueGetters.push(getGibraltarValue)
+    const valueGetters = [
+      subdomains.scotland.getValue,
+      subdomains.ireland.getValue,
+      subdomains.influence.getGibraltarValue,
+      getNegotiationValue,
+    ]
     for (const getValue of valueGetters) {
       const { subValue, subNodeValues } = getValue(context, subdomains)
       totalValue += subValue
@@ -206,7 +116,6 @@ const getDecision = (vals, subdomains) => {
     const { totalValues, subNodeValues } = calcSubs(context, subs)
     totalValue += totalValues.UK
     Object.assign(nodeValues, subNodeValues.UK)
-    //TODO: Display nodeValues on the diagram
     const label = factors.brexitApproval.options[option]
     alternatives[option] = { totalValue, nodeValues, label  }
   }
@@ -234,6 +143,62 @@ const getDecision = (vals, subdomains) => {
     maxTotalValue,
     alternatives,
   })
+}
+
+const getNegotiationValue = (vals, subdomains) => {
+  const options = Object.keys(factors.marketMovement.options)
+  if (vals.ukInEu) {
+    const option = 'marketAndMovement'
+    const { UK, nodeValues } = getNegotiationOptionValues(option, vals, subdomains)
+    return { subValue: UK, subNodeValues: nodeValues }
+  } else {
+    const agentValues = { UK: {}, EU: {} }
+    const optionValues = {}
+    for (const option of options) {
+      const { UK, EU, nodeValues } = getNegotiationOptionValues(option, vals, subdomains)
+      agentValues.UK[option] = UK
+      agentValues.EU[option] = EU
+      optionValues[option] = nodeValues
+    }
+    const dist = getNegotiationDistribution(options, agentValues)
+    let subValue = 0
+    const subNodeValues = {}
+    for (const option of options) {
+      subValue += agentValues['UK'][option] * dist[option]
+      for (const key in optionValues[option]) {
+        subNodeValues[key] = (subNodeValues[key] || 0)
+          + optionValues[option][key] * dist[option]
+      }
+    }
+    return { subValue, subNodeValues }
+  }
+}
+
+const getNegotiationOptionValues = (option, vals, subdomains) => {
+  vals.marketMovement = option
+  let bestBI
+  let maxUK = -Infinity
+  let maxUKEU
+  let maxNodeValues
+  for (const billIntention of [false, true]) {
+    //Filter out disabled bill/brexit combinations
+    if (vals.brexitApproval === 'remain' && billIntention) continue
+    const context = clone(vals)
+    context.marketMovement = option
+    context.singleMarket = ['marketAndMovement', 'onlyMarket'].includes(option)
+    context.freedomOfMovement = ['marketAndMovement', 'onlyMovement'].includes(option)
+    context.billIntention = billIntention
+    const subs = ['trade', 'immigration', 'budget', 'gdp', 'nhs']
+    const {totalValues, subNodeValues} = calcSubs(context, subs)
+    const {UK, EU} = totalValues
+    if (UK > maxUK) {
+      maxUK = UK
+      maxUKEU = EU
+      bestBI = billIntention
+      maxNodeValues = subNodeValues.UK
+    }
+  }
+  return { UK: maxUK, EU: maxUKEU, nodeValues: maxNodeValues }
 }
 
 export const brexit = { factors, diagram, getDecision }

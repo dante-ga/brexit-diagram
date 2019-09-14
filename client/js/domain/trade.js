@@ -31,11 +31,42 @@ for (const {dir, loc, key, valuedBy} of tradeTypes) {
   if (valuedBy) factors[key].valuedBy = valuedBy
 }
 
+Object.assign(factors, {
+  exchangeRateChangeIn: {
+    type: 'mirrorUnitInterval',
+    choice: true,
+    mergeInto: 'exchangeRateChange',
+    sliderLabel: "'Remain' change",
+  },
+  exchangeRateChangeOut: {
+    type: 'mirrorUnitInterval',
+    choice: true,
+    mergeInto: 'exchangeRateChange',
+    sliderLabel: "'Leave' change",
+  },
+  marketMovementTied: {
+    type: 'boolean',
+    title: 'Market tied to movement',
+    desc: "The access to the single market and the freedom of movement across the EU are tied together.",
+    calc: c => c.singleMarket === c.freedomOfMovement,
+    valuedBy: ['EU'],
+  },
+  exchangeRateChange: {
+    type: 'mirrorUnitInterval',
+    title: 'GBP exchange rate change',
+    desc: 'Please estimate the long term change of GBP exchange rate (eg. agians the USD) in the cases where the UK remains or leaves the EU.',
+    calc: c => (c.ukInEu) ? c.exchangeRateChangeIn : c.exchangeRateChangeOut,
+    valuedBy: ['UK']
+  },
+})
+
 const diagram = `
-  -            exportsToEu      $exportsToEu
-  singleMarket importsFromEu    $importsFromEu
-  -            exportsToNonEu 
-  -            importsFromNonEu
+  -                 exportsToEu        $exportsToEu
+  -                 importsFromEu      $importsFromEu
+  singleMarket      exportsToNonEu
+  -                 importsFromNonEu
+  freedomOfMovement marketMovementTied $marketMovementTied
+  ukInEu            exchangeRateChange $exchangeRateChange
 `
 
 export const trade = { factors, diagram }

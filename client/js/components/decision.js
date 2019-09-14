@@ -68,9 +68,6 @@ export const Decision = (decision) => {
     <div class="field">
       Recommended option: <strong>${alternatives[bestOption].label}</strong>
     </div>
-    <div class="notification">
-      <strong>Note:</strong> these results update automatically when you change your answers.
-    </div>
   `
 }
 
@@ -80,6 +77,7 @@ export const DecisionInfo = () => html`
     <li>Each of the Brexit options is considered separately.</li>
     <li>Consequences of the decision are calculated based on the various relations between the factors and answers that you gave.</li>
     <li>Outcomes are evaluated based on the values that you provided.</li>
-    <li>Total expected values of the options are compared to find the best one.</li>
+    <li>Total expected values of the Brexit options are compared to find the best one.</li>
   </ol>
+  <strong>Note</strong>: the recommendation updates automatically when you change your answers.
 `

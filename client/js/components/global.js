@@ -42,7 +42,7 @@ export const Info = ({title, content, onClose}) => html`
       </p>
       <button class="delete" aria-label="delete" onclick=${onClose} />
     </div>
-    <div class="message-body">
+    <div class="message-body content">
       ${content}
     </div>
   </article>

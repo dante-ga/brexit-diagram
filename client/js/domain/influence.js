@@ -1,3 +1,5 @@
+import { getAgentValue } from '../calc/value.js'
+
 const factors = {
   ukInfluenceOnEuIn: {
     type: 'unitInterval',
@@ -72,12 +74,46 @@ const factors = {
     calc: c =>  Math.min(1, c.ukInfluenceNotViaEu + c.ukInfluenceOnEu * c.euInfluenceOnGlobal),
     valuedBy: ['UK'],
   },
+  gibraltarInUkProb: {
+    type: 'unitInterval',
+    mergeInto: 'gibraltarInUk',
+    choice: true,
+    sliderLabel: 'Probability',
+    minLabel: 'Impossible',
+    maxLabel: 'Absolutely certain',
+    arguments: {
+      lower: ['Spain may force Gibraltar to leave the UK. Spain will have veto on all trade deals with Gibraltar in EU negotiatons.'],
+      higher: ['2002 Gibraltar sovereignty referendum showed 99% oposition even towards a shared sovereignty with Spain.'],
+    },
+  },
+  gibraltarInUk: {
+    type: 'boolean',
+    title: 'British sovereignty over Gibraltar',
+    desc: 'What is the probability that Gibraltar will remain under British sovereignty until at least 2030 if the UK will leave the EU?',
+    valuedBy: ['UK'],
+    valueArguments: {
+      UK: {
+        lower: [],
+        higher: ['"Gibraltar holds a strategically important position on the northern side of the strait separating Europe from Africa at the entrance to the Mediterranean Sea from the Atlantic."'],
+      }
+    },
+    customCalc: true,
+    calc: c => c.ukInEu || (Math.random() < c.gibraltarInUkProb),
+  },
 }
 
 const diagram = `
   -      ukInfluenceOnEu
   ukInEu euInfluenceOnGlobal ukInfluenceOnGlobal $ukInfluenceOnGlobal
   -      ukInfluenceNotViaEu
+  -      -                   gibraltarInUk       $gibraltarInUk
 `
 
-export const influence = { factors, diagram }
+const getGibraltarValue = (vals) => {
+  const subValue = ((vals.ukInEu) ? 1 : vals.gibraltarInUkProb)
+    * getAgentValue('gibraltarInUk', true, 'UK')
+  const subNodeValues = { gibraltarInUk: subValue }
+  return { subValue, subNodeValues }
+}
+
+export const influence = { factors, diagram, getGibraltarValue }
