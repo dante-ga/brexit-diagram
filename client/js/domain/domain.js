@@ -11,6 +11,7 @@ import { budget } from './budget.js'; sub({budget})
 import { gdp } from './gdp.js'; sub({gdp})
 import { nhs } from './nhs.js'; sub({nhs})
 
+export const defaultAgent = 'UK'
 export const agentLabels = {
   UK: 'United Kingdom',
   Scotland: 'Scotland',

@@ -10,7 +10,7 @@ export const Next = (onClick, path) => html`
   <div class="navbar-item is-va-center">
     <span
       class="icon is-medium tooltip is-tooltip-primary is-tooltip-multiline"
-      data-tooltip='Please answer all of the questions to submit your response and get a decision recommendation. You can answer the questions in any order by using the influence diagram or by using the "Next&nbsp;Question" button.'
+      data-tooltip='Please answer all of the questions to submit your response and get a decision recommendation. You can answer the questions in any order by using the influence diagram or by using the "Next&nbsp;question" button.'
     >
       <i class="fas fa-lg fa-info-circle"></i>
     </span>
@@ -21,7 +21,7 @@ export const Next = (onClick, path) => html`
       onclick=${onClick}
       href=${path}
     >
-      <span>Next Question</span>
+      <span>Next question</span>
       <span class="icon is-small">
         <i class="fas fa-arrow-right"></i>
       </span>

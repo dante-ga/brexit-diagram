@@ -28,9 +28,8 @@ const factors = {
     calc: c => c.euCost - c.euIncome
   },
   billIntention: {
-    title: "Divorce bill intention",
+    title: "Brexit divorce bill decision",
     type: 'boolean',
-    choice: true,
     checkboxLabel: 'UK intends to pay the Brexit divorce bill.',
     calc: c => (c.brexitApproval === 'deal') || ((c.brexitApproval === 'noDeal') && (c.billIntention)),
     decidedBy: ['UK'],

@@ -6,7 +6,7 @@ const factors = {}
 
 factors.irishBorder = {
   type: 'option',
-  title: 'Irish borders',
+  title: 'Irish borders negotiation',
   desc: 'If UK leaves the EU, Irish border arrangements will need to be negotiated.',
   options: {
     hardBorder: 'Hard border',
@@ -83,7 +83,6 @@ factors.irishBorder = {
       },
     },
   },
-  choice: true,
   calc: c => {
     if (c.ukInEu) {
       return 'openBorder'

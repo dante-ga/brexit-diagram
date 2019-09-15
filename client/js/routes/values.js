@@ -163,7 +163,6 @@ export const getValues = ({ agent }, {updateView: _updateView, navigate}) => {
   activeAgent = agent || activeAgent
 
   const content = []
-  let info
   if (!localStorage.getItem('dismissed_values_info')) {
     content.push(Info({
       title: 'Agent values',

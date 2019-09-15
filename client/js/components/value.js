@@ -23,3 +23,7 @@ export const ValueRegionTable = (valueList) => html`
     </tbody>
   </table>
 `
+
+export const ValueInfo = () => html`
+  As a UK voter please indicate how much you value this factor by setting a positive or a negative value on the slider below. The table above the slider shows other factors with similar absolute values for comparison. You can fine-tune all of the values in the "<a href="/values/UK">Values</a>" tab. For agents other than the United Kingdom, please provide the values you think that their decision makers have. Some factros are valued by agents other than the United Kingdom (eg. EU). In those cases please provide the values which you think those agents have.
+`

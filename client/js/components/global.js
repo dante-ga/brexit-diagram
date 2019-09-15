@@ -36,7 +36,7 @@ export const Info = ({title, content, onClose}) => html`
     <div class="message-header">
       <p>
         <span class="icon">
-          <i class="fas fa-info-circle"></i>
+          <i class="fas fa-info-circle" />
         </span>
         <span>${title}</span>
       </p>

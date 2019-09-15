@@ -8,17 +8,68 @@ import { getNegotiationDistribution } from '../calc/negotiation.js'
 const factors = {
   brexitApproval: {
     type: 'option',
-    title: 'UK Brexit decision',
-    desc: 'UK picks the following Brexit option:',
+    title: 'Brexit decision',
+    desc: `
+      The United Kingdom decides which Brexit option to take.
+      <ul>
+        <li><strong>Remain</strong> - cancel Brexit and stay in the EU</li>
+        <li><strong>Deal</strong> - leave with the deal currently offered by the EU</li>
+        <li><strong>No-deal</strong> - leave the EU without a deal</li>
+      </ul>
+    `,
+    calcDesc: "Each of the options will be tried. The option resulting in the highest expected value for the United Kingdom will be chosen.",
     options: {
       remain: 'Remain',
       deal: 'Deal',
       noDeal: 'No-deal',
     },
-    choice: true,
     decidedBy: ['UK'],
     blockedExtArrow: true,
-    // flipExtArrow: true,
+  },
+  noDealDisruptions: {
+    type: 'boolean',
+    title: 'Short term disruptions',
+    desc: 'Short term disruptions (UK border, supplies etc.) caused by Brexit',
+    calcDesc: 'The disruptions will be present in case of a <a href="/factor/brexitApproval">no-deal Brexit</a> with no transition period.',
+    valuedBy: ['UK'],
+    calc: c => c.brexitApproval === 'noDeal'
+  },
+  marketMovement: {
+    type: 'option',
+    title: 'EU negotiation',
+    desc: `
+      Negotiations about UK's membership in:
+      <ul>
+        <li>EU's single market,</li>
+        <li>EU's freedom of movement area.</li>
+      </ul>
+    `,
+    calcDesc: `In case of the <a href="/factor/brexitApproval">remain Brexit decision</a> both memberships continue to be active. Otherwise all four combinations of membership statuses are considered. Each of the four options is evaluated and ranked by each of the agents (EU, UK) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected values of this negotiation.`,
+    options: {
+      marketAndMovement: 'Single market and freedom of movement',
+      onlyMarket: 'Only single market',
+      onlyMovement: 'Only freedom of movement',
+      noMarketNoMovement: 'No single market and no freedom of movement',
+    },
+    customCalc: true,
+    calc: c => (c.brexitApproval === 'remain') ? 'marketAndMovement' : c.marketMovement,
+    decidedBy: ['UK', 'EU'],
+  },
+  singleMarket: {
+    type: 'boolean',
+    title: 'Single market',
+    desc: "The UK is in the single market with the EU.",
+    calcDesc: `This is determined by the outcome of the <a href="/factor/marketMovement">EU negotiation</a>.`,
+    customCalc: true,
+    calc: c => ['marketAndMovement', 'onlyMarket'].includes(c.marketMovement),
+  },
+  freedomOfMovement: {
+    type: 'boolean',
+    title: 'Freedom of movement',
+    desc: "There is freedom of movement between the UK and the EU.",
+    calcDesc: `This is determined by the outcome of the <a href="/factor/marketMovement">EU negotiation</a>.`,
+    customCalc: true,
+    calc: c => ['marketAndMovement', 'onlyMovement'].includes(c.marketMovement),
   },
   transitionPeriod: {
     type: 'until2030interval',
@@ -41,47 +92,12 @@ const factors = {
   },
   ukInEu: {
     type: 'boolean',
-    title: "UK's membership in the EU",
-    desc: "Unless it remains in the EU, the UK will be effectively outside the EU immediately after no-deal Brexit or after the two year transition period as per the Brexit deal.",
+    title: "EU membership",
+    desc: "Membership of the United Kindom in the European Union.",
+    calcDesc: `In case of the remain <a href="/factor/brexitApproval">decision</a> the EU membership will continue. In case of a no-deal Brexit it will stop staight away. In case of the deal the membership will continue until the <a href="/factor/transitionPeriod">transition period & backstop</a> run out.`,
     customCalc: true,
     calc: c => (c.brexitApproval === 'remain')
       || ((c.brexitApproval === 'deal') && (Math.random() < c.transitionPeriod)),
-  },
-  noDealDisruptions: {
-    type: 'boolean',
-    title: 'Short term disruptions',
-    desc: 'Potential short term disruptions caused by no-deal Brexit.',
-    valuedBy: ['UK'],
-    calc: c => c.brexitApproval === 'noDeal'
-  },
-  marketMovement: {
-    type: 'option',
-    title: 'UK-EU negotiations',
-    desc: 'UK-EU single market and freedom of movement combination',
-    options: {
-      marketAndMovement: 'Single market and freedom of movement',
-      onlyMarket: 'Only single market',
-      onlyMovement: 'Only freedom of movement',
-      noMarketNoMovement: 'No single market and no freedom of movement',
-    },
-    choice: true,
-    customCalc: true,
-    calc: c => (c.brexitApproval === 'remain') ? 'marketAndMovement' : c.marketMovement,
-    decidedBy: ['UK', 'EU'],
-  },
-  singleMarket: {
-    type: 'boolean',
-    title: 'Single market',
-    desc: "The UK is effectively in EU's single market.",
-    customCalc: true,
-    calc: c => ['marketAndMovement', 'onlyMarket'].includes(c.marketMovement),
-  },
-  freedomOfMovement: {
-    type: 'boolean',
-    title: 'Freedom of movement',
-    desc: "There is effectively freedom of movement between the UK and the EU.",
-    customCalc: true,
-    calc: c => ['marketAndMovement', 'onlyMovement'].includes(c.marketMovement),
   },
 }
 

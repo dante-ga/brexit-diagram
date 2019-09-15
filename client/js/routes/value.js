@@ -1,7 +1,7 @@
-import { Title, Tabs } from '../components/global.js'
-import { ValueRegionTable } from '../components/value.js'
+import { Title, Tabs, Info } from '../components/global.js'
+import { ValueRegionTable, ValueInfo } from '../components/value.js'
 import { Arguments, RadioAddon } from '../components/arguments.js'
-import { domain, agentLabels } from '../domain/domain.js'
+import { domain, agentLabels, defaultAgent } from '../domain/domain.js'
 import { userValues } from '../calc/value.js'
 import { onValueChange, getValueList } from './values.js'
 import { types } from '../types.js'
@@ -75,8 +75,18 @@ const getRadioAddon = (key, agent, field, option, activeOption) => {
 
 export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, setEvaluation}) => {
   const content = []
+  if (!localStorage.getItem('dismissed_value_info')) {
+    content.push(Info({
+      title: 'Value slider',
+      content: ValueInfo(),
+      onClose: () => {
+        localStorage.setItem('dismissed_value_info', 'true')
+        updateView()
+      },
+    }))
+  }
   const { title, valuedBy, type, options, valueArguments } = domain[key]
-  let pageTitle
+  let pageTitle = `Value of "${title}"`
   if (valuedBy.length > 1) {
     const agentTabs = valuedBy.map(a => ({
       label: agentLabels[a],
@@ -85,9 +95,9 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
       path: `/value/${key}/${a}`,
     }))
     content.push(Tabs(agentTabs))
-    pageTitle = `Value of "${title}" for ${agentLabels[agent]}`
-  } else {
-    pageTitle = `Value of "${title}"`
+  }
+  if (valuedBy.length !== 1 || valuedBy[0] !== defaultAgent) {
+    pageTitle += ' for ' + agentLabels[agent]
   }
   content.push(Title(pageTitle))
   content.push(Tabs([

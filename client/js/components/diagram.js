@@ -1,7 +1,7 @@
 import { Arrows } from './arrows.js'
 const { html } = lighterhtml
 
-const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external, hasExternal, importance, path, onClick }) => {
+const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, notify, external, hasExternal, importance, path, onClick }) => {
   let cellClass = 'diagram-cell'
   let box
   if (!key) {
@@ -30,8 +30,15 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external
     }
     if (decision) {
       badges.push(html`
-        <span class="badge tooltip is-tooltip-left" data-tooltip="decision/negotiation">
+        <span class="badge tooltip is-tooltip-left" data-tooltip="decision">
           <i class="fas fa-balance-scale-right" />
+        </span>
+      `)
+    }
+    if (negotiation) {
+      badges.push(html`
+        <span class="badge tooltip is-tooltip-left" data-tooltip="negotiation">
+          <i class="fas fa-users" />
         </span>
       `)
     }
@@ -39,7 +46,7 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, notify, external
       badges.push(html`
         <span
           class="status has-text-danger tooltip is-tooltip-left is-tooltip-danger"
-          data-tooltip="unanswered questions"
+          data-tooltip="unanswered question"
         >
           <i class="fas fa-circle" />
         </span>

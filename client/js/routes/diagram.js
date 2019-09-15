@@ -15,8 +15,8 @@ const parseDepends = (fn) => {
 }
 
 const hasChoice = (key) => {
-  const { choice, mergeFrom, decidedBy } = domain[key]
-  return (choice && !decidedBy) || mergeFrom.some(hasChoice)
+  const { choice, mergeFrom } = domain[key]
+  return choice || mergeFrom.some(hasChoice)
 }
 
 const parseDagram = (str) => {
@@ -62,7 +62,7 @@ const getDiagramObj = (str, subKey) => {
           cell.shiftBack = true
         }
       } else {
-        const { title, calc } = domain[key]
+        const { title, calc, decidedBy } = domain[key]
         cell.title = title
         //Exclude external arrows
         if (domain[key].subKey === subKey) {
@@ -71,7 +71,8 @@ const getDiagramObj = (str, subKey) => {
             .map(dk => locs[dk])
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
           cell.choice = hasChoice(key)
-          cell.decision = !!domain[key].decidedBy
+          cell.decision = decidedBy && decidedBy.length === 1
+          cell.negotiation = decidedBy && decidedBy.length > 1
           cell.notify = cell.choice && hasChoiceMissing(key)
         } else {
           cell.external = true

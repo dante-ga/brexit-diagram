@@ -67,8 +67,9 @@ export const getCommentsButton = (updateView) => {
     let label = 'Show comments'
     if (commentCounts.hasOwnProperty(link)) {
       label += ' (' + commentCounts[link] + ')'
+    } else {
+      fetchCount(link, updateView)
     }
-    fetchCount(link, updateView)
     button =  Button({
       label,
       onClick: () => {

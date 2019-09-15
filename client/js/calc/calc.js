@@ -11,11 +11,8 @@ export const importUserVals = (data) => {
   for (const dataKey in data) {
     if (dataKey.startsWith(persistPrefix)) {
       const key = dataKey.slice(persistPrefix.length)
-      if (domain.hasOwnProperty(key)) {
-        const { choice, decidedBy } = domain[key]
-        if (choice && !decidedBy) {
-          userVals[key] = data[dataKey]
-        }
+      if (domain.hasOwnProperty(key) && domain[key].choice) {
+        userVals[key] = data[dataKey]
       }
     }
   }
@@ -27,8 +24,8 @@ export const setUserVal = (key, val) => {
 }
 
 export const hasChoiceMissing = (key) => {
-  const { choice, mergeFrom, decidedBy } = domain[key]
-  return (choice && !decidedBy && !(key in userVals)) || mergeFrom.some(hasChoiceMissing)
+  const { choice, mergeFrom } = domain[key]
+  return (choice && !(key in userVals)) || mergeFrom.some(hasChoiceMissing)
 }
 
 export const calcSubs = (context, subs) => {

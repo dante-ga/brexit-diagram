@@ -17,8 +17,8 @@ const attributes = []
 const attrGroups = {}
 const attrSubs = {}
 for (const key in domain) {
-  const { choice, decidedBy, valuedBy, type, options, mergeInto, subKey } = domain[key]
-  if (choice && !decidedBy) {
+  const { choice, valuedBy, type, options, mergeInto, subKey } = domain[key]
+  if (choice) {
     const attr = valPref + key
     attributes.push(attr)
     const groupKey = (mergeInto) ? valPref + mergeInto : attr

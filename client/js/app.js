@@ -77,6 +77,14 @@ export const navigate = (path, event) => {
   router.navigate(path)
 }
 
+//Intercept content link clicks
+appEl.addEventListener('click', (event) => {
+  const path = event.target.pathname
+  if (path && event.target.closest('.navbar') === null) {
+    navigate(path, event)
+  }
+})
+
 //TODO: Fix activeAgent and add activeDiagram variables
 const routes = {
   diagram: {
@@ -115,6 +123,12 @@ const routes = {
     get: getDecision,
     navTab: 'Decision',
     path: '/decision',
+  },
+  about: {
+    get: () => ({content: '...', title: 'About' }),
+    navTab: 'About',
+    navEnd: true,
+    path: '/about',
   },
   discussion: {
     get: () => {

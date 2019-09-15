@@ -2,9 +2,8 @@ import { getAgentValue } from '../calc/value.js'
 
 const factors = {
   scotlandApproval: {
-    title: "Scottish independence intention",
+    title: "Scottish independence decision",
     type: 'boolean',
-    choice: true,
     checkboxLabel: 'Intends',
     decidedBy: ['Scotland'],
   },
