@@ -1,7 +1,7 @@
 const { html } = lighterhtml
 
 export const Question = (text) => html`
-  <div class="field">
+  <div class="field content is-medium">
     <strong>Q: </strong>${text}
   </div>
 `

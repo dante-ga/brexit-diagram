@@ -16,9 +16,9 @@ const factors = {
     mergeInto: 'ukPopulationChange',
   },
   ukPopulationChange: {
-    title: 'Total UK population change',
+    title: 'Total UK population',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimate the % change of the total population of the UK in 2030 for two cases of migration policy.',
+    question: "How much will the total UK population change if the UK will remain/leave the EU's freedom of movement area?",
     calc: c => (c.freedomOfMovement) ? c.ukPopulationChangeOpen : c.ukPopulationChangeClosed
   },
   nonBritishNow: {
@@ -32,7 +32,7 @@ const factors = {
   nonBritishOpen: {
     type: 'unitInterval',
     choice: true,
-    sliderLabel: "Freedom of movement with EU",
+    sliderLabel: "Freedom of movement with the EU",
     minLabel: '',
     maxLabel: '',
     mergeInto: 'nonBritish2030',
@@ -40,7 +40,7 @@ const factors = {
   nonBritishClosed: {
     type: 'unitInterval',
     choice: true,
-    sliderLabel: "No Freedom of movement with EU",
+    sliderLabel: "No freedom of movement with the EU",
     minLabel: '',
     maxLabel: '',
     mergeInto: 'nonBritish2030',
@@ -48,14 +48,16 @@ const factors = {
   nonBritish2030: {
     title: 'Non-British population proportion',
     type: 'unitInterval',
-    desc: 'Please estimate the % of non-British population from the total UK population now and in 2030 for two cases of migration policy.',
+    question: "What percentage of the UK population is now non-British? What will it be in 2030 if the UK remains/leaves EU's freedom of movement area?",
     calc: c => (c.freedomOfMovement) ? c.nonBritishOpen : c.nonBritishClosed
   },
   popChngDueImmgr: {
-    title: 'Population change due to immigration',
+    title: 'Population growth due to immigration',
     type: 'mirrorUnitInterval',
-    desc: 'The % change in the total UK population in 2030 due to immigration.',
-    /* X =
+    desc: 'The percentage change in the total UK population by 2030 due to immigration.',
+    calcDesc: `"population growth due to immigration" = ("total non-British population in 2030" - "total non-Brtish population now") / "total UK population now"`,
+    /* CALCULATIONS
+      popChngDueImmgr =
       = (nonBritishTotal2030 - nonBritishTotalNow) / allTotalNow
       = (nonBritish2030 * (1 + ukPopulationChange) * allTotalNow - nonBritishNow * allTotalNow) / allTotalNow
       = nonBritish2030 * (1 + ukPopulationChange) - nonBritishNow
@@ -71,7 +73,8 @@ const factors = {
   britishIdentity: {
     title: 'Preservation of British identity',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total decrease preservation of British identity?',
+    question: 'What is the ratio between the increase in non-British population and decrease in preservation of British identity that it causes?',
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in non-British population by 1% causes decrease in British identity by 1%); <strong>2</strong> = double impact.`,
     calc: c => - c.britishIdentityRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
@@ -84,7 +87,8 @@ const factors = {
   socialCohesion: {
     title: 'Social cohesion of the UK',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total decrease social cohesion of the UK?',
+    question: 'What is the ratio between the increase in non-British population and decrease in social cohesion of the UK that it causes?',
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in non-British population by 1% causes decrease social cohesion by 1%); <strong>2</strong> = double impact.`,
     calc: c => - c.socialCohesionRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
@@ -97,7 +101,8 @@ const factors = {
   unemployment: {
     title: 'Unemployment rate',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total increase the unemployment rate in the UK?',
+    question: 'What is the ratio between the increase in non-British population and increase in unemployment rate that it causes?',
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in non-British population by 1% causes increase in unemployment rate by 1%); <strong>2</strong> = double impact.`,
     calc: c => c.unemploymentRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
@@ -110,17 +115,10 @@ const factors = {
   medianIncome: {
     title: 'Median income',
     type: 'mirrorUnitInterval',
-    desc: 'Please estimmate how much does the increase in non-british population % from the total affect the median income in the UK?',
+    question: 'What is the ratio between the increase in non-British population and decrease in median income that it causes?',
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in non-British population by 1% causes decrease in median income by 1%); <strong>2</strong> = double impact.`,
     calc: c => c.medianIncomeRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
-  },
-  legalRights_remain: {
-    type: 'unitInterval',
-    choice: true,
-    sliderLabel: "After remaining in the EU",
-    minLabel: '',
-    maxLabel: '',
-    mergeInto: 'legalRights',
   },
   legalRights_deal: {
     type: 'unitInterval',
@@ -140,17 +138,31 @@ const factors = {
   },
   legalRights: {
     title: 'Legal rights of UK citizens in the EU',
-    desc: 'Please estimate the fullness of legal rights which UK sitiezens will have in the EU in the following cases.',
+    question: 'How much of the legal rights will the UK citizens maintain in the EU if the UK leaves with/without a deal?',
+    desc: `Scale: <strong>0%</strong> = all of the rights will be lost; <strong>100%</strong> = all of the right will remain.`,
     type: 'unitInterval',
-    calc: c => c['legalRights_' + c.brexitApproval],
+    calc: c => (c.brexitApproval === 'remain') ? 1 : c['legalRights_' + c.brexitApproval],
     valuedBy: ['UK'],
   },
+  securityCoOp_deal: {
+    type: 'mirrorUnitInterval',
+    choice: true,
+    sliderLabel: "After leaving the EU with a deal",
+    mergeInto: 'securityCoOp',
+  },
+  securityCoOp_noDeal: {
+    type: 'mirrorUnitInterval',
+    choice: true,
+    sliderLabel: "After no-deal Brexit",
+    mergeInto: 'securityCoOp',
+  },
   securityCoOp: {
-    type: 'boolean',
-    title: 'Full EU-UK cooperation to fight transnational crime',
-    desc: 'Leaving the EU will prevent full cooperation between UK and EU security agencies.',
+    type: 'mirrorUnitInterval',
+    title: 'Transnational crime',
+    question: 'How much will the level of transnational crime affecting the UK change if the UK leaves with/without a deal?',
+    desc: `Scale: <strong>-100%</strong> = it will stop completely; <strong>0%</strong> = it will remain the same; <strong>+100%</strong> = it will double.`,
     valuedBy: ['UK'],
-    calc: c => c.ukInEu,
+    calc: c => (c.brexitApproval === 'remain') ? 1 : c['securityCoOp_' + c.brexitApproval],
   },
 }
 
@@ -160,8 +172,8 @@ const diagram = `
   freedomOfMovement nonBritish2030     medianIncome    $medianIncome
   -                 -                  unemployment    $unemployment
   -                 ukPopulationChange popChngDueImmgr
-  brexitApproval    -                  legalRights     $legalRights
-  ukInEu            -                  securityCoOp    $securityCoOp
+  -                 brexitApproval     legalRights     $legalRights
+  -                 -                  securityCoOp    $securityCoOp
 `
 
 export const immigration = { factors, diagram }

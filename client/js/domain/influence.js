@@ -19,8 +19,9 @@ const factors = {
   },
   ukInfluenceOnEu: {
     type: 'unitInterval',
-    title: 'UK’s influence on EU politics',
-    desc: 'Please estimate the influence of the UK on EU politics in the cases where the UK remains or leaves the EU.',
+    title: 'UK’s influence on the EU',
+    question: 'What is the influence of the UK on the EU if the UK remains/leaves the EU?',
+    desc: `Scale: <strong>0%</strong> = no influence; <strong>100%</strong> = total control.`,
     calc: c => (c.ukInEu) ? c.ukInfluenceOnEuIn : c.ukInfluenceOnEuOut
   },
   euInfluenceOnGlobalIn: {
@@ -41,8 +42,9 @@ const factors = {
   },
   euInfluenceOnGlobal: {
     type: 'unitInterval',
-    title: 'EU’s influence on global politics',
-    desc: 'Please estimate the influence of the EU on global politics in the cases where the UK remains or leaves the EU.',
+    title: 'EU’s global influence',
+    question: "What is UK's global influence if it remains/leaves the EU?",
+    desc: `Scale: <strong>0%</strong> = no influence; <strong>100%</strong> = absolute global control.`,
     calc: c => (c.ukInEu) ? c.euInfluenceOnGlobalIn : c.euInfluenceOnGlobalOut
   },
   ukInfluenceNotViaEuIn: {
@@ -63,14 +65,15 @@ const factors = {
   },
   ukInfluenceNotViaEu: {
     type: 'unitInterval',
-    title: 'UK’s influence on global politics NOT via the EU',
-    desc: 'Please estimate the influence of the UK on global politics NOT via the EU in the cases where the UK remains or leaves the EU.',
+    title: 'UK’s global influence NOT via the EU',
+    question: "What is UK's global influence NOT via the EU if it remains/leaves the EU?",
+    desc: `Scale: <strong>0%</strong> = no influence; <strong>100%</strong> = absolute global control.`,
     calc: c => (c.ukInEu) ? c.ukInfluenceNotViaEuIn : c.ukInfluenceNotViaEuOut
   },
   ukInfluenceOnGlobal: {
     type: 'unitInterval',
-    title: 'UK’s influence on global politics',
-    desc: "It is calculated as the sum of UK's influences on global politics via and not via the EU. The former is the product of influences of the UK on the EU politics and the EU on the global politics.",
+    title: "UK's global influence",
+    calcDesc: "UK's global influence is the sum of UK's global influences via and not via the EU. The former is the product of influences of the UK on the EU and the EU's global influence.",
     calc: c =>  Math.min(1, c.ukInfluenceNotViaEu + c.ukInfluenceOnEu * c.euInfluenceOnGlobal),
     valuedBy: ['UK'],
   },
@@ -89,7 +92,7 @@ const factors = {
   gibraltarInUk: {
     type: 'boolean',
     title: 'British sovereignty over Gibraltar',
-    desc: 'What is the probability that Gibraltar will remain under British sovereignty until at least 2030 if the UK will leave the EU?',
+    question: 'What is the probability that Gibraltar will remain under British sovereignty until at least 2030 if the UK will leave the EU?',
     valuedBy: ['UK'],
     valueArguments: {
       UK: {

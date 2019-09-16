@@ -99,7 +99,7 @@ export const types = {
     max: 100,
     getInput: (val, cb, sliderOptions) => Slider(val, cb, {
       type: 'value',
-      step: 0.1,
+      step: 0.5,
       minLabel: '-100',
       maxLabel: '100',
       ...sliderOptions,

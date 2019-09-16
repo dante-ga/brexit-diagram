@@ -80,7 +80,7 @@ export const navigate = (path, event) => {
 //Intercept content link clicks
 appEl.addEventListener('click', (event) => {
   const path = event.target.pathname
-  if (path && event.target.closest('.navbar') === null) {
+  if (path && event.target.closest('.content') !== null) {
     navigate(path, event)
   }
 })
@@ -163,11 +163,11 @@ router.hooks({
 })
 router.notFound(() => render(appEl, NotFound))
 
-Promise.all([
-  getUserData().then((data) => {
-    importUserVals(data)
-    importUserValues(data)
-    checkStatus()
-  }),
-  getStats()
-]).then(() => router.resolve())
+getUserData().then((data) => {
+  importUserVals(data)
+  importUserValues(data)
+  checkStatus()
+  updateView()
+})
+
+getStats().then(() => router.resolve())

@@ -4,7 +4,8 @@ const factors = {
   scotlandApproval: {
     title: "Scottish independence decision",
     type: 'boolean',
-    checkboxLabel: 'Intends',
+    desc: 'Scotland decides if it should try to leave the UK and become independent.',
+    calcDesc: "Each of the options will be tried. The option resulting in the highest expected value for Scotland will be chosen.",
     decidedBy: ['Scotland'],
   },
   indScotProb: {
@@ -18,7 +19,7 @@ const factors = {
   independentScotland: {
     title: 'Scottish independence',
     type: 'boolean',
-    desc: "If Scotland decides to become independent then with probability P it will become independent.",
+    question: "What is the probability that Scotland will become independent (e.g. despite legal obsticles and UK's wishes) if it will decide to try.",
     valuedBy: ['UK', 'Scotland'],
     calc: c => c.scotlandApproval && (Math.random() < c.indScotProb)
   },
@@ -31,15 +32,15 @@ const factors = {
     maxLabel: 'Absolutely certain',
   },
   scotlandEuMember: {
-    title: 'Scotland is a member of the EU',
+    title: 'Scottish membership in the EU',
     type: 'boolean',
-    desc: "If Scotland will become independent then with probability P it will join the EU.",
+    question: "What is the propability of Scotland being able to join the EU after becoming independent.",
     calc: c => c.independentScotland && (Math.random() < c.scotEuMemberProb)
   },
   scotlandInEu: {
-    title: 'Scotland is in the EU',
+    title: 'Presence of Scotland in the EU',
     type: 'boolean',
-    desc: "Scotland will be in the EU if it will become an EU member or if Scotland will remain in the UK which will remain in the EU.",
+    calcDesc: "Scotland will be present in the EU if it will become an EU member or if Scotland will remain in the UK which in turn will remain in the EU.",
     valuedBy: ['Scotland'],
     calc: c => c.scotlandEuMember || (c.ukInEu && !c.independentScotland)
   },

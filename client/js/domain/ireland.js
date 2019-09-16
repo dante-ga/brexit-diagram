@@ -7,13 +7,23 @@ const factors = {}
 factors.irishBorder = {
   type: 'option',
   title: 'Irish borders negotiation',
-  desc: 'If UK leaves the EU, Irish border arrangements will need to be negotiated.',
+  desc: `
+    The United Kingdom, Northern Ireland and the European Union negotiate which Irish borders arrangement to put in place.
+    <ul>
+      <li><strong>Hard border</strong> - set up border infrastructure between Northern Ireland and the Republic of Ireland</li>
+      <li><strong>EU-UK border breach</strong> - breach in the EU-UK border on the island of Ireland</li>
+      <li><strong>Irish Sea border</strong> - a border between Northern Ireland following EU regulations and the rest of the UK</li>
+      <li><strong>United Ireland</strong> - Northern Ireland leaves the UK, joins the republic and becomes a part of the EU</li>
+      <li><strong>Open border</strong> - the functioning open border remains (subject to UK remaining in the EU)</li>
+    </ul>
+  `,
+  calcDesc: `If the UK will maintain its <a href="/factor/ukInEu">EU membership</a> the "open border" in Ireland will continue to function. Otherwise the other four options will be considered. Each of them is evaluated and ranked by each of the agents (UK, NI, EU) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected value of this negotiation.`,
   options: {
     hardBorder: 'Hard border',
-    brokenBorder: 'EU-UK border broken in Ireland',
+    brokenBorder: 'EU-UK border breach',
     seaBorder: 'Irish Sea border',
-    unitedIreland: 'United Irland in the EU',
-    openBorder: 'Open Irish border in the EU',
+    unitedIreland: 'United Ireland',
+    openBorder: 'Open border',
   },
   valueArguments: {
     NI: {
@@ -139,14 +149,17 @@ for (let i = 0; i < optionEntries.length; i++ ) {
 factors.violenceNi = {
   type: 'unitInterval',
   title: 'Violence in Northern Ireland',
-  desc: "What are expected levels of violence in Northern Ireland under each of the following border arrangements?",
+  question: "What are expected levels of violence in Northern Ireland under each of the following border arrangements?",
+  desc: `Scale: <strong>0%</strong> = no violence; <strong>100%</strong> = war.`,
   calc: c => c['violenceNi_' + c.irishBorder],
   valuedBy: ['UK', 'NI', 'EU'],
 }
 
 factors.brokenDeal = {
   type: 'boolean',
-  title: 'Irish border Brexit deal is broken',
+  title: "Breach of 'no hard border' agreement",
+  desc: 'As part of the current Brexit deal both parties agree to prevent creation of a hard border between the Republic of Ireland and Northern Ireland.',
+  calcDesc: `The breach will occur if the <a href="/factor/brexitApproval">Brexit deal</a> is legislated but the <a href="/factor/irishBorder">hard border</a> is established despite of that.`,
   calc: c => (c.brexitApproval === 'deal') && (c.irishBorder === 'hardBorder'),
   valuedBy: ['UK', 'NI', 'EU'],
 }

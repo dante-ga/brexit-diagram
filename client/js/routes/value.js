@@ -86,7 +86,13 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
     }))
   }
   const { title, valuedBy, type, options, valueArguments } = domain[key]
-  let pageTitle = `Value of "${title}"`
+  let pageTitle
+  const tempValueObj = types[type].getValueObjs({key, title})[key]
+  if (tempValueObj && tempValueObj.percent) {
+    pageTitle = `Value of an increase in "${title}" by ${tempValueObj.percent}%`
+  } else {
+    pageTitle = `Value of "${title}"`
+  }
   if (valuedBy.length > 1) {
     const agentTabs = valuedBy.map(a => ({
       label: agentLabels[a],

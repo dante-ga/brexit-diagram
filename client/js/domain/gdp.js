@@ -33,7 +33,7 @@ const factors = {
   consumptionChange: {
     title: 'Change in total UK household consumption',
     type: 'mirrorUnitInterval',
-    desc: "How much does the % increase in the total UK population due to immigration cause % increase of the total UK household consumption.",
+    question: "How much does the % increase in the total UK population due to immigration cause % increase of the total UK household consumption?",
     calc: c => c.popChngDueImmgr * c.movement2householdConsumption,
   },
   investmentChange_remain: {

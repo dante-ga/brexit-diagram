@@ -28,18 +28,8 @@ const getInput = (domainFactor, stack) => {
 export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updateView }) => {
   const content = []
   const domainFactor = domain[key]
-  const { title, desc, choice, calcDesc } = domainFactor
+  const { title, desc, question, choice, calcDesc } = domainFactor
   content.push(Title(title))
-  if (desc) {
-    if (choice) {
-      content.push(Question(desc))
-    } else {
-      content.push(Desc(desc))
-    }
-  }
-  if (calcDesc) {
-      content.push(CalcDesc(calcDesc))
-  }
 
   const fieldKeys = []
   if (choice) {
@@ -53,6 +43,10 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
   }
   const hasFields = fieldKeys.length > 0
   const multipleFields = fieldKeys.length > 1
+
+  if (question) content.push(Question(question))
+  if (desc) content.push(Desc(desc))
+
   if (hasFields) {
     content.push(Tabs([
       {
@@ -90,9 +84,12 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
       }
     }
     content.push(Arguments(_arguments))
+    if (calcDesc) content.push(CalcDesc(calcDesc))
     if (_arguments !== null) {
       content.push(getCommentsButton(updateView))
     }
+  } else {
+    if (calcDesc) content.push(CalcDesc(calcDesc))
   }
   return { content, title }
 }

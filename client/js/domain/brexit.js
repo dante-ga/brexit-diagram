@@ -44,7 +44,7 @@ const factors = {
         <li>EU's freedom of movement area.</li>
       </ul>
     `,
-    calcDesc: `In case of the <a href="/factor/brexitApproval">remain Brexit decision</a> both memberships continue to be active. Otherwise all four combinations of membership statuses are considered. Each of the four options is evaluated and ranked by each of the agents (EU, UK) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected values of this negotiation.`,
+    calcDesc: `In case of the <a href="/factor/brexitApproval">remain Brexit decision</a> both memberships continue to be active. Otherwise all four combinations of membership statuses are considered. Each of the four options is evaluated and ranked by each of the agents (EU, UK) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected value of this negotiation.`,
     options: {
       marketAndMovement: 'Single market and freedom of movement',
       onlyMarket: 'Only single market',
@@ -74,7 +74,7 @@ const factors = {
   transitionPeriod: {
     type: 'until2030interval',
     title: 'Transition period & backstop',
-    desc: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is approved?',
+    question: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is approved?',
     choice: true,
     sliderLabel: 'Transition period & backstop duration',
     minLabel: '2020',
