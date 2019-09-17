@@ -1,8 +1,8 @@
 const tradeTypes = [
   { dir: 'exports to', loc: 'the EU', key: 'exportsToEu', valuedBy: ['EU']},
   { dir: 'imports from', loc: 'the EU', key: 'importsFromEu', valuedBy: ['EU']},
-  { dir: 'exports to', loc: 'non-EU', key: 'exportsToNonEu'},
-  { dir: 'imports from', loc: 'non-EU', key: 'importsFromNonEu'},
+  { dir: 'exports to', loc: 'non-EU countries', key: 'exportsToNonEu'},
+  { dir: 'imports from', loc: 'non-EU countries', key: 'importsFromNonEu'},
 ]
 
 const accessTypes = [

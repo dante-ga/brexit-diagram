@@ -78,7 +78,7 @@ export const types = {
   },
   mirrorUnitInterval: {
     getDefault: () => 0,
-    getText: val => ((val > 0) ? '+' : '') + Math.round(val * 100) + '%',
+    getText: val => ((val >= 0) ? '+' : '') + Math.round(val * 100) + '%',
     min: -1,
     max: 1,
     getInput: (val, cb, df) => Slider(val, cb, {

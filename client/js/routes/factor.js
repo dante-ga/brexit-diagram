@@ -90,6 +90,7 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
     }
   } else {
     if (calcDesc) content.push(CalcDesc(calcDesc))
+    content.push(getCommentsButton(updateView))
   }
   return { content, title }
 }
