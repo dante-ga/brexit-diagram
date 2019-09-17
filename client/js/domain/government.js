@@ -1,3 +1,5 @@
+import { outLink } from '../components/global.js'
+
 const factors = {
   ukLawsForced: {
     type: 'boolean',
@@ -7,8 +9,10 @@ const factors = {
     calc: c => c.ukInEu,
     valuedBy: ['UK'],
     valueArguments: { UK: {
-      lower: ['In agriculture, fisheries, external trade, and the environment, it’s fair to say that EU legislation and policy is indeed the main driver of UK law and policy, although the UK retains some freedom of action in these areas. Source: https://fullfact.org/europe/uk-law-what-proportion-influenced-eu/'],
-      higher: [],
+      lower: [`In agriculture, fisheries, external trade, and the environment, it’s fair to say that EU legislation and policy is indeed the main driver of UK law and policy, although the UK retains some freedom of action in these areas.<br>${outLink('UK law: What proportion is influenced by the EU?', 'https://fullfact.org/europe/uk-law-what-proportion-influenced-eu/')}`],
+      higher: [
+        `UK Environmental Law Association considers that EU environmental policy and legislation has, on balance, had a significant and very positive influence on the environment in the UK, with related economic benefits.<br>${outLink("Impact of EU membership on UK's environmental laws", 'https://www.ukela.org/impacteulaw')}`
+      ],
     }},
   },
   rejectedReferendum: {

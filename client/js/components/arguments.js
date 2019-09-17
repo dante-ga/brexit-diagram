@@ -1,5 +1,11 @@
 const { html } = lighterhtml
 
+const SubmitArguments = () => html`
+  <div class="notification">
+    No arguments yet. Please select one of the sliders and leave relevant arguments in the comments below. They will be added here after a review.
+  </div>
+`
+
 const SelectArguments = () => html`
   <div class="notification">
     Please select one of the sliders to view relevant arguments.
@@ -8,17 +14,20 @@ const SelectArguments = () => html`
 
 const NoArguments = () => html`
   <div class="notification">
-    <span>No arguments yet. If you have one, please leave it in the comments bellow. It will be added up here after a review.</span>
+    <span>No arguments yet.</span>
   </div>
 `
 
 const Argument = (argument) => html`
   <div class="box">
-    ${argument}
+    ${html([argument])}
   </div>
 `
 
-export const Arguments = (_arguments) => {
+export const Arguments = (_arguments, dontSelect) => {
+  if (dontSelect) {
+    return SubmitArguments()
+  }
   if (_arguments === null) {
     return SelectArguments()
   }
@@ -43,6 +52,9 @@ export const Arguments = (_arguments) => {
         </h2>
         ${(higher.length > 0) ? higher.map(Argument) : NoArguments()}
       </div>
+    </div>
+    <div class="notification has-text-centered">
+      Please leave relevant missing arguments in the comments below. They will be added here after a review.
     </div>
   `
 }

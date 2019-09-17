@@ -147,7 +147,8 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
       }
       content.push(getCommentsButton(updateView))
     } else {
-      content.push(Arguments(null))
+      const dontSelect = !valueArguments
+      content.push(Arguments(null, dontSelect))
     }
   } else {
     if (evaluating) {

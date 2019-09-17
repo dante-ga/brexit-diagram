@@ -2,6 +2,7 @@ import { clone } from '../util.js'
 import { calcSubs } from '../calc/calc.js'
 import { getAgentValue } from '../calc/value.js'
 import { getNegotiationDistribution } from '../calc/negotiation.js'
+import { outLink } from '../components/global.js'
 
 
 //Starting Brexit event + miscaleneous factors
@@ -32,6 +33,15 @@ const factors = {
     desc: 'Short term disruptions (UK border, supplies etc.) caused by Brexit',
     calcDesc: 'The disruptions will be present in case of a <a href="/factor/brexitApproval">no-deal Brexit</a> with no transition period.',
     valuedBy: ['UK'],
+    valueArguments: {UK: {
+      lower: [
+        `The issue of what would happen to drinking water has been raised because some chemicals needed in the purification process, which can’t be stored for very long, could be held up at the border in the event of no deal. Secretary of State for Environment, Food and Rural Affairs, Michael Gove, told parliament that the water industry is “reliant on chemicals that are imported from the EU” but that the government was taking steps to mitigate the risk of a “reasonable worst-case scenario”.<br>${outLink('What would happen to medical supplies and drinking water if we left with no deal?', "https://fullfact.org/europe/what-would-happen-medical-supplies-and-drinking-water-if-we-left-no-deal/")}`,
+        `The government has provided no comprehensive update on how far it has got on preparing for no deal. A government paper published in February 2019 said it was “on track for just over two-thirds of the most critical projects.” However, the report did not explain what those critical projects are, which ones are not on track, or what the government is doing to get them back on track.<br>${outLink('No deal Brexit preparations', "https://www.instituteforgovernment.org.uk/explainers/no-deal-brexit-preparations")}`,
+      ],
+      higher: [
+        `Preparations for a no deal exit have been taking place since the referendum in 2016. The government ramped up its preparations in summer 2018, when it started publishing a series of ‘technical notices’ on how public bodies, businesses and individuals needed to prepare for no deal.<br>${outLink('No deal Brexit preparations', "https://www.instituteforgovernment.org.uk/explainers/no-deal-brexit-preparations")}`,
+      ],
+    }},
     calc: c => c.brexitApproval === 'noDeal'
   },
   marketMovement: {
@@ -74,19 +84,19 @@ const factors = {
   transitionPeriod: {
     type: 'until2030interval',
     title: 'Transition period & backstop',
-    question: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is approved?',
+    question: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is legislated?',
     choice: true,
     sliderLabel: 'Transition period & backstop duration',
     minLabel: '2020',
     maxLabel: '2030 (time horizon)',
     arguments: {
       lower: [
-        'Both the EU and UK say the Irish backstop is intended to be temporary, and it would be if an alternative agreement was reached to take its place.',
-        'Stephen Barclay, the Secretary of State for Exiting the EU, and Geoffrey Cox, the Attorney General, made a number of trips to Brussels to negotiate on the backstop, particularly around the UK’s ability to leave the arrangement if no alternatives are found. These negotiations culminated in a meeting between Prime Minister and President of the European Commission Jean-Claude Juncker in March 2019, when the two sides published further documents clarifying the provisions of the backstop. These turned the joint letters of January 2019 into a ‘joint legal instrument’ which reconfirmed both sides’ plan to work quickly for ‘alternative arrangements’ after the UK leaves the EU, to avoid the need for the backstop to ever come into force. The instrument also clarified that if the backstop comes into force, but the EU does not, "in good faith", use its "best endeavours" to negotiate an agreement to replace the backstop, then the UK can make use of the dispute settlement mechanism outlined in the Withdrawal Agreement.'
+        `The transition period will end in December 2020.<br>${outLink('The Brexit timeline', 'https://fullfact.org/europe/brexit-timeline/')}`,
+        `The UK and the EU have committed in the withdrawal agreement to use their “best endeavours” to find a trade deal which avoids the need for the backstop—that would be a new arrangement that avoids a hard border in Ireland.<br>${outLink('Can we avoid going into the Irish backstop?', 'https://fullfact.org/europe/can-we-avoid-irish-backstop/')}`,
       ],
       higher: [
-        'That advice, from Attorney General Geoffrey Cox, said “despite statements in the [backstop] protocol that it is not intended to be permanent, and the clear intention of the parties that it should be replaced by alternative permanent arrangements, in international law the protocol would endure indefinitely until a superseding agreement took its place”. In other words, while not intended to be permanent, it will only be temporary if the UK and EU find a mutually acceptable alternative.',
-        'The Attorney General then published his legal assessment of what these new documents mean for the UK’s ability to leave the backstop. His conclusion was that while the new documents provide ‘useful clarifications’, nonetheless ‘the legal risk remains unchanged’ that the UK would have a legally-enforceable way to leave the backstop.'
+        `The UK can apply to extend the transition period by one or two years.<br>${outLink('The Brexit timeline', 'https://fullfact.org/europe/brexit-timeline/')}`,
+        `That advice, from Attorney General Geoffrey Cox, said “despite statements in the [backstop] protocol that it is not intended to be permanent, and the clear intention of the parties that it should be replaced by alternative permanent arrangements, in international law the protocol would endure indefinitely until a superseding agreement took its place”. In other words, while not intended to be permanent, it will only be temporary if the UK and EU find a mutually acceptable alternative.<br>${outLink('Is the backstop permanent or temporary?', 'https://fullfact.org/europe/backstop-permanent-or-temporary/')}`,
       ],
     },
   },

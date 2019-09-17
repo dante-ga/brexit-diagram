@@ -61,6 +61,7 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
       },
     ]))
     let _arguments = null
+    let dontSelect = multipleFields
     for (let i = 0; i < fieldKeys.length; i++) {
       const fieldKey = fieldKeys[i]
       const active = (fieldKey === activeKey) || !multipleFields
@@ -82,8 +83,9 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
       if (active) {
         _arguments = factor.arguments
       }
+      dontSelect = dontSelect && !factor.arguments
     }
-    content.push(Arguments(_arguments))
+    content.push(Arguments(_arguments, dontSelect))
     if (calcDesc) content.push(CalcDesc(calcDesc))
     if (_arguments !== null) {
       content.push(getCommentsButton(updateView))
