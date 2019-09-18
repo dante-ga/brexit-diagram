@@ -4,8 +4,8 @@ const { svg } = lighterhtml
 
 const cellHeight = 92
 const nodeHeight = 62
-const cellWidth = 250
-const nodeWidth = 210
+const cellWidth = 210
+const nodeWidth = 170
 const arrowSpace = 18
 const padWidth = cellWidth - nodeWidth
 const padHeight = cellHeight - nodeHeight

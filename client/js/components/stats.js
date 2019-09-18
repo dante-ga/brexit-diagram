@@ -37,7 +37,7 @@ const HistogramSvg = (options, height) => svg`
   </svg>
 `
 
-export const Histogram = (options, type, label, showLegend) => {
+export const Histogram = (options, type, label, decisionOptionLabels, showLegend) => {
   let maxCount = 0
   for (const option in options) {
     maxCount = Math.max(maxCount, ...options[option])
@@ -47,7 +47,7 @@ export const Histogram = (options, type, label, showLegend) => {
     <div class="histogram-cont field">
       <div class="is-flex is-space-between field">
         <div>${label}</div>
-        ${(showLegend) ? Legend() : ''}
+        ${(showLegend) ? Legend(decisionOptionLabels) : ''}
       </div>
       ${HistogramSvg(options, height)}
       ${Ruler(type)}
@@ -55,15 +55,15 @@ export const Histogram = (options, type, label, showLegend) => {
   `
 }
 
-const OptionColor = ([option, color]) => html`
+const OptionColor = (option, color) => html`
   <span class="option-color">
     <span class=${'color-indicator ' + color} />
     ${option}
   </span>
 `
 
-const Legend = () => html`
+const Legend = (decisionOptionLabels) => html`
   <div class="legend">
-    ${Object.entries(optionColors).map(OptionColor)}
+    ${Object.entries(optionColors).map(([option, color]) => OptionColor(decisionOptionLabels[option], color))}
   </div>
 `

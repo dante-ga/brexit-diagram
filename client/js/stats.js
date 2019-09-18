@@ -1,6 +1,6 @@
 import { updateView } from './app.js'
 import { Histogram } from './components/stats.js'
-import { domain } from './domain/domain.js'
+import { domain, decisionOptionLabels } from './domain/domain.js'
 
 //TODO: Move these constants into a shared location for the project
 const valPref = 'val_'
@@ -26,7 +26,7 @@ export const getValueHistogram = (agent, key, option, showLegend) => {
 }
 
 const getHistogram = (attr, type, label, showLegend) => {
-  return Histogram(stats.histograms[attr], type, label, showLegend)
+  return Histogram(stats.histograms[attr], type, label, decisionOptionLabels, showLegend)
 }
 
 export const getImportance = (key, value) => {

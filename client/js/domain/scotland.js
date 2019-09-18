@@ -2,7 +2,7 @@ import { getAgentValue } from '../calc/value.js'
 
 const factors = {
   scotlandApproval: {
-    title: "Scottish independence decision",
+    title: "Scottish indep. decision",
     type: 'boolean',
     desc: 'Scotland decides if it should try to leave the UK and become independent.',
     calcDesc: "Each of the options will be tried. The option resulting in the highest expected value for Scotland will be chosen.",

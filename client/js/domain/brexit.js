@@ -227,4 +227,6 @@ const getNegotiationOptionValues = (option, vals, subdomains) => {
   return { UK: maxUK, EU: maxUKEU, nodeValues: maxNodeValues }
 }
 
-export const brexit = { factors, diagram, getDecision }
+const decisionOptionLabels = factors.brexitApproval.options
+
+export const brexit = { factors, diagram, getDecision, decisionOptionLabels }

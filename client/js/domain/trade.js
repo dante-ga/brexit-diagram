@@ -46,7 +46,8 @@ Object.assign(factors, {
   },
   marketMovementTied: {
     type: 'boolean',
-    title: 'Single market tied to freedom of movement',
+    title: 'Market = freedom of movement',
+    desc: 'Access to the single market is tied to the freedom of movement with the EU.',
     calcDesc: "EU will maintain the tie between the two memberships only if the UK will be in both or will leave both.",
     calc: c => c.singleMarket === c.freedomOfMovement,
     valuedBy: ['EU'],

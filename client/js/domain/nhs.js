@@ -80,7 +80,7 @@ const factors = {
     mergeInto: 'researchColab',
   },
   researchColab: {
-    title: 'Scientific collaboration with the EU',
+    title: 'Scientific collab. with the EU',
     question: 'How much of the scientific research collaboration with the EU will continue after leaving the EU with/without a deal?',
     type: 'unitInterval',
     calc: c => (c.brexitApproval === 'remain') ? 1 : c['researchColab_' + c.brexitApproval],

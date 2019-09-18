@@ -39,3 +39,4 @@ for (const source in domain) {
 
 
 export const getMainDecision = (vals) => subdomains.brexit.getDecision(vals, subdomains)
+export const decisionOptionLabels = subdomains.brexit.decisionOptionLabels

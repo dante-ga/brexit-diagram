@@ -89,6 +89,9 @@ export const checkStatus = (data) => {
   const newComplete = getCount() === totalCount
   if (newComplete !== complete && (!data || (data.complete !== complete))) {
     persist('complete', newComplete)
+    if (newComplete) {
+      gtag('event', 'complete')
+    }
   }
   complete = newComplete
 }
@@ -109,6 +112,7 @@ export const getDecisionToolbar = () => {
       complete = true
       navigate('/decision', event)
       persist('complete', true)
+      gtag('event', 'complete')
     }
     next = Finish(decide, '/decision')
   }
@@ -132,8 +136,6 @@ export const getDecision = (_, {updateView}) => {
 
   if (complete) {
     const decision = getMainDecision(userVals)
-    console.log({decision})
-
     const optionTotalValue = {}
     const optionLabels = []
     for (const option in decision.alternatives) {
