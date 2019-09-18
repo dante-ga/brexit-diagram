@@ -9,9 +9,10 @@ import {
 } from '../components/decision.js'
 import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { userValues, hasMissingValues } from '../calc/value.js'
-import { domain, getMainDecision } from '../domain/domain.js'
+import { domain, getMainDecision, defaultAgent } from '../domain/domain.js'
 import { navigate } from '../app.js'
 import { persist } from '../persist.js'
+import { round2tenth } from '../util.js'
 
 const getValsTotalCount = () => {
   let count = 0
@@ -131,7 +132,30 @@ export const getDecision = (_, {updateView}) => {
 
   if (complete) {
     const decision = getMainDecision(userVals)
-    content.push(Decision(decision))
+    console.log({decision})
+
+    const optionTotalValue = {}
+    const optionLabels = []
+    for (const option in decision.alternatives) {
+      optionTotalValue[option] = 0
+      optionLabels.push(decision.alternatives[option].label)
+    }
+    const valueRows = []
+    for (const key in domain) {
+      const { valuedBy, title } = domain[key]
+      if (valuedBy && valuedBy.includes(defaultAgent)) {
+        const row = [title]
+        for (const option in decision.alternatives) {
+          const { nodeValues } = decision.alternatives[option]
+          const value = nodeValues[key]
+          optionTotalValue[option] += value
+          row.push(round2tenth(value))
+        }
+        valueRows.push(row)
+      }
+    }
+    const totalValues = Object.values(optionTotalValue).map(Math.round)
+    content.push(Decision({decision, valueRows, optionLabels, totalValues}))
   } else {
     content.push(ProgressPage(getCount(), totalCount))
   }

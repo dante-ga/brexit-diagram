@@ -13,9 +13,10 @@ export const getContextValue = (context, subs) => {
     for (const valueFactor in userValues[agent]) {
       const valueObj = userValues[agent][valueFactor]
       const factor = valueObj.factor || valueFactor
-      if (subs.includes(domain[factor].subKey)) {
+      const {subKey, type, customCalc} = domain[factor]
+      if (subs.includes(subKey) && !customCalc) {
         const value = valueObj.value * ((valueObj.positive) ? 1 : -1)
-        const typeObj = types[domain[factor].type]
+        const typeObj = types[type]
         const finalValue = typeObj.getValue(context[factor], value, valueObj)
         total += finalValue
         nodes[factor] = finalValue

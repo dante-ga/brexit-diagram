@@ -117,7 +117,7 @@ const factors = {
     type: 'mirrorUnitInterval',
     question: 'What is the ratio between the increase in non-British population and decrease in median income that it causes?',
     desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in non-British population by 1% causes decrease in median income by 1%); <strong>2</strong> = double impact.`,
-    calc: c => c.medianIncomeRatio * (c.nonBritish2030 - c.nonBritishNow),
+    calc: c => - c.medianIncomeRatio * (c.nonBritish2030 - c.nonBritishNow),
     valuedBy: ['UK'],
   },
   legalRights_deal: {
@@ -162,7 +162,7 @@ const factors = {
     question: 'How much will the level of transnational crime affecting the UK change if the UK leaves with/without a deal?',
     desc: `Scale: <strong>-100%</strong> = it will stop completely; <strong>0%</strong> = it will remain the same; <strong>+100%</strong> = it will double.`,
     valuedBy: ['UK'],
-    calc: c => (c.brexitApproval === 'remain') ? 1 : c['securityCoOp_' + c.brexitApproval],
+    calc: c => (c.brexitApproval === 'remain') ? 0 : c['securityCoOp_' + c.brexitApproval],
   },
 }
 

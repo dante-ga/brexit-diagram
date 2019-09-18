@@ -32,7 +32,7 @@ export const Next = (onClick, path) => html`
 export const Finish = (onClick, path) => html`
   <div class="navbar-item is-va-center">
     <a class="button is-success has-text-weight-bold" onclick=${onClick} href=${path} >
-      Get Decision!
+      Decide!
     </a>
   </div>
 `
@@ -44,30 +44,55 @@ export const ProgressPage = ( count, totalCount ) => html`
   </div>
 `
 
-const Alternative = ({ totalValue, label }) => html`
+const TableHeader = (text) => html`
+  <th>${text}</th>
+`
+
+const TableCell = (text) => html`
+  <td>${text}</td>
+`
+
+const TableRow = (cells) => html`
   <tr>
-    <td>${label}</td>
-    <td><strong>${Math.round(totalValue)}</strong></td>
+    ${cells.map(TableCell)}
   </tr>
 `
 
-export const Decision = (decision) => {
+export const Decision = ({decision, valueRows, optionLabels, totalValues}) => {
   const { bestOption, alternatives } = decision
   return html`
-    <table class="table">
+    <table class="table is-fullwidth">
       <thead>
         <tr>
-          <th>Option</th>
-          <th>Your expected total value</th>
+          <th rowspan="2" style="vertical-align: middle;">
+            Factors valued by the UK
+          </th>
+          <th colspan=${optionLabels.length} align="center">
+            Expected values by option
+          </th>
+        </tr>
+        <tr>
+          ${optionLabels.map(TableHeader)}
         </tr>
       </thead>
       <tbody>
-        ${Object.values(alternatives).map(Alternative)}
+        ${valueRows.map(TableRow)}
       </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          ${optionLabels.map(TableHeader)}
+        </tr>
+        <tr>
+          <th>Total expected value</th>
+          ${totalValues.map(TableHeader)}
+        <tr>
+      </tfoot>
     </table>
-    <div class="field">
+
+    <h1 class="subtitle is-2 has-text-centered recommendation">
       Recommended option: <strong>${alternatives[bestOption].label}</strong>
-    </div>
+    </h1>
   `
 }
 

@@ -98,6 +98,7 @@ const getValue = (vals) => {
   if (ukInEu) {
     const option = 'openBorder'
     subNodeValues = {
+      brokenDeal: 0,
       violenceNi: getAgentValue('violenceNi', vals['violenceNi_' + option], 'UK'),
       irishBorder: getAgentValue('irishBorder', option, 'UK'),
     }
