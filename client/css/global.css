@@ -13,6 +13,22 @@ nav.navbar.has-shadow {
   box-shadow: 0px 0px 4px grey;
 }
 
+.navbar .logo {
+  font-size: 18px;
+  margin: 5px 6px;
+  padding: 2px 4px;
+  line-height: 17px;
+  cursor: default;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #00d1b2;
+  user-select: none;
+  border: 2px solid;
+}
+.navbar .logo i {
+  margin-left: 3px;
+  font-size: 15px;
+}
+
 .tooltip.is-tooltip-active::before,
 .tooltip:hover::before {
   font-size: 1rem;
@@ -74,3 +90,7 @@ td.is-gap > * {
 .is-flex {
   display: flex !important;
 }
+
+/* .has-column-border {
+  border-right: 1px solid lightgray;
+} */

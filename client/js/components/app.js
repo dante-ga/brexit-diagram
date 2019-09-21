@@ -14,6 +14,9 @@ export const NavBar = ({navTabs, navTabsEnd}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
+        <div class="logo">
+          Brexit<i class="fas fa-project-diagram" /><br>Diagram
+        </div>
         ${navTabs.map(NavBarItem)}
       </div>
       <div class="expand" />

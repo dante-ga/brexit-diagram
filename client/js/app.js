@@ -10,6 +10,7 @@ import {
   checkStatus,
   complete
 } from './routes/decision.js'
+import { getAbout } from './routes/about.js'
 import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
@@ -80,7 +81,8 @@ export const navigate = (path, event) => {
 //Intercept content link clicks
 appEl.addEventListener('click', (event) => {
   const path = event.target.pathname
-  if (path && event.target.closest('.content') !== null) {
+  if (path && (event.target.closest('.content') !== null
+              || event.target.closest('.menu') !== null)) {
     navigate(path, event)
   }
 })
@@ -125,17 +127,18 @@ const routes = {
     path: '/decision',
   },
   about: {
-    get: () => ({content: '...', title: 'About' }),
+    get: getAbout,
     navTab: 'About',
     navEnd: true,
-    path: '/about',
+    path: '/about/:activeTopic',
+    navPath: '/about/project',
   },
   discussion: {
     get: () => {
       showComments()
       return {content: '', title: 'Discussion' }
     },
-    navTab: 'Discussion 💬',
+    navTab: 'Discussion',
     navEnd: true,
     path: '/discussion',
   },
