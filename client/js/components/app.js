@@ -14,9 +14,6 @@ export const NavBar = ({navTabs, navTabsEnd}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <img src="/img/logo.png" width="28" height="28" >
-        </a>
         ${navTabs.map(NavBarItem)}
       </div>
       <div class="expand" />

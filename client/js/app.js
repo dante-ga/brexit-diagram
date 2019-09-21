@@ -52,7 +52,7 @@ export function updateView() {
       activeParams,
       { evaluating, setEvaluation, updateView, navigate }
     )
-    document.title = title + ' | Gitarg'
+    document.title = title
     let toolbar
     if (complete) {
       document.body.classList.remove('has-navbar-fixed-bottom')
