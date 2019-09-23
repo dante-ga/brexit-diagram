@@ -33,6 +33,7 @@ const factors = {
     desc: 'Short term disruptions (UK border, supplies etc.) caused by Brexit',
     calcDesc: 'The disruptions will be present in case of a <a href="/factor/brexitApproval">no-deal Brexit</a> with no transition period.',
     valuedBy: ['UK'],
+    //https://www.bbc.co.uk/news/uk-politics-47652280
     valueArguments: {UK: {
       lower: [
         `The issue of what would happen to drinking water has been raised because some chemicals needed in the purification process, which can’t be stored for very long, could be held up at the border in the event of no deal. Secretary of State for Environment, Food and Rural Affairs, Michael Gove, told parliament that the water industry is “reliant on chemicals that are imported from the EU” but that the government was taking steps to mitigate the risk of a “reasonable worst-case scenario”.<br>${outLink('What would happen to medical supplies and drinking water if we left with no deal?', "https://fullfact.org/europe/what-would-happen-medical-supplies-and-drinking-water-if-we-left-no-deal/")}`,

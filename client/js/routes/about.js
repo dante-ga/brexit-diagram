@@ -2,10 +2,10 @@ import { Tabs } from '../components/global.js'
 import { Article } from '../components/about.js'
 
 const topics = {
-  project: { title: 'This project' },
+  project: { title: 'Project' },
   author: { title: 'Author' },
-  algorithms: { title: 'Algorithms' },
-  future: { title: 'Future Plans' },
+  algo: { title: 'Algorithms' },
+  future: { title: 'Future plans' },
 }
 
 export const getAbout = ({ activeTopic }, {navigate}) => {
@@ -18,6 +18,6 @@ export const getAbout = ({ activeTopic }, {navigate}) => {
   }))
   content.push(Tabs(topicTabs))
   const { title } = topics[activeTopic]
-  content.push(Article(title))
+  content.push(Article(activeTopic))
   return { content, title: 'About: '+title }
 }
