@@ -55,7 +55,7 @@ const factors = {
         <li>EU's freedom of movement area.</li>
       </ul>
     `,
-    calcDesc: `In case of the <a href="/factor/brexitApproval">remain Brexit decision</a> both memberships continue to be active. Otherwise all four combinations of membership statuses are considered. Each of the four options is evaluated and ranked by each of the agents (EU, UK) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected value of this negotiation.`,
+    calcDesc: `In case of the <a href="/factor/brexitApproval">remain Brexit decision</a> both memberships continue to be active. Otherwise, all four combinations of membership statuses are considered. Each of the four options is evaluated and ranked by each of the agents (EU, UK) separately. A negotiation algorithm determines probabilities of each of the outcomes according to the rankings. These probabilities are then used when calculating total expected value of this negotiation.`,
     options: {
       marketAndMovement: 'Single market and freedom of movement',
       onlyMarket: 'Only single market',
@@ -105,7 +105,7 @@ const factors = {
     type: 'boolean',
     title: "EU membership",
     desc: "Membership of the United Kindom in the European Union.",
-    calcDesc: `In case of the remain <a href="/factor/brexitApproval">decision</a> the EU membership will continue. In case of a no-deal Brexit it will stop staight away. In case of the deal the membership will continue until the <a href="/factor/transitionPeriod">transition period & backstop</a> run out.`,
+    calcDesc: `In case of the remain <a href="/factor/brexitApproval">decision</a> the EU membership will continue. In case of a no-deal Brexit it will stop straight away. In case of the deal the membership will continue until the <a href="/factor/transitionPeriod">transition period & backstop</a> run out.`,
     customCalc: true,
     calc: c => (c.brexitApproval === 'remain')
       || ((c.brexitApproval === 'deal') && (Math.random() < c.transitionPeriod)),

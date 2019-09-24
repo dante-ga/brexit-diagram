@@ -35,7 +35,7 @@ const factors = {
     title: "Brexit divorce bill decision",
     type: 'boolean',
     desc: 'The United Kingdom decides if it should pay the Brexit divorce bill to the European Union.',
-    calcDesc: `It is subject to the <a href="/factor/brexitApproval">Brexit decision</a>. If the UK will remain in the EU, no bill is required. If the Brexit deal will be legislated, the UK agrees to pay the bill. In the case of a no-deal brexit each of the options will be tried. The option resulting in the highest expected value for the United Kingdom will be chosen.`,
+    calcDesc: `It is subject to the <a href="/factor/brexitApproval">Brexit decision</a>. If the UK will remain in the EU, no bill is required. If the Brexit deal will be legislated, the UK agrees to pay the bill. In the case of a no-deal Brexit each of the options will be tried. The option resulting in the highest expected value for the United Kingdom will be chosen.`,
     calc: c => (c.brexitApproval === 'deal') || ((c.brexitApproval === 'noDeal') && (c.billIntention)),
     decidedBy: ['UK'],
   },

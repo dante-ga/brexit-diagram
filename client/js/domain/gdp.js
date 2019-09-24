@@ -71,7 +71,7 @@ const factors = {
   govtSpendingChange: {
     type: 'mirrorUnitInterval',
     title: 'Government spending',
-    desc: 'Change in the total UK governemnt spending until 2030.',
+    desc: 'Change in the total UK government spending until 2030.',
     calcDesc: `Government spending in 2016-2017 was £772bn (${outLink('source', "https://www.gov.uk/government/publications/budget-2016-documents/budget-2016")}). Government spending after Brexit will be affected by  changes to <a href="/factor/euNetCost">UK's net contributions to the EU budget</a> and <a href="/factor/debtService">foreign debt service payments</a> as well as the <a href="/factor/divorceBill">Brexit divorce bill</a>.`,
     calc: c => {
       const billBefore = (c.debtServiceBefore + c.euNetCostBefore) * by2030

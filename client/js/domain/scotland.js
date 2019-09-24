@@ -19,7 +19,7 @@ const factors = {
   independentScotland: {
     title: 'Scottish independence',
     type: 'boolean',
-    question: "What is the probability that Scotland will become independent (e.g. despite legal obsticles and UK's wishes) if it will decide to try.",
+    question: "What is the probability that Scotland will become independent (e.g. despite legal obstacles and UK's wishes) if it will decide to try.",
     valuedBy: ['UK', 'Scotland'],
     calc: c => c.scotlandApproval && (Math.random() < c.indScotProb)
   },
@@ -34,7 +34,7 @@ const factors = {
   scotlandEuMember: {
     title: 'Scottish membership in the EU',
     type: 'boolean',
-    question: "What is the propability of Scotland being able to join the EU after becoming independent.",
+    question: "What is the probability of Scotland being able to join the EU after becoming independent.",
     calc: c => c.independentScotland && (Math.random() < c.scotEuMemberProb)
   },
   scotlandInEu: {

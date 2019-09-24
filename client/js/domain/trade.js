@@ -55,7 +55,7 @@ Object.assign(factors, {
   exchangeRateChange: {
     type: 'mirrorUnitInterval',
     title: 'GBP exchange rate',
-    question: 'How much will GBP exchange rate (eg. agians the USD) change by 2030 if the UK remains/leaves the EU.',
+    question: 'How much will GBP exchange rate (e.g. agians the USD) change by 2030 if the UK remains/leaves the EU.',
     calc: c => (c.ukInEu) ? c.exchangeRateChangeIn : c.exchangeRateChangeOut,
     valuedBy: ['UK']
   },

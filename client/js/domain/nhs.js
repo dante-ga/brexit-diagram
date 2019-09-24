@@ -9,7 +9,7 @@ const factors = {
     title: 'NHS recruitment',
     type: 'mirrorUnitInterval',
     question: 'What is the ratio between the increase in the total UK population due to immigration and the increase of the supply of labour available for NHS positions that it causes?',
-    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in population by 1% causes an increase of the supply of labour by 1%); <strong>2</strong> = double impact.`,
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportional impact (i.e. an increase in population by 1% causes an increase of the supply of labour by 1%); <strong>2</strong> = double impact.`,
     calc: c => c.popChngDueImmgr * c.movement2nhsLabour,
   },
   movement2nhsDemand: {
@@ -23,7 +23,7 @@ const factors = {
     type: 'mirrorUnitInterval',
     desc: "How much does the % increase in the total UK population due to immigration cause % increase of the total demand for NHS services.",
     question: 'What is the ratio between the increase in the total UK population due to immigration and the increase of the total demand for NHS services that it causes?',
-    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportinal impact (i.e. an increase in population by 1% causes an increase of the demand by 1%); <strong>2</strong> = double impact.`,
+    desc: `Scale: <strong>0</strong> = no impact; <strong>1</strong> = proportional impact (i.e. an increase in population by 1% causes an increase of the demand by 1%); <strong>2</strong> = double impact.`,
     calc: c => c.popChngDueImmgr * c.movement2nhsDemand,
   },
   euMedicineForNhs: {
@@ -38,7 +38,7 @@ const factors = {
   euResearchForNhs: {
     title: "EU medical research",
     type: 'unitInterval',
-    question: 'How much will loss of mediacal reasearch programmes due to the UK leaving the EU impact overall NHS quality?',
+    question: 'How much will loss of medical research programs due to the UK leaving the EU impact overall NHS quality?',
     desc: `Scale: <strong>0%</strong> = no impact; <strong>100%</strong> = complete shutdown of the NHS.`,
     sliderLabel: 'Impact',
     choice: true,
@@ -47,7 +47,7 @@ const factors = {
   nhsBudgetChange: {
     title: "NHS budget",
     type: 'mirrorUnitInterval',
-    calcDesc: 'The change of the NHS budget is assumed to be proportional to the change in the overall governemt spending.',
+    calcDesc: 'The change of the NHS budget is assumed to be proportional to the change in the overall government spending.',
     calc: c => c.govtSpendingChange
   },
   nhsPerformance: {

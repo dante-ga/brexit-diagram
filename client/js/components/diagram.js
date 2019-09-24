@@ -102,8 +102,8 @@ export const Diagram = ({ rows, arrows, valuePaths, extArrows }) => html`
 `
 
 export const DiagramInfo = () => html`
-  The influence diagram shows how decisions influence objective factors which in turn affect subjective values. Tabs below contain separate parts of the diagram. It has the following types of elemets:
-  <br><strong>Box</strong> - a factor of a certain type which usually contains settable numeric values, stistics and arguments.
+  The influence diagram shows how decisions influence objective factors which in turn affect subjective values. Tabs below contain separate parts of the diagram. It has the following types of elements:
+  <br><strong>Box</strong> - a factor of a certain type which usually contains settable numeric values, statistics and arguments.
   <br><strong>Heart</strong> - a settable subjective value of a factor which also contains statistics and arguments.
   <br><strong>Arrow</strong> - causal connection between numeric values of the two factors.
   <br><strong>Dashed arrow</strong> - there is one or more target factor in the following parts of the diagram.

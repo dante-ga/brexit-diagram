@@ -4,7 +4,7 @@ const factors = {
   ukLawsForced: {
     type: 'boolean',
     title: 'Laws imposed by the EU',
-    desc: 'EU regulations apply directly at the UK national level. This means that when a regulation is approved at the EU level it applies immidiately without the need for legislaion by the UK governement.',
+    desc: 'EU regulations apply directly at the UK national level. This means that when a regulation is approved at the EU level it applies immediately without the need for legislation by the UK government.',
     calcDesc: `The EU will impose laws in the UK if its <a href="/factor/ukInEu">EU membership</a> will continue.`,
     calc: c => c.ukInEu,
     valuedBy: ['UK'],
@@ -41,9 +41,9 @@ const factors = {
   govtEffectiveness: {
     type: 'unitInterval',
     title: 'UK Government effectiveness',
-    question: "What impact can EU laws and rejection of the referendum results have on the effectiveness of the UK governement?",
+    question: "What impact can EU laws and rejection of the referendum results have on the effectiveness of the UK government?",
     desc: `Scale: <strong>-100%</strong> = complete shutdown; <strong>0%</strong> = no impact; <strong>+100%</strong> = the effectiness doubles.`,
-    calcDesc: `If a facor exists, its impact is added to the total imact on the government effectiveness.`,
+    calcDesc: `If a facor exists, its impact is added to the total impact on the government effectiveness.`,
     //Relative change value. Not an absolute figure.
     calc: c => ((c.ukLawsForced) ? c.ukLawsForcedImpact : 0)
       + ((c.rejectedReferendum) ? c.rejectedReferendumImpact : 0),

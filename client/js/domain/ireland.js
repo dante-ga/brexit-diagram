@@ -17,7 +17,7 @@ factors.irishBorder = {
       <li><strong>Open border</strong> - the functioning open border remains (subject to UK remaining in the EU)</li>
     </ul>
   `,
-  calcDesc: `If the UK will maintain its <a href="/factor/ukInEu">EU membership</a> the "open border" in Ireland will continue to function. Otherwise the other four options will be considered. Each of them is evaluated and ranked by each of the agents (UK, NI, EU) separately. A negotiation algorithm determnes probabilities of each of the outcomes according to the rankings. These probabilites are then used when calculating total expected value of this negotiation.`,
+  calcDesc: `If the UK will maintain its <a href="/factor/ukInEu">EU membership</a> the "open border" in Ireland will continue to function. Otherwise, the other four options will be considered. Each of them is evaluated and ranked by each of the agents (UK, NI, EU) separately. A negotiation algorithm determines probabilities of each of the outcomes according to the rankings. These probabilities are then used when calculating total expected value of this negotiation.`,
   options: {
     hardBorder: 'Hard border',
     brokenBorder: 'EU-UK border breach',
