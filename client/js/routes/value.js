@@ -9,6 +9,7 @@ import { navigate } from '../app.js'
 import { debounce } from '../util.js'
 import { getValueHistogram } from '../stats.js'
 import { getCommentsButton } from '../comments.js'
+import { Slider } from '../components/inputs.js'
 
 const getValueRegionIndexes = (key, agent, fullList, listSize) => {
   const index = fullList.findIndex(item => item.key === key)
@@ -61,10 +62,10 @@ const getValueInput = (key, updateView, valObj, label, stack) => {
   const { value, positive } = valObj
   let val = value
   if (!positive) val *= -1
-  const sliderOptons = { sliderLabel: label, key, stack }
+  const sliderOptons = { sliderLabel: label, key, stack, type: 'value' }
   debState[valObj.key] = debState[valObj.key] || {}
   const onChange = debounce(onValueChange(updateView, valObj, false), 500, true, debState[valObj.key])
-  return types.value.getInput(val, onChange , sliderOptons)
+  return Slider(val, onChange , sliderOptons)
 }
 
 const getRadioAddon = (key, agent, field, option, activeOption) => {

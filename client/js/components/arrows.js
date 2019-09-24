@@ -36,7 +36,7 @@ const Arrow = ([[Ai, Aj],[Bi, Bj]], valuePath) => {
     d = `M${Ax},${Ay} L${E1x},${E1y} L${E2x},${E2y} L${Bx - 1},${By}`
   }
   const pathClass = (valuePath) ? 'value-path' : 'arrow-path'
-  return svg`<path d=${d} class=${pathClass} />`
+  return svg([`<path d="${d}" class="${pathClass}" />`])
 }
 
 const blockedHeight = padHeight/2 + nodeHeight/2
@@ -57,7 +57,7 @@ const ExtArrow = ({loc, blocked, flip}) => {
     const x2 = x + padWidth
     d = `M${x},${y} L${x2 - 1},${y}`
   }
-  return svg`<path d=${d} class="ext-arrow-path" />`
+  return svg([`<path d="${d}" class="ext-arrow-path" />`])
 }
 
 export const Arrows = (arrows, valuePaths, extArrows) => svg`

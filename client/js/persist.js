@@ -33,6 +33,6 @@ export const getUserData = async () => {
     const userData = await response.json()
     return userData
   } else {
-    return {}
+    return null
   }
 }

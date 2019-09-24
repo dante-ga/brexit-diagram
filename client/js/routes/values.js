@@ -145,14 +145,14 @@ export const getValueList = (agent, editable=true) => {
       if (editable) {
         const gap = value - prevValue
         prevValue = value
-        const valueItem = { factor, gap, refObj: valObj, ...valObj}
+        const valueItem = Object.assign({ factor, gap, refObj: valObj}, valObj)
         //Tie callbacks to the context
         valueItem.toggleSign = toggleSign(valObj)
         valueItem.onValueChange = onValueChange(updateView, valObj)
         valueItem.onGapChange = onGapChange(index, order, gap, factors)
         return valueItem
       } else {
-        return { factor, ...valObj }
+        return Object.assign({ factor }, valObj)
       }
     })
   return valueList

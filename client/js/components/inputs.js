@@ -39,7 +39,7 @@ export const Ruler = (type) => {
   `
 }
 
-export const Slider = (val, cb, {stack, type, step, sliderLabel, minLabel, maxLabel, key }) => html`
+export const Slider = (val, cb, {stack, type, sliderLabel, key }) => html`
   <div class="field slider">
     <div>
       ${sliderLabel} = ${types[type].getText(val)}
@@ -47,7 +47,7 @@ export const Slider = (val, cb, {stack, type, step, sliderLabel, minLabel, maxLa
     <div>
       <input
         class="is-fullwidth"
-        step=${step}
+        step=${types[type].step}
         min=${types[type].min}
         max=${types[type].max}
         value=${val}
@@ -59,10 +59,6 @@ export const Slider = (val, cb, {stack, type, step, sliderLabel, minLabel, maxLa
     </div>
   </div>
 `
-/* <div>
-  <span>${minLabel}</span>
-  <span class="is-pulled-right">${maxLabel}</span>
-</div> */
 
 export const NumberInput = (value, onChange, disabled) => html`
   <input

@@ -31,7 +31,7 @@ const articles = {
       At a young age I was inspired by success of projects like Wikipedia. The potential of mass cooperation via the Internet and software has facinated me ever since. I moved to the UK to sudy at a school and then a university to finally graduate with a Mathematics and Computer Science degree.
     </p>
     <p>
-      While working as a Web Developer for a number of years, I became interested in tackling the complexity of conflict resolution using the knowledge and skill that I acquired from my degree. I recently started working full time on this project and I'm looking for people interested in simmilar things and potential collaborators.
+      While working as a Web Developer for a number of years, I became interested in tackling the complexity of conflict resolution using the knowledge and skill that I aquired from my degree. I recently started working full time on this project and I'm looking for people interested in simmilar things and potential collaborators.
     </p>
     <p>
       Dante
@@ -109,7 +109,7 @@ const articles = {
 }
 
 export const Article = (topic) => html`
-  <div class="content is-medium">
+  <div class="content">
     ${html([articles[topic]])}
   </div>
 `

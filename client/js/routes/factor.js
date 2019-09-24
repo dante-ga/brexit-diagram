@@ -8,6 +8,7 @@ import { types } from '../types.js'
 import { debounce } from '../util.js'
 import { getValHistogram } from '../stats.js'
 import { getCommentsButton } from '../comments.js'
+import { Slider } from '../components/inputs.js'
 
 const debState = {}
 
@@ -19,9 +20,9 @@ const getInput = (domainFactor, stack) => {
   }
   debState[domainFactor] = debState[domainFactor] || {}
   const onChangeDeb = debounce(onChange, 500, true, debState[domainFactor])
-  const { getDefault, getInput } = types[type]
+  const { getDefault } = types[type]
   const inputVal = (key in userVals) ? userVals[key] : getDefault(domain[key])
-  const input = getInput(inputVal, onChangeDeb, {stack, ...domainFactor})
+  const input = Slider(inputVal, onChangeDeb, Object.assign({stack}, domainFactor))
   return input
 }
 

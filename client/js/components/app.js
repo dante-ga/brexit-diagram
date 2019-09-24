@@ -10,17 +10,28 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
   </a>
 `
 
-export const NavBar = ({navTabs, navTabsEnd}) => {
+export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu}) => {
   return html`
-    <nav class="navbar has-shadow is-fixed-top is-flex" role="navigation" aria-label="main navigation">
+    <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <div class="logo">
+        <div class="logo is-hidden-mobile">
           Brexit<i class="fas fa-project-diagram" /><br>Diagram
         </div>
         ${navTabs.map(NavBarItem)}
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onclick=${toggleMenu}>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div class="expand" />
-      ${navTabsEnd.map(NavBarItem)}
+      <div class=${'navbar-menu' + ((showMenu) ? ' is-active' : '') }>
+        <div class="navbar-end">
+          <a class="navbar-item is-flex is-va-center" href="https://github.com/gitarg/brexitdiagram" target="_blank">
+            <img src="/img/github.png" >
+          </a>
+          ${navTabsEnd.map(NavBarItem)}
+        </div>
+      </div>
     </nav>
   `
 }
@@ -52,4 +63,10 @@ export const NotFound = () => html`
       </div>
     </div>
   </section>
+`
+
+export const Discussion = () => html`
+  <h1 class="title has-text-centered">
+    General discussion
+  </h1>
 `

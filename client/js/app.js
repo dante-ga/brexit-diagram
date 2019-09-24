@@ -11,7 +11,7 @@ import {
   complete
 } from './routes/decision.js'
 import { getAbout } from './routes/about.js'
-import { NavBar, App, NotFound } from './components/app.js'
+import { NavBar, App, NotFound, Discussion } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
@@ -26,6 +26,12 @@ const appEl = document.getElementById('App')
 
 const setEvaluation = (newEval) => {
   evaluating = newEval
+  updateView()
+}
+
+let showMenu = false
+const toggleMenu = () => {
+  showMenu = !showMenu
   updateView()
 }
 
@@ -44,7 +50,7 @@ const getNav = () => {
       ;(navEnd) ? navTabsEnd.push(tab) : navTabs.push(tab)
     }
   }
-  return NavBar({ navTabs, navTabsEnd })
+  return NavBar({ navTabs, navTabsEnd, showMenu, toggleMenu })
 }
 
 export function updateView() {
@@ -68,6 +74,7 @@ export function updateView() {
 const router = new Navigo(window.location.origin)
 
 export const navigate = (path, event) => {
+  showMenu = false
   if (event) {
     if (event.ctrlKey) {
       return true
@@ -136,7 +143,7 @@ const routes = {
   discussion: {
     get: () => {
       showComments()
-      return {content: '', title: 'Discussion' }
+      return {content: Discussion(), title: 'Discussion' }
     },
     navTab: 'Discussion',
     navEnd: true,
@@ -148,9 +155,13 @@ const routeHandlers = {}
 for (const route in routes) {
   const { path } = routes[route]
   routeHandlers[path] = (params) => {
+    const oldRoute = activeRoute
     activeRoute = route
     activeParams = params
     updateView()
+    if (route !== oldRoute) {
+      window.scroll(0, 0)
+    }
   }
 }
 router.on(routeHandlers)
@@ -167,10 +178,12 @@ router.hooks({
 router.notFound(() => render(appEl, NotFound))
 
 getUserData().then((data) => {
-  importUserVals(data)
-  importUserValues(data)
-  checkStatus()
-  updateView()
+  if (data !== null) {
+    importUserVals(data)
+    importUserValues(data)
+    checkStatus()
+    updateView()
+  }
 })
 
 getStats().then(() => router.resolve())

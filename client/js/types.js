@@ -1,6 +1,4 @@
 import { round2tenth, camel2space, bn } from './util.js'
-import { Slider } from './components/inputs.js'
-import { domain } from './domain/domain.js'
 
 const valuePercent = 10
 
@@ -36,10 +34,7 @@ export const types = {
     getText: val => round2tenth(val * 100) + '%',
     min: 0,
     max: 1,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      step: 0.005,
-      ...df
-    }),
+    step: 0.005,
     getValueObjs: ({key, title}) => ({[key]: {
       percent: valuePercent,
       title: `${title} (+${valuePercent}%)`,
@@ -51,10 +46,7 @@ export const types = {
     getText: val => round2tenth(val * 10) + ' yr',
     min: 0,
     max: 1,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      step: 0.01,
-      ...df
-    }),
+    step: 0.01,
     getValueObjs: ({key, title}) => ({[key]: {
       percent: valuePercent,
       title: `${title} (+${valuePercent/10} year)`,
@@ -66,10 +58,7 @@ export const types = {
     getText: val => round2tenth(val * 100) + '%',
     min: -1,
     max: 0,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      step: 0.005,
-      ...df
-    }),
+    step: 0.005,
     getValueObjs: ({key, title}) => ({[key]: {
       percent: valuePercent,
       title: `${title} (+${valuePercent}%)`,
@@ -81,12 +70,7 @@ export const types = {
     getText: val => ((val >= 0) ? '+' : '') + Math.round(val * 100) + '%',
     min: -1,
     max: 1,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      step: 0.01,
-      minLabel: 'Decrease',
-      maxLabel: 'Increase',
-      ...df
-    }),
+    step: 0.01,
     getValueObjs: ({key, title}) => ({[key]: {
       percent: valuePercent,
       title: `${title} (+${valuePercent}%)`,
@@ -97,24 +81,13 @@ export const types = {
     getText: val => val,
     min: -100,
     max: 100,
-    getInput: (val, cb, sliderOptions) => Slider(val, cb, {
-      type: 'value',
-      step: 0.5,
-      minLabel: '-100',
-      maxLabel: '100',
-      ...sliderOptions,
-    })
+    step: 0.5,
   },
   ratio: {
     getDefault: () => 1,
     getText: val => val,
     min: 0,
     max: 2,
-    getInput: (val, cb, df) => Slider(val, cb, {
-      step: 0.01,
-      minLabel: 'No impact',
-      maxLabel: 'Drastic impact',
-      ...df
-    }),
+    step: 0.01,
   },
 }

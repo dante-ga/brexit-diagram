@@ -4,7 +4,6 @@
   padding-top: 1.5rem;
 }
 #disqus_thread.section {
-  margin-top: -35px;
   padding-bottom: 0;
   padding-top: 0;
 }
@@ -29,9 +28,28 @@ nav.navbar.has-shadow {
   font-size: 15px;
 }
 
+@media screen and ( max-height: 499px ) {
+  .navbar.is-fixed-bottom,
+  .navbar.is-fixed-top {
+    position: static;
+    z-index: 0;
+  }
+  html.has-navbar-fixed-bottom,
+  body.has-navbar-fixed-bottom {
+    padding-bottom: 0px;
+  }
+  html.has-navbar-fixed-top,
+  body.has-navbar-fixed-top {
+    padding-top: 0px;
+  }
+}
+
 .tooltip.is-tooltip-active::before,
 .tooltip:hover::before {
   font-size: 1rem;
+}
+.tooltip.is-tooltip-multiline::before {
+  min-width: 17rem;
 }
 
 .expand {
@@ -90,7 +108,3 @@ td.is-gap > * {
 .is-flex {
   display: flex !important;
 }
-
-/* .has-column-border {
-  border-right: 1px solid lightgray;
-} */

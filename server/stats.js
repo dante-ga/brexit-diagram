@@ -103,7 +103,7 @@ const main = async () => {
     for (const sectionKey in sections) {
       gapChanges[sectionKey] = 0
       for (const option in optionAvgs) {
-        const deviant = { ...optionAvgs[option] }
+        const deviant = Object.assign({}, optionAvgs[option])
         for (const alt in optionAvgs) {
           if (alt === option) continue
           for (const deviantAttr of sections[sectionKey]) {

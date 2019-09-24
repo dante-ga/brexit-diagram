@@ -25,7 +25,7 @@ export const domain = {}
 for (const subKey in subdomains) {
   const { factors } = subdomains[subKey]
   for (const key in factors) {
-    domain[key] = { key, subKey, ...factors[key], mergeFrom: [] }
+    domain[key] = Object.assign({ key, subKey, mergeFrom: [] }, factors[key])
   }
 }
 
