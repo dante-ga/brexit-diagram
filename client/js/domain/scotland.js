@@ -99,7 +99,7 @@ const getIndependentScotlandValueUK = ({scotlandApproval}, vals) => {
     const nodeValues = { independentScotland: value }
     return { value, nodeValues }
   } else {
-    return 0
+    return { value: 0, nodeValues: {independentScotland: 0}}
   }
 }
 

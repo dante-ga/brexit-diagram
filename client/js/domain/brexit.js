@@ -209,7 +209,7 @@ const getNegotiationOptionValues = (option, vals, subdomains) => {
   let maxNodeValues
   for (const billIntention of [false, true]) {
     //Filter out disabled bill/brexit combinations
-    if (vals.brexitApproval === 'remain' && billIntention) continue
+    if ((vals.brexitApproval === 'remain') && billIntention) continue
     const context = clone(vals)
     context.marketMovement = option
     context.singleMarket = ['marketAndMovement', 'onlyMarket'].includes(option)

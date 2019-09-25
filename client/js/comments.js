@@ -31,6 +31,7 @@ export const showComments = () => {
     })
   } else {
     initComments(config)
+    setTimeout(showComments, 3000)
   }
 }
 

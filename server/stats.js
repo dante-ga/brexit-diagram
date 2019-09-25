@@ -73,12 +73,14 @@ const main = async () => {
   const users = dbResponse.Items.map(AWS.DynamoDB.Converter.unmarshall)
   const optionUsers = {}
   for (const user of users) {
-    const decision = decide(user)
-    const { bestOption } = decision
-    if (!optionUsers.hasOwnProperty(bestOption)) {
-      optionUsers[bestOption] = []
+    if (attributes.every(attr => user.hasOwnProperty(attr))) {
+      const decision = decide(user)
+      const { bestOption } = decision
+      if (!optionUsers.hasOwnProperty(bestOption)) {
+        optionUsers[bestOption] = []
+      }
+      optionUsers[bestOption].push(user)
     }
-    optionUsers[bestOption].push(user)
   }
 
   //Calculate average user per option

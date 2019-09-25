@@ -19,7 +19,8 @@ const factors = {
     title: 'Total UK population',
     type: 'mirrorUnitInterval',
     question: "How much will the total UK population change if the UK will remain/leave the EU's freedom of movement area?",
-    calc: c => (c.freedomOfMovement) ? c.ukPopulationChangeOpen : c.ukPopulationChangeClosed
+    //Prevent zero edge case
+    calc: c => Math.max(-0.99, (c.freedomOfMovement) ? c.ukPopulationChangeOpen : c.ukPopulationChangeClosed)
   },
   nonBritishNow: {
     type: 'unitInterval',
