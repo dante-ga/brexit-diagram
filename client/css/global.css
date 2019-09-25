@@ -108,3 +108,8 @@ td.is-gap > * {
 .is-flex {
   display: flex !important;
 }
+
+.button-section {
+  margin-top: -15px;
+  margin-bottom: 15px;
+}

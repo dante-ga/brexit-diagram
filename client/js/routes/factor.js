@@ -1,4 +1,4 @@
-import { Title, Tabs } from '../components/global.js'
+import { Title, Tabs, ButtonSection } from '../components/global.js'
 import { Desc, Question, CalcDesc } from '../components/factor.js'
 import { Arguments, RadioAddon } from '../components/arguments.js'
 import { userVals, setUserVal } from '../calc/calc.js'
@@ -26,11 +26,17 @@ const getInput = (domainFactor, stack) => {
   return input
 }
 
-export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updateView }) => {
+export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updateView, navigate }) => {
   const content = []
   const domainFactor = domain[key]
-  const { title, desc, question, choice, calcDesc } = domainFactor
+  const { title, desc, question, choice, calcDesc, valuedBy } = domainFactor
   content.push(Title(title))
+  if (valuedBy) {
+    content.push(ButtonSection({
+      label: 'Go to value',
+      onClick: (event) => navigate('/value/'+key+'/'+valuedBy[0], event)
+    }))
+  }
 
   const fieldKeys = []
   if (choice) {

@@ -1,4 +1,4 @@
-import { Title, Tabs, Info } from '../components/global.js'
+import { Title, Tabs, Info, ButtonSection } from '../components/global.js'
 import { ValueRegionTable, ValueInfo } from '../components/value.js'
 import { Arguments, RadioAddon } from '../components/arguments.js'
 import { domain, agentLabels, defaultAgent } from '../domain/domain.js'
@@ -107,6 +107,10 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
     pageTitle += ' for ' + agentLabels[agent]
   }
   content.push(Title(pageTitle))
+  content.push(ButtonSection({
+    label: 'Go to factor',
+    onClick: (event) => navigate('/factor/'+key, event)
+  }))
   content.push(Tabs([
     {
       label: 'Your answer',

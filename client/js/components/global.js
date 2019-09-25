@@ -15,6 +15,12 @@ export const Button = ({label, onClick}) => html`
   </button>
 `
 
+export const ButtonSection = (button) => html`
+  <div class="button-section has-text-centered">
+    ${Button(button)}
+  </div>
+`
+
 const Tab = ({label, active, onClick, path}) => html`
   <li class=${(active) ? 'is-active' : ''} >
     <a onclick=${onClick} href=${path} >
