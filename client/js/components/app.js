@@ -26,7 +26,7 @@ export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu}) => {
       </div>
       <div class=${'navbar-menu' + ((showMenu) ? ' is-active' : '') }>
         <div class="navbar-end">
-          <a class="navbar-item is-flex is-va-center" href="https://github.com/gitarg/brexitdiagram" target="_blank">
+          <a class="navbar-item is-flex is-va-center" href="https://github.com/dante-ga/brexit-diagram" target="_blank">
             <img src="/img/github.png" >
           </a>
           ${navTabsEnd.map(NavBarItem)}
