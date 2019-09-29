@@ -59,7 +59,7 @@ export function updateView() {
       activeParams,
       { evaluating, setEvaluation, updateView, navigate }
     )
-    document.title = title
+    document.title = title + ' | BrexitDiagram.uk'
     let toolbar
     if (complete) {
       document.body.classList.remove('has-navbar-fixed-bottom')
