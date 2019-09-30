@@ -151,4 +151,16 @@ const diagram = `
   importsFromNonEu -
 `
 
+// const diagram_triangle_conf = `
+//   euNetCost        -                  ukPopulationChange  gdppcChange $gdppcChange
+//   divorceBill      -                  -
+//   debtService      govtSpendingChange $govtSpendingChange
+//   popChngDueImmgr  consumptionChange  gdpChange           $gdpChange
+//   brexitApproval   investmentChange   -
+//   exportsToEu      exportsChange
+//   exportsToNonEu   importsChange
+//   importsFromEu    -
+//   importsFromNonEu -
+// `
+
 export const gdp = { factors, diagram }

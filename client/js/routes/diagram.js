@@ -65,18 +65,17 @@ const getDiagramObj = (str, subKey) => {
         const { title, calc, decidedBy } = domain[key]
         cell.title = title
         //Exclude external arrows
+        cell.choice = hasChoice(key)
+        cell.decision = decidedBy && decidedBy.length === 1
+        cell.negotiation = decidedBy && decidedBy.length > 1
         if (domain[key].subKey === subKey) {
           parseDepends(calc)
             .filter(dk => (dk in locs) && dk !== key)
             .map(dk => locs[dk])
             .forEach(fromLoc => arrows.push([fromLoc, loc]))
-          cell.choice = hasChoice(key)
-          cell.decision = decidedBy && decidedBy.length === 1
-          cell.negotiation = decidedBy && decidedBy.length > 1
           cell.notify = cell.choice && hasChoiceMissing(key)
         } else {
           cell.external = true
-          cell.choice = false
         }
         cell.path = '/factor/' + key
       }
