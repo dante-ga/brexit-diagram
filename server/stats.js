@@ -147,7 +147,7 @@ const main = async () => {
           continue
         }
         const { min, max } = types[type]
-        const binIndex = Math.floor((num_bins * (user[attr] - min)) / (max - min))
+        const binIndex = Math.min(num_bins - 1, Math.floor((num_bins * (user[attr] - min)) / (max - min)))
         histograms[attr][option][binIndex]++
       }
     }
