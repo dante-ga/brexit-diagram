@@ -5,6 +5,7 @@ import { userVals, hasChoiceMissing } from '../calc/calc.js'
 import { hasMissingValues } from '../calc/value.js'
 import { updateView, navigate } from '../app.js'
 import { getImportance } from '../stats.js'
+import { getFieldKeys } from './factor.js'
 
 const parseDepends = (fn) => {
   if (!fn) return []
@@ -53,11 +54,14 @@ const getDiagramObj = (str, subKey) => {
       const {key, value, loc} = cell
       if (!key) continue
       if (value) {
-        cell.title = 'Valued by: '+domain[key].valuedBy.join(', ')
+        const { type, options, valuedBy } = domain[key]
         valuePaths.push([locs[key], loc])
         cell.notify = hasMissingValues(key).missing
         const agent = domain[key].valuedBy[0]
         cell.path = `/value/${key}/${agent}`
+        if (type === 'option') {
+          cell.path += '/' + Object.keys(options)[0]
+        }
         if (loc[0] !== locs[key][0]) {
           cell.shiftBack = true
         }
@@ -77,7 +81,12 @@ const getDiagramObj = (str, subKey) => {
         } else {
           cell.external = true
         }
-        cell.path = '/factor/' + key
+        const fieldKeys = getFieldKeys(key)
+        if (fieldKeys.length > 1) {
+          cell.path = '/factor/' + key + '/' + fieldKeys[0]
+        } else {
+          cell.path = '/factor/' + key
+        }
       }
       cell.importance = !cell.external && getImportance(key, value)
       cell.onClick = (event) => navigate(cell.path, event)

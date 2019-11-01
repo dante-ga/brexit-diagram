@@ -1,6 +1,7 @@
 import { Title, Tabs, Info, ButtonSection } from '../components/global.js'
 import { ValueRegionTable, ValueInfo } from '../components/value.js'
-import { Arguments, RadioAddon } from '../components/arguments.js'
+import { RadioAddon } from '../components/arguments.js'
+import { getArguments } from '../arguments.js'
 import { domain, agentLabels, defaultAgent } from '../domain/domain.js'
 import { userValues } from '../calc/value.js'
 import { onValueChange, getValueList } from './values.js'
@@ -8,7 +9,6 @@ import { types } from '../types.js'
 import { navigate } from '../app.js'
 import { debounce } from '../util.js'
 import { getValueHistogram } from '../stats.js'
-import { getCommentsButton } from '../comments.js'
 import { Slider } from '../components/inputs.js'
 
 const getValueRegionIndexes = (key, agent, fullList, listSize) => {
@@ -123,7 +123,13 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
       onClick: () => setEvaluation(false)
     },
   ]))
+  let _arguments
+  let path
+  let multipleFields
   if (type === 'option') {
+    activeOption = activeOption || Object.keys(options)[0]
+    path = ['value', key, agent, activeOption].join('_')
+    multipleFields = true
     if (evaluating) {
       const valueKeys = Object.keys(options).map(option => key + '_' + option)
       content.push(getMultiValueRegion(valueKeys, agent))
@@ -144,18 +150,12 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
         content.push(getRadioAddon(key, agent, field, option, activeOption))
       }
     }
-    if (activeOption) {
-      if (valueArguments && valueArguments[agent] && valueArguments[agent][activeOption]) {
-        content.push(Arguments(valueArguments[agent][activeOption]))
-      } else {
-        content.push(Arguments())
-      }
-      content.push(getCommentsButton(updateView))
-    } else {
-      const dontSelect = !valueArguments
-      content.push(Arguments(null, dontSelect))
+    if (valueArguments && valueArguments[agent] && valueArguments[agent][activeOption]) {
+      _arguments = valueArguments[agent][activeOption]
     }
   } else {
+    path = ['value', key, agent].join('_')
+    multipleFields = false
     if (evaluating) {
       content.push(getValueRegion(key, agent))
       const valObj = userValues[agent][key]
@@ -164,11 +164,9 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
       content.push(getValueHistogram(agent, key, null, true))
     }
     if (valueArguments && valueArguments[agent]) {
-      content.push(Arguments(valueArguments[agent]))
-    } else {
-      content.push(Arguments())
+      _arguments = valueArguments[agent]
     }
-    content.push(getCommentsButton(updateView))
   }
+  content.push(getArguments(_arguments, multipleFields, path, updateView))
   return { content, title: pageTitle }
 }

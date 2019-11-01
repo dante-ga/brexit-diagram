@@ -65,8 +65,8 @@ export const NotFound = () => html`
   </section>
 `
 
-export const Discussion = () => html`
+export const Survey = () => html`
   <h1 class="title has-text-centered">
-    General discussion
+    Survey about this website
   </h1>
 `

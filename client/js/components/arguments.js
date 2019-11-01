@@ -1,22 +1,6 @@
+import { Button } from './global.js'
+
 const { html } = lighterhtml
-
-const SubmitArguments = () => html`
-  <div class="notification">
-    No arguments yet. Please select one of the sliders and leave relevant arguments in the comments below. They will be added here after a review.
-  </div>
-`
-
-const SelectArguments = () => html`
-  <div class="notification">
-    Please select one of the sliders to view relevant arguments.
-  </div>
-`
-
-const NoArguments = () => html`
-  <div class="notification">
-    <span>No arguments yet.</span>
-  </div>
-`
 
 const Argument = (argument) => html`
   <div class="box">
@@ -24,40 +8,99 @@ const Argument = (argument) => html`
   </div>
 `
 
-export const Arguments = (_arguments, dontSelect) => {
-  if (dontSelect) {
-    return SubmitArguments()
-  }
-  if (_arguments === null) {
-    return SelectArguments()
-  }
-  const {higher, lower} = _arguments || {higher:[], lower:[]}
-  return html`
-    <div class="columns">
-      <div class="column">
-        <h2 class="subtitle has-text-centered">
-          <span class="icon">
-            <i class="fas fa-angle-double-left" />
-          </span>
-          <span>Lower because...</span>
-        </h2>
-        ${(lower.length > 0) ? lower.map(Argument) : NoArguments()}
-      </div>
-      <div class="column">
-        <h2 class="subtitle has-text-centered">
-          <span>Higher because...</span>
-          <span class="icon">
-            <i class="fas fa-angle-double-right" />
-          </span>
-        </h2>
-        ${(higher.length > 0) ? higher.map(Argument) : NoArguments()}
-      </div>
-    </div>
-    <div class="notification has-text-centered">
-      Please leave relevant missing arguments in the comments below. They will be added here after a review.
-    </div>
+const UnmodArg = (unmodArg) => html`
+  <div class="box has-background-white-ter has-text-grey is-italic">
+    ${unmodArg}
+  </div>
+`
+
+const titles = {
+  lower: () => html`
+    <span class="icon">
+      <i class="fas fa-angle-double-left" />
+    </span>
+    <span>Lower because...</span>
+  `,
+  higher: () => html`
+    <span>Higher because...</span>
+    <span class="icon">
+      <i class="fas fa-angle-double-right" />
+    </span>
   `
 }
+
+const sideAlt = {
+  lower: 'left',
+  higher: 'right',
+}
+
+const UnmodArgButton = ({label, onClick}) => html`
+  <button
+    class="button field is-fullwidth has-text-grey"
+    onclick=${onClick}
+  >
+    ${label}
+  </button>
+`
+
+export const UnmodArgs = (showUnmodArgs, sideUnmodArgs, setUnmodArgs) => {
+  if (sideUnmodArgs.length > 0) {
+    if (showUnmodArgs) {
+      return [
+        UnmodArgButton({
+          label: 'Hide unmoderated arguments',
+          onClick: () => setUnmodArgs(false),
+        }),
+        ...sideUnmodArgs.map(UnmodArg)
+      ]
+    } else {
+      return html`${UnmodArgButton({
+        label: `Show unmoderated arguments (${sideUnmodArgs.length})`,
+        onClick: () => setUnmodArgs(true),
+      })}`
+    }
+  } else {
+    return ''
+  }
+}
+
+export const ArgumentsColumn = ({
+  side,
+  sideArguments,
+  showUnmodArgs,
+  sideUnmodArgs,
+  setUnmodArgs,
+  multipleFields,
+  onInput,
+  areaText,
+  addArgument,
+}) => html`
+  <div class="column">
+    <h2 class="subtitle has-text-centered">
+      ${titles[side]()}
+    </h2>
+    ${sideArguments.map(Argument)}
+    ${UnmodArgs(showUnmodArgs, sideUnmodArgs, setUnmodArgs)}
+    <textarea
+      class="textarea field"
+      placeholder=${`Why should the ${(multipleFields) ? 'selected ' : ''}slider be moved to the ${sideAlt[side]}?`}
+      oninput=${onInput}
+      value=${areaText}
+    />
+    <div class="field">
+      ${Button({
+        label: 'Add argument',
+        onClick: addArgument,
+      })}
+    </div>
+  </div>
+`
+
+export const Arguments = (columns) => html`
+  <div class="columns">
+    ${columns}
+  </div>
+`
 
 export const RadioAddon = (fieldKey, field, active, activate) => html`
   <div class="is-flex is-va-center">

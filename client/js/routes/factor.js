@@ -1,13 +1,13 @@
 import { Title, Tabs, ButtonSection } from '../components/global.js'
 import { Desc, Question, CalcDesc } from '../components/factor.js'
-import { Arguments, RadioAddon } from '../components/arguments.js'
+import { RadioAddon } from '../components/arguments.js'
+import { getArguments } from '../arguments.js'
 import { userVals, setUserVal } from '../calc/calc.js'
 import { updateView, navigate } from '../app.js'
 import { domain } from '../domain/domain.js'
 import { types } from '../types.js'
 import { debounce } from '../util.js'
 import { getValHistogram } from '../stats.js'
-import { getCommentsButton } from '../comments.js'
 import { Slider } from '../components/inputs.js'
 
 const debState = {}
@@ -26,10 +26,25 @@ const getInput = (domainFactor, stack) => {
   return input
 }
 
+export const getFieldKeys = (key) => {
+  const { choice, mergeFrom } = domain[key]
+  const fieldKeys = []
+  if (choice) {
+    fieldKeys.push(key)
+  }
+  for (const source of mergeFrom) {
+    const ds = domain[source]
+    if (ds.choice) {
+      fieldKeys.push(source)
+    }
+  }
+  return fieldKeys
+}
+
 export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updateView, navigate }) => {
   const content = []
   const domainFactor = domain[key]
-  const { title, desc, question, choice, calcDesc, valuedBy } = domainFactor
+  const { title, desc, question, calcDesc, valuedBy } = domainFactor
   content.push(Title(title))
   if (valuedBy) {
     content.push(ButtonSection({
@@ -38,16 +53,7 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
     }))
   }
 
-  const fieldKeys = []
-  if (choice) {
-    fieldKeys.push(key)
-  }
-  for (const source of domainFactor.mergeFrom) {
-    const ds = domain[source]
-    if (ds.choice) {
-      fieldKeys.push(source)
-    }
-  }
+  const fieldKeys = getFieldKeys(key)
   const hasFields = fieldKeys.length > 0
   const multipleFields = fieldKeys.length > 1
 
@@ -67,8 +73,11 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
         onClick: () => setEvaluation(false)
       },
     ]))
+    if (multipleFields && !activeKey) {
+      activeKey = fieldKeys[0]
+    }
     let _arguments = null
-    let dontSelect = multipleFields
+    let path
     for (let i = 0; i < fieldKeys.length; i++) {
       const fieldKey = fieldKeys[i]
       const active = (fieldKey === activeKey) || !multipleFields
@@ -89,17 +98,11 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
       }
       if (active) {
         _arguments = factor.arguments
+        path = ['factor', key, fieldKey].join('_')
       }
-      dontSelect = dontSelect && !factor.arguments
     }
-    content.push(Arguments(_arguments, dontSelect))
-    if (calcDesc) content.push(CalcDesc(calcDesc))
-    if (_arguments !== null) {
-      content.push(getCommentsButton(updateView))
-    }
-  } else {
-    if (calcDesc) content.push(CalcDesc(calcDesc))
-    content.push(getCommentsButton(updateView))
+    content.push(getArguments(_arguments, multipleFields, path, updateView))
   }
+  if (calcDesc) content.push(CalcDesc(calcDesc))
   return { content, title }
 }

@@ -44,7 +44,7 @@ const factors = {
   euInfluenceOnGlobal: {
     type: 'unitInterval',
     title: 'EU’s global influence',
-    question: "What is UK's global influence if it remains/leaves the EU?",
+    question: "What is EU's global influence if the UK remains/leaves?",
     desc: `Scale: <strong>0%</strong> = no influence; <strong>100%</strong> = absolute global control.`,
     calc: c => (c.ukInEu) ? c.euInfluenceOnGlobalIn : c.euInfluenceOnGlobalOut
   },

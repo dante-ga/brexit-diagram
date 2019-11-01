@@ -1,4 +1,4 @@
-import { getUserData, persist } from './persist.js'
+import { getUserData, persist, getUnmodArgs } from './persist.js'
 import { getFactor } from './routes/factor.js'
 import { getValues, activeAgent, importUserValues } from './routes/values.js'
 import { getValue } from './routes/value.js'
@@ -11,12 +11,12 @@ import {
   complete
 } from './routes/decision.js'
 import { getAbout } from './routes/about.js'
-import { NavBar, App, NotFound, Discussion } from './components/app.js'
+import { NavBar, App, NotFound, Survey } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 import { getStats } from './stats.js'
-import { hideComments, showComments } from './comments.js'
+import { importUnmodArgs } from './arguments.js'
 const { render } = lighterhtml
 
 let activeRoute
@@ -105,12 +105,10 @@ const routes = {
   factor: {
     get: getFactor,
     path: '/factor/:key',
-    comments: true,
   },
   factorActiveKey: {
     get: getFactor,
     path: '/factor/:key/:activeKey',
-    comments: true,
   },
   values: {
     get: getValues,
@@ -121,12 +119,10 @@ const routes = {
   value: {
     get: getValue,
     path: '/value/:key/:agent',
-    comments: true,
   },
   valueActiveOption: {
     get: getValue,
     path: '/value/:key/:agent/:activeOption',
-    comments: true,
   },
   decision: {
     get: getDecision,
@@ -140,14 +136,11 @@ const routes = {
     path: '/about/:activeTopic',
     navPath: '/about/project',
   },
-  discussion: {
-    get: () => {
-      showComments()
-      return {content: Discussion(), title: 'Discussion' }
-    },
-    navTab: 'Discussion',
+  survey: {
+    get: () => ({content: Survey(), title: 'Survey' }),
+    navTab: 'Survey',
     navEnd: true,
-    path: '/discussion',
+    path: '/survey',
   },
 }
 
@@ -168,7 +161,6 @@ router.on(routeHandlers)
 router.hooks({
   before: (done) => {
     evaluating = true
-    hideComments()
     done()
   },
   after: () => {
@@ -184,6 +176,11 @@ getUserData().then((data) => {
     checkStatus()
     updateView()
   }
+})
+
+getUnmodArgs().then((data) => {
+  importUnmodArgs(data)
+  updateView()
 })
 
 getStats().then(() => router.resolve())

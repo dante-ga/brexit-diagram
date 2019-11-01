@@ -36,3 +36,13 @@ export const getUserData = async () => {
     return null
   }
 }
+
+export const saveArgument = (path, side, text) => {
+  post('/addArgument', {path, side, text})
+}
+
+export const getUnmodArgs = async () => {
+  const response = await post('/getAllArguments', {})
+  const unmodArgs = await response.json()
+  return unmodArgs
+}
