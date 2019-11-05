@@ -19,6 +19,7 @@ const areaTexts = { lower: {}, higher: {} }
 
 const getColumn = (side, sideArguments, multipleFields, path, updateView) => {
   return ArgumentsColumn({
+    path,
     side,
     sideArguments,
     showUnmodArgs,

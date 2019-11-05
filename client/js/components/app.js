@@ -65,6 +65,7 @@ export const NotFound = () => html`
   </section>
 `
 
+//TODO: Make it a separate route and put in the questions
 export const Survey = () => html`
   <h1 class="title has-text-centered">
     Survey about this website

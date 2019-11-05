@@ -17,6 +17,7 @@ import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 import { getStats } from './stats.js'
 import { importUnmodArgs } from './arguments.js'
+import { html, svg, render as r } from 'https://unpkg.com/lit-html?module'
 const { render } = lighterhtml
 
 let activeRoute
@@ -61,7 +62,7 @@ export function updateView() {
     )
     document.title = title + ' | BrexitDiagram.uk'
     let toolbar
-    if (complete) {
+    if (complete || ['about', 'survey'].includes(activeRoute)) {
       document.body.classList.remove('has-navbar-fixed-bottom')
     } else {
       toolbar = getDecisionToolbar()

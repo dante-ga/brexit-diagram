@@ -65,6 +65,7 @@ export const UnmodArgs = (showUnmodArgs, sideUnmodArgs, setUnmodArgs) => {
 }
 
 export const ArgumentsColumn = ({
+  path,
   side,
   sideArguments,
   showUnmodArgs,
@@ -85,6 +86,7 @@ export const ArgumentsColumn = ({
       class="textarea field"
       placeholder=${`Why should the ${(multipleFields) ? 'selected ' : ''}slider be moved to the ${sideAlt[side]}?`}
       oninput=${onInput}
+      id=${path + '_' + side + 'textarea'}
       value=${areaText}
     />
     <div class="field">
