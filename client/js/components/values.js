@@ -1,6 +1,7 @@
 import { NumberInput } from './inputs.js'
 import { round2tenth } from '../util.js'
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
+import { repeat } from '../../third_party/lit-html/directives/repeat.js';
 
 export const Sign = (positive) => {
   let iconClass, spanColor
@@ -17,7 +18,7 @@ export const Sign = (positive) => {
   const spanClass = 'icon ' + spanColor
   return html`
     <span class=${spanClass}>
-      <i class=${iconClass} />
+      <i class=${iconClass} ></i>
     </span>
   `
 }
@@ -25,13 +26,13 @@ export const Sign = (positive) => {
 const SignButton = (positive, toggle) => html`
   <button
     class=${'button ' + ((positive === null) ? 'is-static' : '')}
-    onclick=${toggle}
+    @click=${toggle}
   >
     ${Sign(positive)}
   </button>
 `
 
-const ValueRow = ({factor, positive, value, gap, title, toggleSign, onValueChange, onGapChange, refObj}) => html.for(refObj)`
+const ValueRow = ({factor, positive, value, gap, title, toggleSign, onValueChange, onGapChange}) => html`
   <tr>
     <td>${SignButton((value === 0) ? null : positive, toggleSign)}</td>
     <td>${NumberInput(round2tenth(value), onValueChange)}</td>
@@ -51,7 +52,7 @@ export const ValuesTable = (valueList) => html`
       </tr>
     </thead>
     <tbody>
-      ${valueList.reverse().map(ValueRow)}
+      ${repeat(valueList.reverse(), ({refObj}) => refObj, ValueRow)}
       <tr>
         <td>${Sign(null)}</td>
         <td>${NumberInput(0, () => {}, true)}</td>

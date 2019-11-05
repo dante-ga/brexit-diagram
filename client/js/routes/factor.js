@@ -65,12 +65,14 @@ export const getFactor = ({ key, activeKey }, { evaluating, setEvaluation, updat
       {
         label: 'Your answer',
         active: evaluating,
-        onClick: () => setEvaluation(true)
+        onClick: () => setEvaluation(true),
+        path: '#',
       },
       {
         label: 'Statistics',
         active: !evaluating,
-        onClick: () => setEvaluation(false)
+        onClick: () => setEvaluation(false),
+        path: '#',
       },
     ]))
     if (multipleFields && !activeKey) {

@@ -1,4 +1,5 @@
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
+import { unsafeHTML } from '../../third_party/lit-html/directives/unsafe-html.js'
 
 export const Question = (text) => html`
   <div class="field content is-medium">
@@ -8,7 +9,7 @@ export const Question = (text) => html`
 
 export const Desc = (text) => html`
   <div class="field content">
-    ${html([text])}
+    ${unsafeHTML(text)}
   </div>
 `
 
@@ -17,13 +18,13 @@ export const CalcDesc = (text) => html`
     <div class="message-header">
       <p>
         <span class="icon">
-          <i class="fas fa-calculator" />
+          <i class="fas fa-calculator" ></i>
         </span>
         <span>How is this calculated?</span>
       </p>
     </div>
     <div class="message-body content">
-      ${html([text])}
+      ${unsafeHTML(text)}
     </div>
   </article>
 `

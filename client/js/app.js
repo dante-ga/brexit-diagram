@@ -17,8 +17,7 @@ import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
 import { getStats } from './stats.js'
 import { importUnmodArgs } from './arguments.js'
-import { html, svg, render as r } from 'https://unpkg.com/lit-html?module'
-const { render } = lighterhtml
+import { render } from '../third_party/lit-html/lit-html.js'
 
 let activeRoute
 let activeParams
@@ -55,21 +54,20 @@ const getNav = () => {
 }
 
 export function updateView() {
-  render(appEl, () => {
-    const { content, title } = routes[activeRoute].get(
-      activeParams,
-      { evaluating, setEvaluation, updateView, navigate }
-    )
-    document.title = title + ' | BrexitDiagram.uk'
-    let toolbar
-    if (complete || ['about', 'survey'].includes(activeRoute)) {
-      document.body.classList.remove('has-navbar-fixed-bottom')
-    } else {
-      toolbar = getDecisionToolbar()
-      document.body.classList.add('has-navbar-fixed-bottom')
-    }
-    return App(getNav(), content, toolbar)
-  })
+  const { content, title } = routes[activeRoute].get(
+    activeParams,
+    { evaluating, setEvaluation, updateView, navigate }
+  )
+  document.title = title + ' | BrexitDiagram.uk'
+  let toolbar
+  if (complete || ['about', 'survey'].includes(activeRoute)) {
+    document.body.classList.remove('has-navbar-fixed-bottom')
+  } else {
+    toolbar = getDecisionToolbar()
+    document.body.classList.add('has-navbar-fixed-bottom')
+  }
+
+  render(App(getNav(), content, toolbar), appEl)
 }
 
 const router = new Navigo(window.location.origin)
@@ -168,7 +166,7 @@ router.hooks({
     gtag('config', 'UA-147529439-1', { 'page_path': window.location.pathname })
   }
 })
-router.notFound(() => render(appEl, NotFound))
+router.notFound(() => render(NotFound(), appEl))
 
 getUserData().then((data) => {
   if (data !== null) {

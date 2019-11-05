@@ -1,9 +1,9 @@
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 const suffix = '@brexitdiagram.uk'
 
 const articles = {
-  project: `
+  project: html`
     <h1 class="title has-text-centered">
       About this project
     </h1>
@@ -23,7 +23,7 @@ const articles = {
       Finally, this project does not aim to make an authoritative conclusion about Brexit. Instead, it's a new tool which will hopefully make the Brexit debate more productive.
     </p>
   `,
-  author: `
+  author: html`
     <h1 class="title has-text-centered">
       Author
     </h1>
@@ -39,7 +39,7 @@ const articles = {
       <br>Oxford, United Kingdom
     </p>
   `,
-  algo: `
+  algo: html`
     <h1 class="title has-text-centered">
       Algorithms
     </h1>
@@ -81,7 +81,7 @@ const articles = {
       </ol>
     </p>
   `,
-  future: `
+  future: html`
     <h1 class="title has-text-centered">
       Future plans
     </h1>
@@ -110,6 +110,6 @@ const articles = {
 
 export const Article = (topic) => html`
   <div class="content">
-    ${html([articles[topic]])}
+    ${articles[topic]}
   </div>
 `

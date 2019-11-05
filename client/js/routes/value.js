@@ -115,12 +115,14 @@ export const getValue = ({ key, agent, activeOption }, {evaluating, updateView, 
     {
       label: 'Your answer',
       active: evaluating,
-      onClick: () => setEvaluation(true)
+      onClick: () => setEvaluation(true),
+      path: '#',
     },
     {
       label: 'Statistics',
       active: !evaluating,
-      onClick: () => setEvaluation(false)
+      onClick: () => setEvaluation(false),
+      path: '#',
     },
   ]))
   let _arguments

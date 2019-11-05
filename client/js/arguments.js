@@ -29,7 +29,11 @@ const getColumn = (side, sideArguments, multipleFields, path, updateView) => {
     },
     sideUnmodArgs: (unmodArgs[path]) ? unmodArgs[path][side] : [],
     multipleFields,
-    onInput: (e) => areaTexts[side][path] = e.target.value,
+    onChange: (e) => {
+      areaTexts[side][path] = e.target.value
+      //Need to update view, otherwise textarea value is not reset correctly later on
+      updateView()
+    },
     areaText: areaTexts[side][path] || '',
     addArgument: () => {
       const text = (areaTexts[side][path] || '').trim()

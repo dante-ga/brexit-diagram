@@ -1,9 +1,9 @@
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 const NavBarItem = ({ title, active, href, onClick }) => html`
   <a
     class=${['navbar-item', 'is-flex', 'is-va-center',  'is-tab', (active) ? 'is-active' : ''].join(' ')}
-    onclick=${onClick}
+    @click=${onClick}
     href=${href}
   >
     ${title}
@@ -15,10 +15,10 @@ export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu}) => {
     <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <div class="logo is-hidden-mobile">
-          Brexit<i class="fas fa-project-diagram" /><br>Diagram
+          Brexit<i class="fas fa-project-diagram" ></i><br>Diagram
         </div>
         ${navTabs.map(NavBarItem)}
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onclick=${toggleMenu}>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click=${toggleMenu}>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>

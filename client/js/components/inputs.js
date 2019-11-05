@@ -1,12 +1,12 @@
 import { camel2space } from '../util.js'
 import { types } from '../types.js'
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 const RulerDash = (position) => html`
   <div
     class="ruler-dash"
     style=${`left:${position * 100}%`}
-  />
+  ></div>
 `
 
 const RulerNumber = ([position, text]) => html`
@@ -50,10 +50,10 @@ export const Slider = (val, cb, {stack, type, sliderLabel, key }) => html`
         step=${types[type].step}
         min=${types[type].min}
         max=${types[type].max}
-        value=${val}
+        .value=${val}
         type="range"
         id=${key}
-        onchange=${(e) => cb(parseFloat(e.target.value))}
+        @change=${(e) => cb(parseFloat(e.target.value))}
       >
       ${(stack) ? '' : Ruler(type)}
     </div>
@@ -64,11 +64,11 @@ export const NumberInput = (value, onChange, disabled) => html`
   <input
     class="input"
     type="number"
-    value=${value}
-    onchange=${(e) => onChange(parseFloat(e.target.value))}
+    .value=${value}
+    @change=${(e) => onChange(parseFloat(e.target.value))}
     min="0"
     max="100"
     step="0.1"
-    disabled=${disabled}
+    ?disabled=${disabled}
   >
 `

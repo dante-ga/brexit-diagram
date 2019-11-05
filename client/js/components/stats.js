@@ -1,6 +1,6 @@
 import { Ruler } from '../components/inputs.js'
 
-const { html, svg } = lighterhtml
+import { html, svg } from '../../third_party/lit-html/lit-html.js'
 
 const width = 1050
 const countHeight = 30
@@ -57,7 +57,7 @@ export const Histogram = (options, type, label, decisionOptionLabels, showLegend
 
 const OptionColor = (option, color) => html`
   <span class="option-color">
-    <span class=${'color-indicator ' + color} />
+    <span class=${'color-indicator ' + color} ></span>
     ${option}
   </span>
 `

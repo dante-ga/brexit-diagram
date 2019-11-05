@@ -1,10 +1,10 @@
 import { Button } from './global.js'
-
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
+import { unsafeHTML } from '../../third_party/lit-html/directives/unsafe-html.js'
 
 const Argument = (argument) => html`
   <div class="box">
-    ${html([argument])}
+    ${unsafeHTML(argument)}
   </div>
 `
 
@@ -17,14 +17,14 @@ const UnmodArg = (unmodArg) => html`
 const titles = {
   lower: () => html`
     <span class="icon">
-      <i class="fas fa-angle-double-left" />
+      <i class="fas fa-angle-double-left" ></i>
     </span>
     <span>Lower because...</span>
   `,
   higher: () => html`
     <span>Higher because...</span>
     <span class="icon">
-      <i class="fas fa-angle-double-right" />
+      <i class="fas fa-angle-double-right" ></i>
     </span>
   `
 }
@@ -37,7 +37,7 @@ const sideAlt = {
 const UnmodArgButton = ({label, onClick}) => html`
   <button
     class="button field is-fullwidth has-text-grey"
-    onclick=${onClick}
+    @click=${onClick}
   >
     ${label}
   </button>
@@ -72,7 +72,7 @@ export const ArgumentsColumn = ({
   sideUnmodArgs,
   setUnmodArgs,
   multipleFields,
-  onInput,
+  onChange,
   areaText,
   addArgument,
 }) => html`
@@ -85,10 +85,10 @@ export const ArgumentsColumn = ({
     <textarea
       class="textarea field"
       placeholder=${`Why should the ${(multipleFields) ? 'selected ' : ''}slider be moved to the ${sideAlt[side]}?`}
-      oninput=${onInput}
+      @change=${onChange}
       id=${path + '_' + side + 'textarea'}
-      value=${areaText}
-    />
+      .value=${areaText}
+    ></textarea>
     <div class="field">
       ${Button({
         label: 'Add argument',
@@ -112,8 +112,8 @@ export const RadioAddon = (fieldKey, field, active, activate) => html`
         id=${'radioAddon_' + fieldKey}
         type="radio"
         name="radioAddon"
-        checked=${active}
-        onclick=${activate}
+        ?checked=${active}
+        @click=${activate}
       >
       <label for=${'radioAddon_' + fieldKey} ></label>
     </label>

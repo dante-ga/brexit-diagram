@@ -1,4 +1,4 @@
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 export const Title = (text) => html`
   <h1 class="title has-text-centered">
@@ -9,7 +9,7 @@ export const Title = (text) => html`
 export const Button = ({label, onClick}) => html`
   <button
     class="button is-primary"
-    onclick=${onClick}
+    @click=${onClick}
   >
     ${label}
   </button>
@@ -23,7 +23,7 @@ export const ButtonSection = (button) => html`
 
 const Tab = ({label, active, onClick, path}) => html`
   <li class=${(active) ? 'is-active' : ''} >
-    <a onclick=${onClick} href=${path} >
+    <a @click=${onClick} href=${path} >
       ${label}
     </a>
   </li>
@@ -42,11 +42,11 @@ export const Info = ({title, content, onClose}) => html`
     <div class="message-header">
       <p>
         <span class="icon">
-          <i class="fas fa-info-circle" />
+          <i class="fas fa-info-circle" ></i>
         </span>
         <span>${title}</span>
       </p>
-      <button class="delete" aria-label="delete" onclick=${onClose} />
+      <button class="delete" aria-label="delete" @click=${onClose} ></button>
     </div>
     <div class="message-body content">
       ${content}
@@ -55,4 +55,4 @@ export const Info = ({title, content, onClose}) => html`
 `
 
 //Designed to be embeded in content strings so no DOM rendering.
-export const outLink = (text, href) => `<a href=${href} target="_blank"><span>${text}</span><span class="icon"><i class="fas fa-external-link-alt" /></span></a>`
+export const outLink = (text, href) => `<a href=${href} target="_blank"><span>${text}</span><span class="icon"><i class="fas fa-external-link-alt" ></i></span></a>`

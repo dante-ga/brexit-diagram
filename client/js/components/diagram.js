@@ -1,5 +1,5 @@
 import { Arrows } from './arrows.js'
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, notify, external, hasExternal, importance, path, onClick }) => {
   let cellClass = 'diagram-cell'
@@ -13,7 +13,7 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, not
     if (value) {
       title = html`
       <span class="icon is-medium">
-        <i class="far fa-lg fa-heart" />
+        <i class="far fa-lg fa-heart" ></i>
       </span>
       `
       cellClass += ' value-cell'
@@ -24,21 +24,21 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, not
     if (choice) {
       badges.push(html`
         <span class="badge tooltip is-tooltip-left" data-tooltip="settable numeric values">
-          <i class="fas fa-sliders-h" />
+          <i class="fas fa-sliders-h" ></i>
         </span>
       `)
     }
     if (decision) {
       badges.push(html`
         <span class="badge tooltip is-tooltip-left" data-tooltip="decision">
-          <i class="fas fa-balance-scale-right" />
+          <i class="fas fa-balance-scale-right" ></i>
         </span>
       `)
     }
     if (negotiation) {
       badges.push(html`
         <span class="badge tooltip is-tooltip-left" data-tooltip="negotiation">
-          <i class="fas fa-users" />
+          <i class="fas fa-users" ></i>
         </span>
       `)
     }
@@ -48,7 +48,7 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, not
           class="status has-text-danger tooltip is-tooltip-left is-tooltip-danger"
           data-tooltip="unanswered question"
         >
-          <i class="fas fa-circle" />
+          <i class="fas fa-circle" ></i>
         </span>
       `)
     }
@@ -60,7 +60,7 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, not
             class="badge badge2 has-text-danger tooltip is-tooltip-danger is-tooltip-left"
             data-tooltip="significant disagreement"
           >
-            <i class="fas fa-exclamation" />
+            <i class="fas fa-exclamation" ></i>
           </span>
         `)
       } else {
@@ -69,14 +69,14 @@ const Cell = ({ key, value, shiftBack, title, choice, decision, negotiation, not
             class="badge badge2 has-text-danger tooltip is-tooltip-danger is-tooltip-left"
             data-tooltip="critical disagreement"
           >
-            <i class="fas fa-exclamation" /><i class="fas fa-exclamation" />
+            <i class="fas fa-exclamation" ></i><i class="fas fa-exclamation" ></i>
           </span>
         `)
       }
     }
 
     box = html`
-      <a class=${classStr} onclick=${onClick} href=${path} >
+      <a class=${classStr} @click=${onClick} href=${path} >
         ${badges}
         <span>${title}</span>
       </a>

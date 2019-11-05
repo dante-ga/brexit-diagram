@@ -1,8 +1,8 @@
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 export const Progress = (val, max) => html`
   <div class="navbar-item is-expanded is-flex is-va-center">
-    <progress class="progress is-primary is-medium" value=${val+''} max=${max} />
+    <progress class="progress is-primary is-medium" .value=${val+''} max=${max} ></progress>
   </div>
 `
 
@@ -18,7 +18,7 @@ export const Next = (onClick, path) => html`
   <div class="navbar-item is-va-center">
     <a
       class="${'button ' + ((onClick) ? 'is-primary' : 'is-static' )}"
-      onclick=${onClick}
+      @click=${onClick}
       href=${path}
     >
       <span>Next question</span>
@@ -31,7 +31,7 @@ export const Next = (onClick, path) => html`
 
 export const Finish = (onClick, path) => html`
   <div class="navbar-item is-va-center">
-    <a class="button is-success has-text-weight-bold" onclick=${onClick} href=${path} >
+    <a class="button is-success has-text-weight-bold" @click=${onClick} href=${path} >
       Decide!
     </a>
   </div>

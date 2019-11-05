@@ -1,5 +1,5 @@
 import { Sign } from './values.js'
-const { html } = lighterhtml
+import { html } from '../../third_party/lit-html/lit-html.js'
 
 const ValueRow = ({positive, value, title, highlight}) => html`
   <tr class=${(highlight) ? 'has-text-weight-bold' : ''}>
