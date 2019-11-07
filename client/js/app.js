@@ -36,6 +36,8 @@ const toggleMenu = () => {
   updateView()
 }
 
+const onLogo = (event) => navigate('/diagram/brexit', event)
+
 const getNav = () => {
   const navTabs = []
   const navTabsEnd = []
@@ -51,7 +53,7 @@ const getNav = () => {
       ;(navEnd) ? navTabsEnd.push(tab) : navTabs.push(tab)
     }
   }
-  return NavBar({ navTabs, navTabsEnd, showMenu, toggleMenu })
+  return NavBar({ navTabs, navTabsEnd, showMenu, toggleMenu, onLogo })
 }
 
 export function updateView() {

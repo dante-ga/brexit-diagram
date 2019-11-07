@@ -17,13 +17,13 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
   </a>
 `
 
-export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu}) => {
+export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu, onLogo}) => {
   return html`
     <nav class="navbar has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <div class="logo is-hidden-mobile">
+        <a href="/diagram/brexit" class="logo is-hidden-mobile" @click=${onLogo}>
           Brexit<i class="fas fa-project-diagram" ></i><br>Diagram
-        </div>
+        </a>
         ${navTabs.map(NavBarItem)}
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click=${toggleMenu}>
           <span aria-hidden="true"></span>

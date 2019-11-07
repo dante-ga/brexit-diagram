@@ -84,20 +84,18 @@ const factors = {
   },
   transitionPeriod: {
     type: 'until2030interval',
-    title: 'Transition period & backstop',
-    question: 'How long do you expect the transition period together with the backstop to last if the Brexit deal is legislated?',
+    title: 'Transition period',
+    question: 'How long do you expect the transition period to last if the Brexit deal is legislated?',
     choice: true,
-    sliderLabel: 'Transition period & backstop duration',
+    sliderLabel: 'Transition period duration',
     minLabel: '2020',
     maxLabel: '2030 (time horizon)',
     arguments: {
       lower: [
-        `The transition period will end in December 2020.<br>${outLink('The Brexit timeline', 'https://fullfact.org/europe/brexit-timeline/')}`,
-        `The UK and the EU have committed in the withdrawal agreement to use their “best endeavours” to find a trade deal which avoids the need for the backstop—that would be a new arrangement that avoids a hard border in Ireland.<br>${outLink('Can we avoid going into the Irish backstop?', 'https://fullfact.org/europe/can-we-avoid-irish-backstop/')}`,
+        `As with the agreement Theresa May’s government put forward, the end date for the transition period is set at the 31 December 2020.<br>${outLink("Boris Johnson's new Brexit deal: four key questions answered",  'https://fullfact.org/europe/boris-johnsons-new-brexit-deal-four-key-questions-answered/')}`,
       ],
       higher: [
         `The UK can apply to extend the transition period by one or two years.<br>${outLink('The Brexit timeline', 'https://fullfact.org/europe/brexit-timeline/')}`,
-        `That advice, from Attorney General Geoffrey Cox, said “despite statements in the [backstop] protocol that it is not intended to be permanent, and the clear intention of the parties that it should be replaced by alternative permanent arrangements, in international law the protocol would endure indefinitely until a superseding agreement took its place”. In other words, while not intended to be permanent, it will only be temporary if the UK and EU find a mutually acceptable alternative.<br>${outLink('Is the backstop permanent or temporary?', 'https://fullfact.org/europe/backstop-permanent-or-temporary/')}`,
       ],
     },
   },
