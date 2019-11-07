@@ -11,7 +11,8 @@ import {
   complete
 } from './routes/decision.js'
 import { getAbout } from './routes/about.js'
-import { NavBar, App, NotFound, Survey } from './components/app.js'
+import { getSurvey } from './routes/survey.js'
+import { NavBar, App, NotFound } from './components/app.js'
 import { debounce } from './util.js'
 import { importUserVals } from './calc/calc.js'
 import Navigo from '../third_party/navigo.js'
@@ -88,7 +89,7 @@ export const navigate = (path, event) => {
 appEl.addEventListener('click', (event) => {
   const path = event.target.pathname
   if (path && (event.target.closest('.content') !== null
-              || event.target.closest('.menu') !== null)) {
+    || event.target.closest('.menu') !== null)) {
     navigate(path, event)
   }
 })
@@ -136,9 +137,8 @@ const routes = {
     navPath: '/about/project',
   },
   survey: {
-    get: () => ({content: Survey(), title: 'Survey' }),
-    navTab: 'Survey',
-    navEnd: true,
+    get: getSurvey,
+    navTab: 'Feedback',
     path: '/survey',
   },
 }
@@ -167,6 +167,8 @@ router.hooks({
   }
 })
 router.notFound(() => render(NotFound(), appEl))
+
+
 
 getUserData().then((data) => {
   if (data !== null) {

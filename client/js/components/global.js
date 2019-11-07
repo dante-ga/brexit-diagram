@@ -1,4 +1,5 @@
 import { html } from '../../third_party/lit-html/lit-html.js'
+import { ifDefined } from '../../third_party/lit-html/directives/if-defined.js'
 
 export const Title = (text) => html`
   <h1 class="title has-text-centered">
@@ -23,7 +24,7 @@ export const ButtonSection = (button) => html`
 
 const Tab = ({label, active, onClick, path}) => html`
   <li class=${(active) ? 'is-active' : ''} >
-    <a @click=${onClick} href=${path} >
+    <a @click=${onClick} href=${ifDefined(path)} >
       ${label}
     </a>
   </li>

@@ -93,6 +93,11 @@ export const Decision = ({decision, valueRows, optionLabels, totalValues}) => {
     <h1 class="subtitle is-2 has-text-centered recommendation">
       Recommended option: <strong>${alternatives[bestOption].label}</strong>
     </h1>
+
+    <div class="margin-top-lg content">
+      Please fill in a one-page survey about your experience. Your feedback is very important to me! &nbsp;&nbsp;
+      <a class="button is-primary is-va-middle" href="/survey">Leave Feedback</a>
+    </div>
   `
 }
 

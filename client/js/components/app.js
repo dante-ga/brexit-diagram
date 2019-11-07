@@ -1,5 +1,11 @@
 import { html } from '../../third_party/lit-html/lit-html.js'
 
+const SurveyIcon = () => html`
+  <span class="icon is-medium has-text-primary surveyIcon">
+    <i class="fas fa-comment-alt" ></i>
+  </span>
+`
+
 const NavBarItem = ({ title, active, href, onClick }) => html`
   <a
     class=${['navbar-item', 'is-flex', 'is-va-center',  'is-tab', (active) ? 'is-active' : ''].join(' ')}
@@ -7,6 +13,7 @@ const NavBarItem = ({ title, active, href, onClick }) => html`
     href=${href}
   >
     ${title}
+    ${(href === '/survey') ? SurveyIcon() : ''}
   </a>
 `
 
@@ -26,10 +33,10 @@ export const NavBar = ({navTabs, navTabsEnd, showMenu, toggleMenu}) => {
       </div>
       <div class=${'navbar-menu' + ((showMenu) ? ' is-active' : '') }>
         <div class="navbar-end">
+          ${navTabsEnd.map(NavBarItem)}
           <a class="navbar-item is-flex is-va-center" href="https://github.com/dante-ga/brexit-diagram" target="_blank">
             <img src="/img/github.png" >
           </a>
-          ${navTabsEnd.map(NavBarItem)}
         </div>
       </div>
     </nav>
@@ -63,11 +70,4 @@ export const NotFound = () => html`
       </div>
     </div>
   </section>
-`
-
-//TODO: Make it a separate route and put in the questions
-export const Survey = () => html`
-  <h1 class="title has-text-centered">
-    Survey about this website
-  </h1>
 `

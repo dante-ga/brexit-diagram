@@ -46,3 +46,5 @@ export const getUnmodArgs = async () => {
   const unmodArgs = await response.json()
   return unmodArgs
 }
+
+export const saveSurvey = (data) => post('/saveSurvey', data)

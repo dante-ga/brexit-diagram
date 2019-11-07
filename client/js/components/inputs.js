@@ -30,7 +30,7 @@ export const Ruler = (type) => {
     position => [position, getText(min + (max - min) * position)]
   )
   return html`
-    <div class="is-flex">
+    <div class="is-flex ruler">
       <div class="ruler-scale is-flex-one">
         ${positions.map(RulerDash)}
         ${vals.map(RulerNumber)}
