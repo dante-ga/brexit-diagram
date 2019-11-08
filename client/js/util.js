@@ -35,3 +35,6 @@ export const clone = obj => JSON.parse(JSON.stringify(obj))
 export const uuidv4 = () => ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
   (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 )
+
+//Designed to be embeded in content strings so no DOM rendering.
+export const outLink = (text, href) => `<a href=${href} target="_blank"><span>${text}</span><span class="icon"><i class="fas fa-external-link-alt" ></i></span></a>`

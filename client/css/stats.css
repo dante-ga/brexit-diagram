@@ -44,4 +44,6 @@
 
 .histogram {
   display: block;
+  margin: 0 5px;  /*Matchs ruller margin*/
+  width: calc(100% - 10px)
 }

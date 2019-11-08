@@ -1,7 +1,7 @@
 import { getNegotiationDistribution } from '../calc/negotiation.js'
 import { getAgentValue } from '../calc/value.js'
 import { clone } from '../util.js'
-import { outLink } from '../components/global.js'
+import { outLink } from '../util.js'
 
 const factors = {}
 
@@ -43,12 +43,13 @@ factors.irishBorder = {
   decidedBy: ['UK', 'NI', 'EU'],
 }
 
+//TODO: Add arguments below
 const violenceNiArguments = {
-  hardBorder: false,
-  brokenBorder: false,
-  seaBorder: false,
-  unitedIreland: false,
-  openBorder: false,
+  hardBorder: undefined,
+  brokenBorder: undefined,
+  seaBorder: undefined,
+  unitedIreland: undefined,
+  openBorder: undefined,
 }
 
 const optionEntries = Object.entries(factors.irishBorder.options)

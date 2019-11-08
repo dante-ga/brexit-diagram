@@ -54,6 +54,3 @@ export const Info = ({title, content, onClose}) => html`
     </div>
   </article>
 `
-
-//Designed to be embeded in content strings so no DOM rendering.
-export const outLink = (text, href) => `<a href=${href} target="_blank"><span>${text}</span><span class="icon"><i class="fas fa-external-link-alt" ></i></span></a>`

@@ -2,7 +2,7 @@ import { clone } from '../util.js'
 import { calcSubs } from '../calc/calc.js'
 import { getAgentValue } from '../calc/value.js'
 import { getNegotiationDistribution } from '../calc/negotiation.js'
-import { outLink } from '../components/global.js'
+import { outLink } from '../util.js'
 
 
 //Starting Brexit event + miscaleneous factors

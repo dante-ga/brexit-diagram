@@ -2,7 +2,7 @@ import { Ruler } from '../components/inputs.js'
 
 import { html, svg } from '../../third_party/lit-html/lit-html.js'
 
-const width = 1050
+const width = 1040
 const countHeight = 30
 
 const optionColors = {
@@ -27,7 +27,6 @@ const Layer = ({option, bins, height}) => {
 
 const HistogramSvg = (options, height) => svg`
   <svg
-    width="100%"
     height=${height}
     class="histogram"
     viewBox=${'0 0 ' + width + ' ' + height}

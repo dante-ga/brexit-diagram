@@ -1,5 +1,5 @@
 import { bn } from '../util.js'
-import { outLink } from '../components/global.js'
+import { outLink } from '../util.js'
 
 const euCostBefore = 17.4 * bn
 const euIncomeBefore = (4.2 + 4.3 + 2.3) * bn

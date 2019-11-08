@@ -1,5 +1,5 @@
 import { bn } from '../util.js'
-import { outLink } from '../components/global.js'
+import { outLink } from '../util.js'
 const by2030 = 10
 
 

@@ -1,5 +1,5 @@
 import { getAgentValue } from '../calc/value.js'
-import { outLink } from '../components/global.js'
+import { outLink } from '../util.js'
 
 const factors = {
   ukInfluenceOnEuIn: {
