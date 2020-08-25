@@ -33,11 +33,6 @@ const articles = {
     <p>
       While working as a Web Developer for a number of years, I became interested in tackling the complexity of conflict resolution using the knowledge and skill that I acquired from my degree. I recently started working full time on this project and I'm looking for people interested in similar things and potential collaborators.
     </p>
-    <p>
-      Dante
-      <br>dante${suffix}
-      <br>Oxford, United Kingdom
-    </p>
   `,
   algo: html`
     <h1 class="title has-text-centered">
